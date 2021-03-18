@@ -1,0 +1,137 @@
+<div class="sett-active">
+	<div class="header">
+		<h4>{{LANG business_account}}</h4>
+		<div class="clear"></div>
+	</div>
+	<hr>
+	<?php if ($context['bus_requested'] > 0) { ?>
+	<div class="verify_h"> 
+		<h4 class="text-center">{{LANG bus_request_done}}</h4>
+	</div>
+	<?php } else{ ?>
+	<form class="form row pp_sett_form" id="business-profile-settings">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="pp_mat_input">
+						<input type="text" name="business_name" class="form-control">
+						<span class="bar"></span>
+						<label>{{LANG business_name}}</label>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="pp_mat_input">
+						<input type="email" name="email" class="form-control">
+						<span class="bar"></span>
+						<label>{{LANG email}}</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="pp_mat_input">
+						<input type="text" name="phone" class="form-control">
+						<span class="bar"></span>
+						<label>{{LANG phone_number}}</label>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="pp_mat_input">
+						<input type="url" name="website" class="form-control">
+						<span class="bar"></span>
+						<label>{{LANG website}}</label>
+					</div>
+				</div>
+			</div>
+
+			<?php if ($context['me']['verified'] == 0) { ?>
+		<div class="pp_mat_input">
+			<div>
+				<p class="verify_text_1">{{LANG upload_docs}}</p>
+				<p class="verify_text_2">{{LANG select_verif_images}}</p>
+			</div>
+			<div class="clear"></div>
+			
+			<div class="col-md-6">
+				<div class="fak_image">
+					<div id="user_image"></div>
+					<div class="upload_fk_image" onclick="document.getElementById('user-photo').click(); return false">
+						<div class="upload_fk_image_content">
+							<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" /></svg> {{LANG your_photo}}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="fak_image">
+					<div id="user_ip"></div>
+					<div class="upload_fk_image" onclick="document.getElementById('ip-photo').click(); return false">
+						<div class="upload_fk_image_content">
+							<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M22,4H14V7H10V4H2A2,2 0 0,0 0,6V20A2,2 0 0,0 2,22H22A2,2 0 0,0 24,20V6A2,2 0 0,0 22,4M8,9A2,2 0 0,1 10,11A2,2 0 0,1 8,13A2,2 0 0,1 6,11A2,2 0 0,1 8,9M12,17H4V16C4,14.67 6.67,14 8,14C9.33,14 12,14.67 12,16V17M20,18H14V16H20V18M20,14H14V12H20V14M20,10H14V8H20V10M13,6H11V2H13V6Z" /></svg> {{LANG your_ip}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php } ?>
+		<div class="clear"></div>
+
+
+		<div class="pp_load_loader"><button class="btn btn-info pp_flat_btn" type="submit"><span>{{LANG send}}</span></button></div>
+		<input type="hidden" name="user_id" value="<?php echo($context['me']['user_id']) ?>">
+		<input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+		<input type="file" name="passport" class="hidden" id="ip-photo" accept="image/x-png,image/jpg,image/jpeg">
+		<input type="file" name="photo" class="hidden" id="user-photo" accept="image/x-png,image/jpg,image/jpeg">
+
+		</div>
+		<div class="col-md-1"></div>
+	</form>
+	<?php } ?>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+
+		$("#user_image").click(function(event) {
+	        $("#user-photo").trigger('click');
+	    });
+
+	    $("#user_ip").click(function(event) {
+	        $("#ip-photo").trigger('click');
+	    });
+
+	    $("#ip-photo").change(function(event) {
+	        $("#user_ip").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture' width='100%'>")
+	    });
+
+	    $("#user-photo").change(function(event) {
+	        $("#user_image").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture' width='100%'>")
+	    });
+
+		var form = $("form#business-profile-settings");
+		form.ajaxForm({
+			url: link('settings/business'),
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function(){
+				$(form).find('.pp_load_loader').addClass('loadingg');
+				form.find('button[type="submit"]').attr('disabled','true');
+			},
+			success: function(data){
+				$.toast(data.message,{
+                	duration: 5000, 
+                	type: 'success',
+                	align: 'bottom',
+                	singleton: true
+                });
+				$(form).find('.pp_load_loader').removeClass('loadingg');
+				form.find('button[type="submit"]').removeAttr('disabled');
+				if (data.status == 200) {
+				    setTimeout(function () {
+						window.location.reload();
+					},3000);
+				}
+			}
+		});
+	});
+</script>

@@ -1,0 +1,159 @@
+<?php  
+$tot_users = $admin->totalUsers();
+$tot_posts = $admin->totalPosts();
+$onl_users = $admin->onlineUsers();
+$tot_comms = $admin->totalComments();
+$tot_mssgs = $admin->totalMessages();
+$tot_vids  = $admin->totalVideos();
+$tot_imgs  = $admin->totalPhotos();
+$tot_liks  = $admin->totalLikes();
+
+$usr_statc = $admin->userStatistic();
+$pst_statc = $admin->postStatistic();
+?>
+
+<div class="block-header">
+    <h2>DASHBOARD</h2>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-light-blue hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">people</i>
+            </div>
+            <div class="content">
+                <div class="text">TOTAL USERS</div>
+                <div class="number count-to" data-from="0" data-to="<?php echo($tot_users);?>" data-speed="15" data-fresh-interval="20"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-cyan hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">border_color</i>
+            </div>
+            <div class="content">
+                <div class="text">TOTAL POSTS</div>
+                <div class="number count-to" data-from="0" data-to="<?php echo($tot_posts);?>" data-speed="1000" data-fresh-interval="20"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-light-green hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">forum</i>
+            </div>
+            <div class="content">
+                <div class="text">TOTAL COMMENTS</div>
+                <div class="number count-to" data-from="0" data-to="<?php echo($tot_comms);?>" data-speed="1000" data-fresh-interval="20"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-green hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">account_circle</i>
+            </div>
+            <div class="content">
+                <div class="text">ONLINE USERS</div>
+                <div class="number count-to" data-from="0" data-to="<?php echo($onl_users);?>" data-speed="1000" data-fresh-interval="20"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-indigo hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">message</i>
+            </div>
+            <div class="content">
+                <div class="text">TOTAL MESSAGES</div>
+                <div class="number count-to" data-from="0" data-to="<?php echo($tot_mssgs);?>" data-speed="1000" data-fresh-interval="20"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <div class="info-box bg-blue-grey hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">video_library</i>
+            </div>
+            <div class="content">
+                <div class="text">TOTAL VIDEOS</div>
+                <div class="number count-to" data-from="0" data-to="<?php echo($tot_vids); ?>" data-speed="1000" data-fresh-interval="20"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <div class="info-box bg-pink hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">collections</i>
+            </div>
+            <div class="content">
+                <div class="text">TOTAL PHOTOS</div>
+                <div class="number count-to" data-from="0" data-to="<?php echo($tot_imgs); ?>" data-speed="1000" data-fresh-interval="20"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-orange hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">thumb_up</i>
+            </div>
+            <div class="content">
+                <div class="text">TOTAL POSTS LIKES</div>
+                <div class="number count-to" data-from="0" data-to="<?php echo($tot_liks); ?>" data-speed="1000" data-fresh-interval="20"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>USERS STATICS</h2>
+            </div>
+            <div class="body">
+                <div id="bar_users_chart" class="graph"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>POSTS STATICS</h2>
+            </div>
+            <div class="body">
+                <div id="bar_posts_chart" class="graph"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>    
+jQuery(document).ready(function($) {
+    $('.sparkline').sparkline();
+	$('.number').countTo();
+
+	Morris.Bar({
+        element: 'bar_posts_chart',
+        data: <?php echo($pst_statc); ?>,
+        xkey: 'month',
+        ykeys: ['new_posts'],
+        labels: ['Published posts'],
+        pointSize: 1,
+        hideHover: 'auto',
+        resize: true,
+        barColors: ['#E91E63']
+    });
+
+    Morris.Bar({
+        element: 'bar_users_chart',
+        data: <?php echo($usr_statc); ?>,
+        xkey: 'month',
+        ykeys: ['new_users'],
+        labels: ['New Users'],
+        pointSize: 1,
+        hideHover: 'auto',
+        resize: true,
+        barColors: ['#8BC34A']
+    });
+});
+</script>

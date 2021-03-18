@@ -1,0 +1,129 @@
+<div class="settings-page-container content-shadow">
+<div class="page-content sett_avatr_chng">
+</div>
+	<div class="col-xs-12 col-sm-12 col-md-12 page-content" style="border-left:1px solid #ececec">
+        <div class="sett-active">
+            <form class="form row pp_sett_form" id="create_fund" enctype="multipart/form-data">
+                <div class="col-md-6">
+                    <div class="pp_mat_input">
+                        <input required="true" type="text" name="title" class="form-control" value="<?php echo($context['fund']->title) ?>">
+                        <span class="bar"></span>
+                        <label>{{LANG title}}</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="pp_mat_input">
+                        <input required="true" type="text" name="amount" class="form-control" value="<?php echo($context['fund']->amount) ?>">
+                        <span class="bar"></span>
+                        <label>{{LANG amount}}</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="pp_mat_input">
+                        <textarea class="form-control" name="description" rows="3"><?php echo($context['fund']->description) ?></textarea>
+                        <span class="bar"></span>
+                        <label>{{LANG description}}</label>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>{{LANG upload_file}}</label>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <span class="btn btn-default btn-file">
+                                    Browse… <input type="file" id="image" name="image">
+                                </span>
+                            </span>
+                            <input type="text" class="form-control" readonly>
+                        </div>
+                        <img id='img-upload' src="<?php echo(media($context['fund']->image)) ?>" />
+                    </div>
+                </div>
+                <input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+                <input type="hidden" name="id" value="<?php echo($context['fund']->id) ?>">
+                <div class="clear"></div>
+                <div class="pp_load_loader"><button class="btn btn-info pp_flat_btn" type="submit"><span>{{LANG submit}}</span></button></div>
+            </form>
+        </div>
+    </div>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+    
+
+jQuery(document).ready(function($) {
+        
+
+    $("form#create_fund").ajaxForm({
+        url: link('profile/edit_fund'),
+        type: 'POST',
+        dataType: 'json',
+        beforeSubmit: function(arr,form){
+            
+            $(form).find('.pp_load_loader').addClass('loadingg');
+            $(form).find('button[type="submit"]').attr('disabled','true');
+        },
+        success: function(data,stat,xhr,form){
+            scroll2top();
+            $.toast(data.message,{
+                duration: 5000, 
+                type: 'success',
+                align: 'bottom',
+                singleton: true
+            });
+            if (data.status == 200) {
+                setTimeout(function () {
+                    window.location.href = "{{CONFIG site_url}}/funding";
+                },2000);
+            }
+            $(form).find('.pp_load_loader').removeClass('loadingg');
+            $(form).find('button[type="submit"]').removeAttr('disabled');
+        }
+    });
+
+    
+});
+
+
+
+
+
+$('.selectpicker').selectpicker({});
+$(document).ready( function() {
+    $(document).on('change', '.btn-file :file', function() {
+    var input = $(this),
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    input.trigger('fileselect', [label]);
+    });
+
+    $('.btn-file :file').on('fileselect', function(event, label) {
+        
+        var input = $(this).parents('.input-group').find(':text'),
+            log = label;
+        
+        if( input.length ) {
+            input.val(log);
+        } else {
+            if( log ) alert(log);
+        }
+    
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                console.log(reader.result)
+                $('#img-upload').attr('src', reader.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#image").change(function(){
+        readURL(this);
+    });     
+});
+</script>

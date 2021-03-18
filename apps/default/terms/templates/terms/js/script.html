@@ -1,0 +1,25 @@
+<script type="text/javascript">
+	var form = $("form#contact_us_form");
+	$("form#contact_us_form").ajaxForm({
+		url: '<?php echo($context['xhr_url']) ?>/contact_us',
+		type: 'POST',
+		dataType: 'json',
+		beforeSubmit: function(arr,form){
+			$(form).find('.pp_load_loader').addClass('loadingg');
+			$(form).find('button[type="submit"]').attr('disabled','true');
+			$(form).find('button[type="submit"]').text('please wait ..');
+		},
+		success: function(data,stat,xhr,form){
+			scroll2top();
+			$.toast(data.message,{
+            	duration: 5000, 
+            	type: '',
+            	align: 'top-right',
+            	singleton: false
+            });
+			$(form).find('.pp_load_loader').removeClass('loadingg');
+            $(form).find('button[type="submit"]').removeAttr('disabled');
+            $(form).find('button[type="submit"]').text("<?php echo lang('send'); ?>");
+		}
+	});
+</script>

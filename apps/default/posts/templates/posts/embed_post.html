@@ -1,0 +1,429 @@
+
+	<div class="post-data-container" data-post-id="<?php echo($context['post_data']['post_id']) ?>" style="height: 100%;margin-top: unset">
+		<div class="post-data-inner">
+			<div class="post-media-renderer">
+				<?php if ($context['post_data']['type'] == 'image') { ?>
+					<div id="post-data-cr" class="carousel slide carousel-fade" data-ride="carousel" data-interval="false">
+						<div class="carousel-inner">
+							<?php foreach ($context['post_data']['media_set'] as $k => $medai_file) { ?>
+								<div class="item <?php if($k == 0){ ?> active<?php } ?>">
+									<img src="<?php echo(media($medai_file['file'])) ?>" alt="Gif image" class="img-res">
+								</div>
+							<?php } ?>
+						</div>
+						<?php if (count($context['post_data']['media_set']) > 1) { ?>
+							<a class="carousel-control-prev cr-controls" href="#post-data-cr" role="button" data-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>
+								</span>
+							</a>
+							<a class="carousel-control-next cr-controls" href="#post-data-cr" role="button" data-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+								</span>
+							</a>
+						<?php } ?>
+					</div>
+				<?php } elseif ($context['post_data']['type'] == 'gif') { ?>
+					<div class="gif">
+						<?php foreach ($context['post_data']['media_set'] as $key => $medai_file) { ?>
+							<img src="<?php echo(media($medai_file['file'])) ?>" alt="Gif image" class="img-res">
+						<?php } ?>
+					</div>
+				<?php } elseif ($context['post_data']['type'] == 'video') { ?>
+					<div class="video">
+						<?php foreach ($context['post_data']['media_set'] as $key => $media_file) { ?>
+							<video class="afterglow" id="postvideo-<?php echo($context['post_data']['post_id']) ?>"  width="1280" height="720" data-autoresize="fit"  onplay="px_add_view(<?php echo($context['post_data']['post_id']) ?>)">
+								<source src="<?php echo(media($media_file['file'])) ?>" type="video/mp4">
+								<source src="<?php echo(media($media_file['file'])) ?>" type="video/mov">
+								<source src="<?php echo(media($media_file['file'])) ?>" type="video/webm">
+								<source src="<?php echo(media($media_file['file'])) ?>" type="video/3gp">
+								<source src="<?php echo(media($media_file['file'])) ?>" type="video/ogg">
+							</video>
+						<?php } if ($context['post_data']['is_should_hide']) { ?>
+						<div class="is_should_hide show_m_reprted-<?php echo($context['post_data']['post_id']) ?>">
+							<?php foreach ($context['post_data']['media_set'] as $key => $media_file) { ?>
+								<img src="<?php echo(media($media_file['extra'])) ?>" width="100%" height="100%">
+							<?php } ?>
+						</div>
+						<div class="is_should_hide1 text_m_reprted-<?php echo($context['post_data']['post_id']) ?>">
+							<div class="is_should_hide2">
+								<p class="is_should_hide3">{{LANG post_m_report}}</p>
+								<div class="is_should_hide4">
+									<a class="is_should_hide5" href="javascript:void(0);" onclick="show_m_reprted(<?php echo($context['post_data']['post_id']) ?>)">{{LANG click_to_see}}</a>
+								</div>
+							</div>
+						</div>
+						<?php } ?>
+					</div>
+					<script>
+						jQuery(document).ready(function($) {
+							afterglow.init();
+						});
+					</script>
+				<?php } elseif ($context['post_data']['type'] == 'youtube') { ?>
+					<div class="post-embed-frame fluid">
+						<iframe style="width: 100%; min-height: 340px;" src="https://www.youtube.com/embed/<?php echo($context['post_data']['youtube']) ?>" frameborder="0"></iframe>
+					</div>
+				<?php } elseif ($context['post_data']['type'] == 'dailymotion') { ?>
+					<div class="post-embed-frame fluid">
+						<iframe style="width: 100%; min-height: 335px;" src="//www.dailymotion.com/embed/video/<?php echo($context['post_data']['dailymotion']) ?>" frameborder="0"></iframe>
+					</div>
+				<?php } elseif ($context['post_data']['type'] == 'vimeo') { ?>
+					<div class="post-embed-frame fluid">
+						<iframe style="width: 100%; min-height: 335px;" src="https://player.vimeo.com/video/<?php echo($context['post_data']['vimeo']) ?>" frameborder="0"></iframe>
+					</div>
+				<?php } elseif ($context['post_data']['type'] == 'playtube') { ?>
+					<div class="post-embed-frame fluid">
+						<iframe style="width: 100%; min-height: 335px;" src="{{CONFIG playtube_url}}/embed/<?php echo($context['post_data']['playtube']) ?>" frameborder="0"></iframe>
+					</div>
+				<?php } elseif ($context['post_data']['type'] == 'mp4') { ?>
+					<video class="afterglow" id="postvideo-<?php echo($context['post_data']['post_id']) ?>"  width="1280" height="720" data-autoresize="fit">
+								<source src="<?php echo($context['post_data']['link']) ?>" type="video/mp4">
+							</video>
+							<script>
+						jQuery(document).ready(function($) {
+							afterglow.init();
+						});
+					</script>
+				<?php } elseif ($context['post_data']['type'] == 'fetched') { ?>
+					<div id="post-data-cr" class="carousel slide carousel-fade" data-ride="carousel" data-interval="false">
+						<div class="carousel-inner">
+							<?php foreach ($context['post_data']['media_set'] as $k => $medai_file) { ?>
+								<div class="item <?php if($k == 0){ ?> active<?php } ?>">
+									<img src="<?php echo(media($media_file['file'])) ?>" alt="Gif image" class="img-res">
+								</div>
+							<?php } ?>
+						</div>
+						<?php if (count($context['post_data']['media_set']) > 1) { ?>
+							<a class="carousel-control-prev cr-controls" href="#post-data-cr" role="button" data-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>
+								</span>
+							</a>
+							<a class="carousel-control-next cr-controls" href="#post-data-cr" role="button" data-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+								</span>
+							</a>
+						<?php } ?>
+					</div>
+				<?php } ?>
+			</div>
+			<div class="sidebar">
+				<div class="sidebar__inner">
+					<div class="header">
+						<div class="avatar">
+							<img src="<?php echo(media($context['post_data']['avatar'])) ?>" alt="Avatar" class="img-circle img-res">
+						</div>
+						<div class="uname">
+							<div class="fluid">
+								<a href="<?php echo(un2url($context['post_data']['username'])) ?>"><?php echo($context['post_data']['username']) ?>
+								<?php if ($context['post_data']['is_verified'] > 0) { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#00BCD4" class="verified-color feather feather-check-circle"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>
+								<?php } ?>
+									<span class="fluid">
+										<span class="time-ago" title="<?php echo(ToDate($context['post_data']['time'])) ?>"><?php echo(time2str($context['post_data']['time'])) ?></span>
+									</span>
+								</a>
+								<?php if ($context['is_owner'] == falce) { 
+									if ($context['is_following']) { ?>
+										<button class="btn-follow pull-right btn-following" onclick="follow(<?php echo($context['post_data']['user_id']) ?>,this);">
+											<span>{{LANG following}}</span>
+										</button>
+									<?php  } else{ ?>
+										<button class="btn-follow pull-right" onclick="follow(<?php echo($context['post_data']['user_id']) ?>,this);">
+											<span>{{LANG follow}}</span>
+										</button>
+								<?php } } ?>
+							</div>
+						</div>
+					</div>
+					
+					<div class="pp_pst_caption">
+						<?php if ($context['post_data']['type'] == 'fetched' && $context['post_data']['link']) { ?>
+						<a href="<?php echo($context['post_data']['link']) ?>" target="_blank" >{{LANG click_to_visit}}</a>
+						<br>
+						<?php } ?>
+						<p data-caption>
+							<?php if ($context['post_data']['description']) {
+								echo $context['post_data']['description'];
+							} ?>
+						</p>
+					</div>
+					
+					<div class="comments">
+						<ul class="post-comments-list">
+							<span class="main_post_comm"><?php echo $context['post_data']['votes']; ?> {{LANG comments}}</span>
+							<?php foreach ($context['post_data']['comments'] as $key => $comment) { ?>
+								<li data-post-comment="<?php echo($comment['id']) ?>">
+									<div class="user-avatar">
+										<img src="<?php echo(media($comment['avatar'])) ?>" class="img-circle" />
+									</div>
+									<div class="pp_com_body">
+										<span>
+											<strong><a href="<?php echo(un2url($comment['username'])) ?>"><?php echo($comment['username']) ?></a></strong> <?php echo($comment['text']) ?>
+										</span>
+									</div>
+									<?php if ($comment['is_owner']) { ?>
+										<span class="pull-right delcomment" title="{{LANG delete_comment}}" onclick="delete_commnet(<?php echo($comment['id']) ?>);">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+										</span>
+									<?php } ?>
+								</li>
+							<?php } ?>
+						</ul>
+					</div>
+					<div class="comment-box">
+						<div class="votes">
+							<?php if ($context['post_data']['is_liked']) { ?>
+								<span class="like-post active"  onclick="like_post('<?php echo($context['post_data']['post_id']) ?>',this);" >
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+								</span>
+							<?php } else{ ?>
+								<span class="like-post"  onclick="like_post('<?php echo($context['post_data']['post_id']) ?>',this);" >
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+								</span>
+							<?php } ?>
+							<span <?php if($context['post_data']['likes']){ ?>  class="pointer" onclick="view_post_likes('<?php echo($context['post_data']['post_id']) ?>');"<?php } ?>><span  data-post-likes="<?php echo($context['post_data']['post_id']) ?>"><?php echo $context['post_data']['likes']; ?></span> {{LANG likes}}</span>
+							<?php if ($context['post_data']['type'] == 'video') { ?>
+								<span class="video_views_ ml_"><span><?php echo $context['post_data']['views']; ?></span> {{LANG views}}</span>
+							<?php } ?>
+							<div class="dropup">
+								<span class="dropdown-toggle" data-toggle="dropdown">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+								</span>
+								<ul class="dropdown-menu zoom-up">
+									<?php if ($context['post_data']['is_owner'] == true) { ?>
+										<li onclick="delete_post('<?php echo($context['post_data']['post_id']) ?>',true);">
+										  	<a href="javascript:void(0);">{{LANG delete_post}}</a>
+										</li>
+									    <li id="edit-post">
+									    	<a href="javascript:void(0);">{{LANG edit_post}}</a>
+									    </li>
+									<?php } ?>
+									<?php if ($context['post_data']['is_owner'] == false) { ?>
+										<li onclick="report_post('<?php echo($context['post_data']['post_id']) ?>',this);">
+										    <a href="javascript:void(0);">
+										    	<?php if ($context['post_data']['reported']) {
+										    		echo lang('cancel_report');
+										    	}else{
+										    		echo lang('report_post');
+										    	} ?>
+									    	</a>
+										</li>
+									<?php } ?>
+									<li id="save-post" data-id="<?php echo($context['post_data']['post_id']) ?>">
+									  	<a href="javascript:void(0);">
+									  		<?php if ($context['post_data']['is_saved']) {
+										    		echo lang('unsave_post');
+										    	}else{
+										    		echo lang('save_post');
+										    	} ?>
+									  	</a>
+									</li>
+									<li onclick="embed_post('<?php echo($context['post_data']['post_id']) ?>',this);">
+								  		<a href="javascript:void(0);">
+								  			{{LANG embed}}
+								  		</a>
+								  	</li>
+								</ul>
+							</div>
+						</div>
+						<form class="form" action="javascript:void(0);">
+							<input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+							<div class="text-input">	
+								<?php if (IS_LOGGED) { ?>
+									<div class="user-avatar post_avatar_">
+										<img class="img-circle" src="<?php echo($context['user']['avatar']) ?>" alt="avatar" />
+									</div>
+									<div class="post_input_">
+										<input type="text" class="form-control comment" id="post_c" placeholder="Write a comment" data-post-id="<?php echo($context['post_data']['post_id']) ?>">
+									</div>
+									
+									<div class="commenting-overlay hidden">
+										<div id="pp_loader"><div class="speeding_wheel"></div></div>
+									</div>
+								<?php } else{ ?>
+									<div class="login2comment">
+										<a href="<?php echo(pxp_link('welcome')) ?>">{{LANG login}}</a> {{LANG login_to_lc_post}}
+									</div>
+								<?php } ?>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="footer__container">
+			<?php include $context['dirname_theme'].'/main/templates/includes/lazy-load.html'; ?>
+		</div>
+	</div>
+<?php 
+	include $context['dirname_theme'].'/main/templates/modals/delete-post.html';
+	include $context['dirname_theme'].'/main/templates/modals/delete-comment.html';
+	include $context['dirname_theme'].'/main/templates/modals/embed_post.html';
+	include $context['dirname_theme'].'/main/templates/modals/edit-post.html';
+ ?>
+
+	<script>
+		$('.container').css('width', '100%');
+		$('.container').css('max-width', 'unset');
+		jQuery(document).ready(function($) {
+			var pd_cont = $(".post-data-container");
+
+			function insert_p_comment() {
+				$(".post-data-container").find('.commenting-overlay').removeClass('hidden');
+				var zis  = $("#post_c");
+				var text = zis.val();
+				var list = $(".post-data-container").find('.post-comments-list');
+				var id   = $("#post_c").data('post-id');
+
+				if (!text) { return false; }
+
+				$.post(link('posts/add-comment'), {post_id:id,text:text}, function(data, textStatus, xhr) {
+					if (data.status == 200) {
+						$(data.html).insertAfter(list.find('span.main_post_comm'));
+					}
+
+					zis.val('');
+					$(".post-data-container").find('.commenting-overlay').addClass('hidden');
+				});
+			}
+
+			var ell = $("#post_c").emojioneArea({
+				pickerPosition: "top",
+			    tonesStyle: "radio",
+			    events: {
+			     	keyup: function (editor, event) {
+				      $("#post_c").val(ell[0].emojioneArea.getText());
+		              if (event.keyCode == 13 && event.shiftKey == 0) {
+		              	insert_p_comment();
+						$('.emojionearea .emojionearea-editor').html('');
+		              }
+				    }
+			    },
+			    filters: {
+			        flags : false
+			    }
+			});
+			$('.emojionearea').css('border', '0');
+			
+
+			pd_cont.find('input[type="text"]').keydown(function(event) {
+				if (event.keyCode == 13 && event.shiftKey == 0) {
+
+					event.preventDefault();
+					event.stopPropagation();
+					pd_cont.find('.commenting-overlay').removeClass('hidden');
+					var zis  = $(this);
+					var text = zis.val();
+					var list = pd_cont.find('.post-comments-list');
+					var id   = $(this).data('post-id');
+
+					if (!text) { return false; }
+
+					$.post(link('posts/add-comment'), {post_id:id,text:text}, function(data, textStatus, xhr) {
+						if (data.status == 200) {
+							$(data.html).insertAfter(list.find('span.main_post_comm'));
+						}
+
+						zis.val('');
+						pd_cont.find('.commenting-overlay').addClass('hidden');
+					});
+				}
+			});
+
+			pd_cont.find('#save-post').click(function(event) {
+				if (not(is_logged())) {
+					redirect('welcome');
+					return false;
+				}
+				var post_id = $(this).data('id');
+				var zis     = $(this);
+
+				if (!post_id) {
+					return false;
+				}
+
+				$.ajax({
+					url: link('posts/save'),
+					type: 'POST',
+					dataType: 'json',
+					data: {id:post_id},
+				})
+				.done(function(data) {
+					if (data.status == 200 && data.code == 0) {
+						zis.find('a').text("{{LANG save_post}}");
+					}
+
+					else if(data.status == 200 && data.code == 1){
+						zis.find('a').text("{{LANG unsave_post}}");
+					}
+
+					$.toast(data.message,{
+	                	duration: 5000, 
+	                	type: '',
+	                	align: 'top-right',
+	                	singleton: false
+	                });
+				});
+			});
+
+			pd_cont.find('#edit-post').click(function(event) {
+				if (not(is_logged())) {
+					redirect('welcome');
+					return false;
+				}
+
+				$("#edit-post-modal").fadeIn(200, function() {
+					var text = pd_cont.find('[data-caption]').text();
+					$(this).find('#caption').val($.trim(text));
+				});
+			});
+
+			$("#edit-post-modal").find('button[type="button"]').click(function(event) {
+				$("#edit-post-modal").fadeOut(200, function() {
+					$(this).find('#caption').val('');
+				});
+			});
+
+			$("#edit-post-modal").find('form').submit(function(event) {
+				event.preventDefault();
+				var text    = $(this).find('#caption').val();
+				var post_id = $(this).find('#post_id').val();
+				
+				if (int(post_id) == 0) {
+					return false;
+				}
+
+				pd_cont.find('[data-caption]').html(linkify_htags(text));
+
+				$("#edit-post-modal").fadeOut(200, function() {
+					$(this).find('#caption').val('');
+				});
+
+				$.ajax({
+					url: link('posts/update'),
+					type: 'POST',
+					dataType: 'json',
+					data: {text:text,id:post_id},
+				})
+				.done(function(data) {
+					if (data.message) {
+						$.toast(data.message,{
+			            	duration: 5000, 
+			            	type: '',
+			            	align: 'top-right',
+			            	singleton: false
+			            });
+					}
+				});
+			});
+		});
+		function show_m_reprted(post_id) {
+					$('.show_m_reprted-'+post_id).hide('slow'); 
+					$('.text_m_reprted-'+post_id).hide('slow'); 
+		}
+	</script>

@@ -1,0 +1,28 @@
+<tr class="setting-userads" id="userad_<?php echo $context['ad']['id']?>" data-userad-id="<?php echo $context['ad']['id']?>">
+   <td><?php echo $context['ad']['id']?></td>
+   <td>
+      <a href="<?php echo $context['ad']['url']; ?>"> <?php echo $context['ad']['url']; ?></a>
+   </td>
+   <td>
+      <a href="<?php echo $context['user']['url']; ?>">
+        <img src="<?php echo $context['user']['avatar']; ?>" class="setting-avatar" alt="<?php echo $context['user']['name']?> Avatar Picture">
+         <?php echo $context['user']['name']; ?>
+      </a>
+   </td>
+   <td>
+     <div class="ajax-time" title="<?php echo date('c',$context['ad']['posted']); ?>">
+         <?php echo time2str($context['ad']['posted']);?>
+     </div>
+     
+   </td>
+   <td>
+     <?php echo $context['ad']['clicks']?>
+   </td>
+   <td>
+     <?php echo $context['ad']['views']?>
+   </td>
+   <td>
+      
+      <button type="button" class="btn btn-danger waves-effect waves-light delete-content" data-id="<?php echo $context['ad']['id']?>">DELETE</button>
+   </td>
+</tr>

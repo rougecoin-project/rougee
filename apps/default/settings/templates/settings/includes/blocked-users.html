@@ -1,0 +1,14 @@
+<div class="blocked-users--ls-item" data-blocked-users-ls="<?php echo($udata['user_id']) ?>">
+	<div class="avatar">
+		<img src="<?php echo(media($udata['avatar'])) ?>" alt="Picture" class="img-circle img-res">
+	</div>
+	<h4>
+	<?php echo($udata['username']) ?>
+		<span class="name">
+			<?php echo($udata['name']) ?>
+		</span>
+	</h4>
+	<button class="btn btn-info unblock-user" id="<?php echo($udata['user_id']) ?>">
+		{{LANG unblock}}
+	</button>
+</div>

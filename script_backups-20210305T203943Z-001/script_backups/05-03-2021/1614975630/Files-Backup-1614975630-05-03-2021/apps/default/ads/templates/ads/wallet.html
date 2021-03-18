@@ -1,0 +1,261 @@
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<div class="settings-page-container content-shadow">
+	<div class="page-content sett_avatr_chng">
+		<?php include 'header.html'; ?>
+		<div class="row m-0 my_wallet">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<div class="my_wallet_cont">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20,7V5c0-1.103-0.897-2-2-2H5C3.794,3,2,3.799,2,6v11c0,2.201,1.794,3,3,3h15c1.104,0,2-0.896,2-2V9 C22,7.896,21.104,7,20,7z M4,6c0-0.805,0.55-0.988,1-1h13v2H5.012C4.55,6.988,4,6.805,4,6z M19,15h-2v-3h2V15z"></path></svg> 
+					<h3>{{LANG wallet}}<br><b><?php echo $context['currency_symbol'].$me['wallet']; ?></b></h3>
+				</div>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+		<div></div>
+		<div class="row m-0">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+			<h5>{{LANG add_money}}</h5>
+			<div class="pp_mat_input">
+			<input required="true" type="number" name="wallet" class="form-control" placeholder="0.00" id="wallet">
+			<span class="bar"></span>
+			<!-- <label>{{LANG add_money}}</label> -->
+		</div>
+		<input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+		<div class="pp_load_loader"><button class="btn btn-info pp_flat_btn" type="button" onclick="Pxp_GetPaymentMethods('wallet')" id="wallet_btn"><span>{{LANG add}}</span></button></div>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+
+<div class="confirm--modal wallet--modal" style="display: none !important;">
+	<div class="confirm--modal--inner">
+		<div class="confirm--modal--body">
+			<h5>{{LANG choose_method}}</h5>
+			<div class="payment_methods_wallet_modal">
+			</div>
+		</div>
+		<div class="confirm--modal--footer">
+			<button class="btn btn-default" data-confirm--modal-dismiss>{{LANG cancel}}</button>
+		</div>
+	</div>
+</div>
+<div class="confirm--modal bank_payment--modal" style="display: none !important;">
+	<div class="confirm--modal--inner">
+		<div class="confirm--modal--body dt_bank_trans_modal">
+			<h5>{{LANG bank_transfer}}</h5>
+			<div class="bank_alert"></div>
+			<?php echo $config['bank_description'];?>
+			<br>
+			<br>
+			<?php if (!empty($config['bank_transfer_note'])) { ?>
+			<div class="dt_user_profile">
+				<ul class="dt_prof_vrfy">
+					<li><?php echo $config['bank_transfer_note'];?></li>
+				</ul>
+			</div>
+			<?php } ?>
+			<div class="fak_image">
+				<div id="fake_img_holder"></div>
+				<div class="upload_fk_image" onclick="document.getElementById('upload-image').click(); return false">
+					<div class="upload_fk_image_content">
+						<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" /></svg> {{LANG upload_file}}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="confirm--modal--footer">
+			<button class="btn btn-default" data-confirm--modal-dismiss>{{LANG cancel}}</button>
+			<button class="btn btn-danger btn-red send_bank">{{LANG send}}</button>
+			<form class="bank_transfer_form">
+	      		<input class="hidden" id="upload-image" type="file" name="image" multiple accept="image/*">
+	      		<input class="hidden" type="text" name="type" value="wallet">
+	      		<input class="hidden" type="text" name="price" id="bank_price_input" value="0">
+	      		<input type="reset" id="configreset" value="Reset" class="hidden">
+	      	</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#upload-image").on('change', function() {
+	//Get count of selected files
+	var product_countFiles = $(this)[0].files.length;
+	var product_imgPath = $(this)[0].value;
+	var extn = product_imgPath.substring(product_imgPath.lastIndexOf('.') + 1).toLowerCase();
+	var product_image_holder = $("#fake_img_holder");
+	product_image_holder.empty();
+	if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+		if (typeof(FileReader) != "undefined") {
+		//loop for each file selected for uploaded.
+		for (var i = 0; i < product_countFiles; i++) 
+		{
+			var product_reader = new FileReader();
+			product_reader.onload = function(e) {
+				$("<img />", {
+                    "src": e.target.result,
+                    "class": "thumb-image"
+                  }).appendTo(product_image_holder);
+                }
+                product_image_holder.show();
+                product_reader.readAsDataURL($(this)[0].files[i]);
+              }
+            } else {
+              product_image_holder.html("<p>This browser does not support FileReader.</p>");
+            }
+         }
+	});
+});
+
+	$(document).on('click', '.send_bank', function(event) {
+		$(".bank_transfer_form").submit();
+	});
+
+	$(".bank_transfer_form").ajaxForm({
+		type:'POST',
+		dataType:'json',
+		url: link('go_pro/bank_transfer'),
+		success:function(data){
+			if (data.status == 200) {
+				$('.bank_alert').html($('<div>',{
+                    class:'alert alert-success',
+                    text:data.message
+                }));
+                setTimeout(function(){
+	                window.location.href = site_url('');
+	            },3000);
+			}
+			else{
+				$('.bank_alert').html($('<div>',{
+                    class:'alert alert-danger',
+                    text:data.message
+                }));
+
+			}
+			setTimeout(function(){
+                $('.alert-danger').slideUp('fast',function(){
+                    $(this).remove(); 
+                })    
+                 $('.alert-success').slideUp('fast',function(){
+                    $(this).remove(); 
+                }) 
+            },2000);
+		}
+	});
+
+	function Pxp_GetPaymentMethods(type) {
+		$('#wallet_btn').attr('disabled','true');
+		$('#wallet_btn').find('span').html("{{LANG please_wait}}");
+		if ($('#wallet').val() > 0) {
+			$.post(link('main/get_payment_methods'), {type: type}, function(data, textStatus, xhr) {
+				if (data.status == 200) {
+					$('.payment_methods_wallet_modal').html(data.html);
+					$('.wallet--modal').fadeIn(250);
+				}
+			});
+		}
+		else{
+			scroll2top();
+			$.toast("{{LANG please_check_details}}",{
+            	duration: 5000, 
+            	type: 'success',
+            	align: 'bottom',
+            	singleton: true
+            });
+		}
+		$('#wallet_btn').removeAttr('disabled');
+		$('#wallet_btn').find('span').html("{{LANG submit}}");
+	}
+
+	function Pxp_GetPayPalLink(type) {
+		$('.btn-paypal').attr('disabled','true');
+		var amount = $('#wallet').val();
+		if ($('#wallet').val() > 0) {
+			$.post(link('go_pro/get_paypal_link'), {type: type,amount:amount}, function(data, textStatus, xhr) {
+				if (data.status == 200) {
+					window.location.href = data.url;
+				}
+				$('.btn-paypal').removeAttr('disabled');
+			});
+		}
+		else{
+			scroll2top();
+			$.toast("{{LANG please_check_details}}",{
+            	duration: 5000, 
+            	type: 'success',
+            	align: 'bottom',
+            	singleton: true
+            });
+		}
+	}
+
+	function Pxp_StripePayment(type,amount=0) {
+		$('.btn-cart').attr('disabled','true');
+		var amount = $('#wallet').val();
+		if ($('#wallet').val() > 0) {
+			var handler = StripeCheckout.configure({
+		        key: "<?php echo $config['stripe_id'];?>",
+		        locale: 'english',
+		        image: '',
+		        token: function(token) {
+		          $('.confirm--modal--body').html('<i class="fa fa-spin fa-spinner"></i> {{LANG c_payment}}');
+		          $.post(link('go_pro/stripe_payment'), {stripeToken:token.id,type:type,amount:amount}, function (data) {
+		          	 if (data.status == 200) {
+		          	 	window.location.href = data.url;
+		          	 } else {
+		          	 	$('.confirm--modal--body').html('<i class="fa fa-spin fa-spinner"></i> {{LANG payment_declined}}');
+		          	 }
+		          });
+		        }
+		    });
+
+		    handler.open({
+	           name: "<?php echo $config['site_name']?>",
+	           description: "Wallet top up",
+	           amount: amount+'00',
+	           currency: '<?php echo $config['currency']?>',
+	           opened: function () {
+	           	   $('.btn-cart').removeAttr('disabled');
+	           	   $('.wallet--modal').fadeOut(250);
+	           }
+	        });
+
+		    $(window).on('popstate', function() {
+		       handler.close();
+		    });
+        }
+		else{
+			scroll2top();
+			$.toast("{{LANG please_check_details}}",{
+            	duration: 5000, 
+            	type: 'success',
+            	align: 'bottom',
+            	singleton: true
+            });
+		}
+	}
+
+	function Pxp_BankPayment(type) {
+		if ($('#wallet').val() > 0) {
+			var price = $('#wallet').val();
+			$('#bank_price_input').attr('value', price);
+			var click_event = "$('#upload-image').trigger('click');";
+			$(".images-renderer").html('<div class="select-images" onclick="'+click_event+'"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg><h5>{{LANG choose_an_image}}</h5></span></div>');
+			$('#configreset').click();
+			$('.bank_payment--modal').fadeIn(250);
+		}
+		else{
+			scroll2top();
+			$.toast("{{LANG please_check_details}}",{
+            	duration: 5000, 
+            	type: 'success',
+            	align: 'bottom',
+            	singleton: true
+            });
+		}
+	}
+</script>

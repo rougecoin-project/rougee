@@ -1,0 +1,38 @@
+<div class="pp_blogs_sidebar">
+    <?php if ($config['ad2']) { ?>
+        <?php echo($config['ad2']); ?><br>
+    <?php } ?>
+    <div class="stories">
+		<h5>{{LANG categories}}</h5>
+		<div class="pp_side_cat_list">
+			<div class="item"><a href="<?php echo(pxp_link('blog')); ?>" data-ajax="ajax_loading.php?app=blog&apph=blog">{{LANG all}}</a></div>
+			<?php
+                 $blog_categories = blog_categories();
+                 foreach ($blog_categories as $category_key => $category) {
+			?>
+                <div class="item"><a href="<?php echo(pxp_link('blog/category/') . $category_key); ?>" data-ajax="ajax_loading.php?app=blog&apph=blog&id=<?php echo $category_key; ?>"><?php echo $category; ?></a></div>
+			<?php } ?>
+		</div>
+	</div>
+
+	<?php if (!empty($context['sidebar_ad'])) { ?>
+        <div class="stories">
+            <h5 class="sidebar_ad_main_title"><a href="<?php echo($context['sidebar_ad']->url) ?>" target="_blank" <?php if ($context['sidebar_ad']->bidding == 'clicks') { ?> onclick="ad_click(<?php echo $context['sidebar_ad']->id; ?>)" <?php } ?>><?php echo($context['sidebar_ad']->name) ?></a></h5>
+            <div class="fluid">
+                <div class="sidebar_ad">
+                    <a href="<?php echo($context['sidebar_ad']->url) ?>" target="_blank" class="side_ad_img" <?php if ($context['sidebar_ad']->bidding == 'clicks') { ?> onclick="ad_click(<?php echo $context['sidebar_ad']->id; ?>)" <?php } ?>>
+                    <img src="<?php echo(media($context['sidebar_ad']->ad_media)) ?>" width="100%" alt="Picture" />
+                    </a>
+                    <div class="caption">
+                        <div class="side_ad_title"><a href="<?php echo($context['sidebar_ad']->url) ?>" target="_blank" <?php if ($context['sidebar_ad']->bidding == 'clicks') { ?> onclick="ad_click(<?php echo $context['sidebar_ad']->id; ?>)" <?php } ?>><?php echo($context['sidebar_ad']->name) ?><?php echo $context['sidebar_ad']->headline; ?></a></div>
+                        <p><?php echo $context['sidebar_ad']->description; ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+	<?php } ?>
+
+	<?php if ($config['ad3']) { ?>
+		<?php echo($config['ad3']); ?>
+	<?php } ?>
+</div>

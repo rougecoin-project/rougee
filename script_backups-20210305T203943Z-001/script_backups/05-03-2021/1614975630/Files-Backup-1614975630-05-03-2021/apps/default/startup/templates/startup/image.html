@@ -1,0 +1,67 @@
+<div class="container pp_startup">
+	<div class="settings-page-container">
+		<div class="row">
+			<form id="startup_image">
+				<div class="col-md-12">
+					<div class="start_head">
+						<h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z" /></svg> {{LANG add_photo_s}}</h3>
+						<p onclick="skip_startup()">{{LANG skip_step}}</p>
+					</div>
+					<div class="img_container startup_image" id="user_image">
+						<div class="img_container_1">
+							<div class="img_container_2">
+								<p class="img_container_text">{{LANG your_photo}}</p>
+								<div class="text-center">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#66757f" class="feather feather-camera"><path d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"></path></svg>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="pp_welcome_feature startup_button">
+						<div class="pp_load_loader"><button class="btn btn-info pp_flat_btn" type="submit"><span>{{LANG save_c}}</span></button></div>
+					</div>
+				</div>
+				<input type="hidden" name="user_id" value="<?php echo($context['me']['user_id']) ?>">
+				<input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+				<input type="file" name="photo" class="hidden" id="user-photo" accept="image/x-png,image/jpg,image/jpeg" required>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+function skip_startup() {
+	$.post(link('startup/skip'), function(data, textStatus, xhr) {
+		window.location.href = site_url('')
+	});
+}
+jQuery(document).ready(function($) {
+	$("#user_image").click(function(event) {
+		$("#user-photo").trigger('click');
+	});
+	$("#user-photo").change(function(event) {
+		$("#user_image").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture' width='100%' height='100%'>")
+		$('.btn_register').removeAttr('disabled');
+	});
+
+
+	var form = $("form#startup_image");
+	form.ajaxForm({
+		url: link('startup/startup_image'),
+		type: 'POST',
+		dataType: 'json',
+		beforeSend: function(){
+			$('form').find('.pp_load_loader').addClass('loadingg');
+			$('form').find('button[type="submit"]').attr('disabled','true');
+		},
+		success: function(data){
+			if (data.status == 200) {
+				window.location.href = site_url('')
+			}
+			$('form').find('.pp_load_loader').removeClass('loadingg');
+	        $('form').find('button[type="submit"]').removeAttr('disabled');
+		}
+	});	
+});
+</script>

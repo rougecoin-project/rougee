@@ -1,0 +1,31 @@
+<tr id="list-<?php echo($cd['post']['post_id']); ?>" data-id="<?php echo($cd['post']['post_id']); ?>">
+	<td><input type="checkbox" id="check-video-<?php echo($cd['post']['post_id']); ?>" class="delete-checkbox filled-in"><label for="check-video-<?php echo($cd['post']['post_id']); ?>"></label></td>
+	<td>
+		<span>
+			<?php echo($cd['post']['post_id']); ?>
+		</span>
+	</td>
+	<td>
+		<a href="<?php echo(un2url($cd['post']['username'])); ?>">
+			<img src="<?php echo(media($cd['post']['avatar'])); ?>" class="td-avatar" alt="post avatar">
+			<?php echo($cd['post']['username']); ?>
+		</a>
+	</td>
+	<td>
+		<span>
+			<a href="<?php echo(pid2url($cd['post']['post_id'])); ?>">
+				<?php echo(pid2url($cd['post']['post_id'])); ?>
+			</a>
+		</span>
+	</td>
+	<td>
+		<span>
+			<?php echo(time2str($cd['post']['time'])); ?>
+		</span>
+	</td>
+	<td>
+		<button class="btn btn-danger waves-effect waves-light delete-content" data-id="<?php echo($cd['post']['post_id']); ?>">
+			DELETE
+		</button>
+	</td>
+</tr>

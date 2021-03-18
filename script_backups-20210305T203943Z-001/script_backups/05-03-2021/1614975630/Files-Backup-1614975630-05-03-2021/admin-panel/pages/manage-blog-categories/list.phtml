@@ -1,0 +1,8 @@
+<tr id="<?php echo $cd['blog-categories']['category_key'];?>">
+    <td><?php echo $cd['blog-categories']['category_id'];?></td>
+    <td id="edit_<?php echo $cd['blog-categories']['category_key'];?>"><?php echo $cd['blog-categories']['category'];?></td>
+    <td>
+        <button type="button" class="btn btn-default waves-effect btn-lang m-r-20" data-id="<?php echo $cd['blog-categories']['category_key'];?>" data-toggle="modal" data-target="#defaultModal">EDIT</button>
+        <button onclick="Wo_DeleteCategory('<?php echo $cd['blog-categories']['category_key'];?>');" type="button" class="btn btn-danger waves-effect waves-light">DELETE</button>
+    </td>
+</tr>

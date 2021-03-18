@@ -1,0 +1,163 @@
+<div class="explore-page-container mt-0">
+    <div class="explore-posts-container mt-0" style="margin-top: inherit;">
+        <?php
+         if ($context['images']) {
+             global $user;
+             foreach ($context['images'] as $key => $post_data) {
+                $post_data['post_id'] = $post_data['id'];
+                $post_data['type'] = 'image';
+                $post_data['thumb'] = $post_data['small_file'];
+                $post_data['boosted'] = 0;
+
+                $_user_data = $user->getUserDataById($post_data['user_id']);
+                $_user_data = o2array($_user_data);
+
+                $post_data['avatar'] = $_user_data['avatar'];
+                $post_data['username'] = $_user_data['username'];
+                //var_dump($post_data);
+                include 'list-item.html';
+             }
+         } else{
+                include $context['dirname_theme'].'/explore/templates/explore/includes/no-posts-found.html';
+         }
+        ?>
+    </div>
+</div>
+
+<?php
+    include $context['dirname_theme'].'/main/templates/includes/lazy-load.html';
+?>
+
+<script>
+    var myLazyLoad = new LazyLoad({
+        elements_selector: ".lazy_"
+    });
+
+    var gwidth = ($('.explore-posts-container').width() / 4);
+    var config = {
+        selector: '.item',
+        gutter: 0,
+        animate: true,
+        animationOptions: {
+            speed: 100,
+            duration: 200
+        }
+    }
+
+    if ($(window).width() > 992){
+        config.width = 303.34;
+    };
+
+    $(".explore-posts-container").gridalicious(config);
+
+    jQuery(document).ready(function($) {
+        window.scrolled = 0;
+        var last_id  = <?php echo end($context['images'])['id'];?>;
+
+        $(window).scroll(function() {
+            if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                if (window.scrolled == 0 && $('.explore-postset').length > 0) {
+                    window.scrolled = 1;
+                    var list_ids = $("div.explore-postset[id]").map(function() {
+                        return $(this).attr('id');
+                    }).get();
+
+                    if (!list_ids) {
+                        return false;
+                    }
+
+                    var _sort = 'id'
+                    if( $('#store_sort').length ){
+                        _sort = $('#store_sort option:selected').val();
+                    }
+                    // if( _sort == 'popularity_desc' || _sort == 'downloads_desc' || _sort == 'sales_desc' || _sort == 'date_desc' ){
+                    //     var last_id  = $("div.explore-postset[id]").last().attr('id');
+                    // }else if( _sort == 'popularity_asc' || _sort == 'downloads_asc' || _sort == 'sales_asc' || _sort == 'date_asc' ){
+                    //     var last_id  = $("div.explore-postset[id]").last().attr('id');
+                    // }else if( _sort == 'id' ){
+                    //     var last_id  = $("div.explore-postset[id]").last().attr('id');
+                    // }
+
+
+                    //var last_id         = $("div.explore-postset[id]").last().attr('data-post-id');
+                    var _last_views     = $("div.explore-postset[id]").last().attr('data-post-views');
+                    var _last_sells     = $("div.explore-postset[id]").last().attr('data-post-sells');
+                    var _last_download  = $("div.explore-postset[id]").last().attr('data-post-download');
+                    var _last_date      = $("div.explore-postset[id]").last().attr('data-post-date');
+
+                    var _viewed_store_ids = [];
+                    for (var i = 0; i < $("div.explore-postset[id]").length; i++) {
+                        //if ($($("div.explore-postset[id]")[i]).attr('data-post-views') == _last_views) {
+                            _viewed_store_ids.push($($("div.explore-postset[id]")[i]).attr('data-post-id'));
+                        //}
+                    }
+
+
+                    $.ajax({
+                        url: link('store/explore-all-store'),
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            scroll: true,
+                            sort: _sort,
+                            offset:last_id,
+                            last_views:_last_views,
+                            last_sells:_last_sells,
+                            last_download:_last_download,
+                            last_date:_last_date,
+                            viewed_store_ids: _viewed_store_ids
+                        },
+                    }).done(function(data) {
+                        if (data.status == 200) {
+                            last_id = data.last_id;
+                            $(".explore-posts-container").gridalicious('append', $(data.html));
+                            window.scrolled = 0;
+                        }
+                        else{
+                            //$(window).unbind('scroll');
+                        }
+                    });
+                }
+            }
+        });
+
+        $(document).ready(function(){
+            $('#follow__suggestions-cr').slick({
+                infinite: false,
+                lazyLoad: 'ondemand',
+                slidesToShow: 5,
+                variableWidth: false,
+                slidesToScroll: 1,
+                autoplay: false,
+                autoplaySpeed: 2000,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 4
+                        }
+                    },
+                    {
+                        breakpoint: 800,
+                        settings: {
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    },
+                    {
+                        breakpoint: 300,
+                        settings: {
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+        });
+    });
+
+</script>

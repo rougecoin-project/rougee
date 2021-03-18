@@ -1,0 +1,72 @@
+<tr class="setting-verificationlist" id="VerificationID_<?php echo $context['verification']->id ?>" >
+   <td><?php echo $context['verification']->id ?> </td>
+   <td>
+      <a href="<?php echo $context['verification']->request_from->url; ?>">
+      <img src="<?php echo $context['verification']->request_from->avatar?>" class="td-avatar" alt="<?php echo $context['verification']->request_from->name; ?> Profile Picture">
+      <?php echo $context['verification']->request_from->name; ?>
+      </a>
+      <span style="cursor: pointer;" onclick="$('#review_request_<?php echo $context['verification']->id ?>').slideToggle('slow');"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg></span>
+
+      
+      
+   </td>
+   <td>
+      <span id="statusID_<?php echo $context['verification']->id ?>" >
+         <?php if ($context['verification']->status == 1): ?>
+            <strong class="label label-success">
+               Active
+            </strong>
+         <?php else: ?>
+            <strong class="label label-warning">
+               Inactive
+            </strong>
+         <?php endif; ?>
+      </span>
+   </td>
+   <td>
+      <button class="btn bg-cyan waves-effect waves-light" onclick="verify_user_(<?php echo $context['verification']->id ; ?>)">
+         Verify
+      </button>
+      <button class="btn btn-danger waves-effect waves-light delete-content" onclick="delete_request_(<?php echo $context['verification']->id ; ?>)">
+         DELETE
+      </button>
+   </td>
+</tr>
+<tr id="VerificationID__<?php echo $context['verification']->id ?>">
+   <td colspan="4">
+      <div class="review-verif-request-cont" style="display: none;"  id="review_request_<?php echo $context['verification']->id ?>">
+         <div class="verification-request-img-<?php echo $context['verification']->id; ?>">
+            <a 
+            href="<?php echo media($context['verification']->passport); ?>" 
+            style="
+            background-image: url('<?php echo media($context['verification']->passport); ?>');
+            width: 100%; 
+            height: 150px; 
+            display: block;
+            background-size: cover;
+            "
+            > 
+            </a>
+            <a href="<?php echo media($context['verification']->passport); ?>"></a>
+         </div>
+          <div class="verification-request-img-<?php echo $context['verification']->id ; ?>">
+            <a 
+            href="<?php echo media($context['verification']->photo); ?>" 
+            style="
+            background-image: url('<?php echo media($context['verification']->photo); ?>');
+            width: 100%; 
+            height: 150px; 
+            display: block;
+            background-size: cover;
+            "
+            > 
+            </a>
+            <a href="<?php echo media($context['verification']->photo); ?>"></a>
+         </div>
+         <h4><?php echo $context['verification']->name; ?></h4>
+         <p><?php echo $context['verification']->message; ?></p>
+      </div>
+   </td>
+</tr>
+   
+

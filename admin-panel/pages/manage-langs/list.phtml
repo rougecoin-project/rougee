@@ -1,0 +1,17 @@
+<tr class="setting-postlist site-lang-list" id="list-<?php echo($cd['lang_key']);?>">
+	<td style="text-align: center;">
+		<span>
+			<?php echo $cd['lang_name']; ?>
+		</span>
+	</td>
+	<td style="text-align: center;">
+	    <button class="btn bg-cyan waves-effect waves-light" onclick="location.href='<?php echo ("edit-language?id={$cd['lang_key']}");?>'">
+	    	EDIT
+	    </button>
+	    <?php if ($context['langs_len'] >= 2): ?>
+	    	<button class="btn btn-danger waves-effect waves-light delete-content" data-id="<?php echo($cd['lang_key']);?>">
+		  		DELETE
+		  	</button>
+	    <?php endif; ?>
+	</td>
+</tr>

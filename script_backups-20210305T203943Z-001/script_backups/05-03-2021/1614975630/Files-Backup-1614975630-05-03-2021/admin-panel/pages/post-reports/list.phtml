@@ -1,0 +1,35 @@
+<tr id="list-<?php echo($cd['report']['post_id']); ?>" data-report="<?php echo($cd['report']['id']); ?>">
+	<td>
+		<span>
+			<?php echo($cd['report']['id']); ?>
+		</span>
+	</td>
+	<td>
+		<a href="<?php echo(un2url($cd['report']['username'])); ?>">
+			<img src="<?php echo(media($cd['report']['avatar'])); ?>" class="td-avatar" alt="report avatar">
+			<?php echo($cd['report']['username']); ?>
+		</a>
+	</td>
+	<td>
+		<span>
+			<?php echo(date('Y-F-d h:s',$cd['report']['time'])); ?>
+		</span>
+	</td>
+	<td>
+		<span>
+			<a href="<?php echo(pid2url($cd['report']['post_id'])); ?>">
+				<b>Open post</b>
+			</a>
+		</span>
+	</td>
+	<td>
+		<button class="btn btn-success waves-effect waves-light delete-report" data-id="<?php echo($cd['report']['id']); ?>">
+			<a href="javascript:void(0);">
+				MARK SAFE
+			</a>
+		</button>
+		<button class="btn btn-danger waves-effect waves-light delete-content" data-id="<?php echo($cd['report']['post_id']); ?>">
+			DELETE POST
+		</button>
+	</td>
+</tr>

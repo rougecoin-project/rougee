@@ -1,0 +1,26 @@
+<div class="timeline-posts content-shadow pp_blog_posts" data-article-id="<?php echo $post_data['id'];?>">
+    <div class="header">
+		<?php if ((int)$me["user_id"] === (int)$post_data["user_id"]) { ?>
+			<div class="dropdown pull-right">
+				<span class="dropdown-toggle" data-toggle="dropdown">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+				</span>
+				<ul class="dropdown-menu zoom">
+					<li onclick="delete_article(<?php echo $post_data['id'];?>,'<?php echo $post_data['thumbnail'];?>');"><a href="javascript:void(0);">{{LANG delete_post}}</a></li>
+					<li><a href="<?php echo un2url('blog/update/'.$post_data['id']);?>" target="_blank">{{LANG edit_post}}</a></li>
+				</ul>
+			</div>
+        <?php } ?>
+        <h2><a href="<?php echo un2url('blog/article/'.$post_data['id']);?>" data-ajax="ajax_loading.php?app=article&amp;apph=article&amp;id=<?php echo $post_data['id'];?>"><?php echo $post_data['title'];?></a></h2>
+        <div>
+			<span class="time-ago" title="<?php echo(ToDate($post_data['created_at'])) ?>"><?php echo(time2str($post_data['created_at'])); ?></span>
+			<span class="middot">·</span>
+			<span><?php echo $post_data['category_name'];?></span>
+		</div>
+    </div>
+    <div class="post-images fluid">
+        <a href="<?php echo un2url('blog/article/'.$post_data['id']);?>" class="image-lightbox">
+            <img src="<?php echo $post_data['full_thumbnail'];?>" class="img-res">
+        </a>
+    </div>
+</div>

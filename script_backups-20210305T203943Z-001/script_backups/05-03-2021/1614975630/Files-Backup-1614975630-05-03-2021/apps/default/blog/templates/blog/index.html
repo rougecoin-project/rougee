@@ -1,0 +1,108 @@
+<div class="explore-page-container">
+    <div class="sub__header go_pro_sub_header pp_blog_sub_header">
+        <div class="container">
+            <div class="col-md-8">
+                <h4 class="animated fadeInUpBig"><?php echo $context['category_name'];?></h4>
+                <p class="animated fadeInUpBig"><?php echo $context['category_desc'];?></p>
+				<?php if ($config['allow_user_create_blog'] == 'on') { ?>
+                    <a href="<?php echo link('blog/new');?>" data-ajax="ajax_loading.php?app=blog&apph=blog&new=true" class="btn btn-create_blog animated fadeInUpBig"><?php echo lang('create_blog_bost');?></a>
+                <?php } ?>
+            </div>
+            <div class="col-md-4 pp_exp_head_svg text-center hidden-xs hidden-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text animated bounceIn"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+        </div>
+		<svg class="go_pro_wave" viewBox="0 0 100 15"><path fill="#fff" opacity="0.5" d="M0 30 V15 Q30 3 60 15 V30z"></path><path fill="#fff" d="M0 30 V12 Q30 17 55 12 T100 11 V30z"></path></svg>
+    </div>
+	
+	<div class="container pp_blogs_main_cont">
+		<div class="row">
+			<div class="col-md-8">
+				<?php if ($config['ad1']) { ?>
+					<div class="row">
+					<div class="col-md-12">
+						<?php echo $config['ad1'] ; ?>
+					</div>
+					</div><br>
+				<?php } ?>
+				<div class="home-posts-container">
+					<?php
+					if ($context['blogs']) {
+						foreach ($context['blogs'] as $key => $post_data) {
+						include 'includes/list.html';
+						}
+					} else{
+						include 'includes/no-articles-found.html';
+					}
+					?>
+				</div>
+				<div class="posts__loader hidden">
+					<div id="pp_loader"><div class="speeding_wheel"></div></div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<?php include 'includes/sidebar.html'; ?>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+    function ad_click(id) {
+        $.post(link('profile/ad_click'), {id: id}, function(data, textStatus, xhr) {});
+    }
+
+    function show_m_reprted(post_id) {
+        $('.show_m_reprted-'+post_id).hide('slow');
+        $('.text_m_reprted-'+post_id).hide('slow');
+    }
+    jQuery(document).ready(function() {jQuery('.custom-fixed-element').theiaStickySidebar({additionalMarginTop: 65});});
+    var pxScrolled = 180;
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > pxScrolled) {
+            $('.add-post-bf--controls').css({'bottom': '32px', 'transition': '.3s'});
+        } else {
+            $('.add-post-bf--controls').css({'bottom': '-60px'});
+        }
+    });
+    jQuery(document).ready(function($) {
+        var scrolled = 0;
+        var last_id  = 0;
+        var posts_cn = $('.home-posts-container');
+
+        $(window).scroll(function() {
+            if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                if (scrolled == 0 && $('.home-posts-container').length > 0 && $('.home-posts-container').attr('data-there-posts') != 'no_posts') {
+                    scrolled = 1;
+                    posts_cn.siblings('.posts__loader').removeClass('hidden');
+                    if ($('[data-article-id]').length > 0) {
+                        last_id  = $('[data-article-id]').last().data('article-id');
+                    }
+
+                    $.ajax({
+                        url: link('blogs/load-tl-articles'),
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {offset:last_id},
+                    }).done(function(data) {
+                        if (data.status == 200) {
+                            posts_cn.append($(data.html));
+                            scrolled = 0;
+                            if (data.html == '') {
+                                $('.home-posts-container').attr('data-there-posts','no_posts');
+                            }
+                        }
+                        else{
+                            $(window).unbind('scroll');
+                        }
+
+                        posts_cn.siblings('.posts__loader').addClass('hidden');
+                    });
+                }
+            }
+        });
+    });
+</script>
+
+<?php include $context['dirname_theme'].'/main/templates/modals/delete-article.html';?>

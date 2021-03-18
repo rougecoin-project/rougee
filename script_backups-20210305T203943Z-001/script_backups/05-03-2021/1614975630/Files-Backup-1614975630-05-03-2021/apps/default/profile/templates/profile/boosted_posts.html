@@ -1,0 +1,33 @@
+<div class="container container-profile user-posts__container">
+	<div class="user-posts new_prof_user_posts">
+		<?php if ($context['boosted_posts'] > 0) {
+			foreach ($context['boosted_posts'] as $key => $post_data) {
+				include 'includes/boost.html';
+			}
+		} else{
+			include 'includes/no-posted.html';
+		} ?>
+	</div>
+</div>
+
+<script>
+	var ajax_url = '<?php echo($context['xhr_url']); ?>';
+	var user_id  = '<?php echo($context['user_data']['user_id']) ?>';
+	var gwidth = ($('.user-posts').width() / 3);
+	var config = {
+		selector: '.item',
+		gutter: 0,
+		animate: true,
+		animationOptions: { 
+			speed: 100, 
+			duration: 200
+		}
+	}
+		
+	if ($(window).width() > 992){
+		 config.width = 303.34;
+	};
+		
+	$(".user-posts").gridalicious(config);
+
+</script>

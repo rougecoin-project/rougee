@@ -1,0 +1,71 @@
+<div class="container pp_startup">
+	<div class="settings-page-container">
+		<div class="row">
+			<form id="startup_follow">
+				<div class="start_head">
+					<h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13,13C11,13 7,14 7,16V18H19V16C19,14 15,13 13,13M19.62,13.16C20.45,13.88 21,14.82 21,16V18H24V16C24,14.46 21.63,13.5 19.62,13.16M13,11A3,3 0 0,0 16,8A3,3 0 0,0 13,5A3,3 0 0,0 10,8A3,3 0 0,0 13,11M18,11A3,3 0 0,0 21,8A3,3 0 0,0 18,5C17.68,5 17.37,5.05 17.08,5.14C17.65,5.95 18,6.94 18,8C18,9.06 17.65,10.04 17.08,10.85C17.37,10.95 17.68,11 18,11M8,10H5V7H3V10H0V12H3V15H5V12H8V10Z" /></svg> {{LANG follow_famous}}</h3>
+					<p onclick="skip_startup()">{{LANG skip_step}}</p>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<?php if ($context['follow']) { ?>
+						<div class="follow-suggestions-cr">
+							<div class="cr-wrapper">
+								<div class="owl-carousel tl-follow-suggestions" id="follow-suggestions-cr">
+									<?php foreach ($context['follow'] as $key => $follow_sugg) { ?>
+										<div class="item">
+											<div class="avatar">
+												<img src="<?php echo($follow_sugg['avatar']) ?>" class="img-circle">
+											</div>
+											<div class="uname">
+												<a href="<?php echo($follow_sugg['url']) ?>">
+													<strong><?php echo($follow_sugg['username']) ?></strong>
+												</a>
+												<span>
+													<?php echo($follow_sugg['name']) ?>
+												</span>
+											</div>
+										</div>
+									<?php } ?>
+								</div>
+							</div>
+						</div>
+					<?php } ?>
+					<div class="pp_welcome_feature startup_button">
+						<div class="pp_load_loader"><button class="btn btn-info pp_flat_btn" type="submit"><span>{{LANG follow_c}}</span></button></div>
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+				<input type="hidden" name="ids" value="<?php echo($context['ids']) ?>">
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+function skip_startup() {
+	$.post(link('startup/skip'), function(data, textStatus, xhr) {
+		window.location.href = site_url('')
+	});
+}
+
+jQuery(document).ready(function($) {
+	var form = $("form#startup_follow");
+	form.ajaxForm({
+		url: link('startup/startup_follow'),
+		type: 'POST',
+		dataType: 'json',
+		beforeSend: function(){
+			$('form').find('.pp_load_loader').addClass('loadingg');
+			$('form').find('button[type="submit"]').attr('disabled','true');
+		},
+		success: function(data){
+			if (data.status == 200) {
+				window.location.href = site_url('')
+			}
+			$('form').find('.pp_load_loader').removeClass('loadingg');
+	        $('form').find('button[type="submit"]').removeAttr('disabled');
+		}
+	});	
+});
+</script>

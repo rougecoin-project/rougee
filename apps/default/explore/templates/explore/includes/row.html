@@ -1,0 +1,23 @@
+<div class="explore-people__item col-xs-4 col-sm-3 col-md-3 col-lg-3" id="<?php echo($udata['user_id']) ?>">
+	<div class="avatar text-center">
+		<img src="<?php echo(media($udata['avatar'])) ?>" alt="Picture" class="img-circle img-res">
+	</div>
+	<div class="user__info">
+		<h5><a href="<?php echo(un2url($udata['username'])) ?>"  data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($udata['username']) ?>"><?php echo($udata['username']) ?></a></h5>
+		<div class="user__stat">
+			<span>
+				<b><?php echo($udata['followers']) ?></b>
+				<small>{{LANG followers}}</small>
+			</span>
+			<span>
+				<b><?php echo $udata['posts']; ?></b>
+				<small>{{LANG posts}}</small>
+			</span>
+		</div>
+		<div class="clear"></div>
+		<button class="btn btn-info" onclick="follow(<?php echo($udata['user_id']) ?>,this);">
+			<span>{{LANG follow}}</span>
+		</button>
+		<div class="clear"></div>
+	</div>
+</div>

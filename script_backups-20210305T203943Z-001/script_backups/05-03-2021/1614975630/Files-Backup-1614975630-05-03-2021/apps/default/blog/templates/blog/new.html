@@ -1,0 +1,163 @@
+<script src="<?php echo pxp_acp_link('plugins/tinymce/tinymce.min.js'); ?>"></script>
+<div class="explore-page-container">	
+	<div class="container pp_blogs_main_cont">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="home-posts-container">
+                    
+                    <div class="verf-active">
+                        <div class="pp_store_tra_hed">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#38983c" d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M20,11V8H4V11H20M13,13V14.68C12.37,15.63 12,16.77 12,18C12,19.09 12.29,20.12 12.8,21H4A2,2 0 0,1 2,19V3L3.67,4.67L5.33,3L7,4.67L8.67,3L10.33,4.67L12,3L13.67,4.67L15.33,3L17,4.67L18.67,3L20.33,4.67L22,3V13.5C20.93,12.58 19.53,12 18,12C16.77,12 15.63,12.37 14.68,13H13M11,19V13H4V19H11Z"></path></svg>
+                            <h4><?php echo $context['category_name'];?></h4>
+                        </div>
+                        <form class="form pp_store_upload pp_create_blog" method="POST" id="upload_store_image">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="fak_image">
+                                        <div id="user_image"></div>
+                                        <div class="upload_fk_image" onclick="document.getElementById('user-photo').click(); return false">
+                                            <div class="upload_fk_image_content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" /></svg> {{LANG upload_file}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7">
+									<div class="pp_mat_input">
+										<input type="text" name="title" class="form-control" value="" placeholder="{{LANG title}}">
+									</div>
+                                    <div class="pp_mat_select">
+										<select name="category" id="category" class="form-control">
+											<option value="" selected disabled>{{LANG category}}</option>
+											<?php
+												$store_categories = blog_categories();
+												foreach ($store_categories as $key => $category) {
+													echo '<option value="'.$key.'">'.$category.'</option>';
+												}
+											?>
+										</select>
+									</div>
+                                    <div class="pp_mat_input">
+                                        <textarea class="form-control" name="description" rows="5" placeholder="{{LANG description}}"></textarea>
+                                    </div>
+								</div>
+                            </div>
+							<div class="pp_mat_input">
+								<textarea class="form-control" id="content" name="content" rows="8" placeholder="{{LANG create_article_html}}"></textarea>
+							</div>
+							<div class="pp_mat_input">
+								<textarea class="form-control" name="tags" rows="1" placeholder="{{LANG tags}}"></textarea>
+							</div>
+							<div class="pp_load_loader">
+								<button class="btn btn-primary pp_flat_btn" type="submit"><span>{{LANG save}}</span></button>
+							</div>
+                            <input type="hidden" name="user_id" value="<?php echo($context['me']['user_id']) ?>">
+                            <input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+                            <input type="file" name="thumbnail" class="hidden" id="user-photo" accept="image/x-png,image/jpg,image/jpeg">
+                        </form>
+                    </div>
+				</div>
+				<div class="posts__loader hidden">
+					<div id="pp_loader"><div class="speeding_wheel"></div></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+    $(function() {
+        tinymce.init({
+                selector: '#content',
+                height: 270,
+                entity_encoding : "raw",
+                paste_data_images: true,
+                image_advtab: true,
+                // toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                // toolbar2: "print preview media | forecolor backcolor",
+                plugins: [
+                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen",
+                    "insertdatetime media nonbreaking save table contextmenu directionality",
+                    "template paste textcolor colorpicker textpattern"
+                ],
+            });
+    });
+    jQuery(document).ready(function($) {
+
+
+        $("#user-photo").change(function(event) {
+            $("#user_image").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture' width='100%'>")
+        });
+        /*
+        var form = $("form#upload_store_image");
+        form.ajaxForm({
+            url: link('main/create_new_article'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: function(){
+                $(form).find('.pp_load_loader').addClass('loadingg');
+                form.find('button[type="submit"]').attr('disabled','true');
+            },
+            success: function(data){
+                $.toast(data.message,{
+                    duration: 5000,
+                    type: 'success',
+                    align: 'bottom',
+                    singleton: true
+                });
+                $(form).find('.pp_load_loader').removeClass('loadingg');
+                form.find('button[type="submit"]').removeAttr('disabled');
+                if (data.status == 200) {
+                    setTimeout(function () {
+                        //window.location = '{{CONFIG site_url}}/blog';
+                    },3000);
+                }
+            }
+        });
+*/
+
+        var form_add_settings = $('form#upload_store_image');
+        form_add_settings.ajaxForm({
+            url: '<?php echo($config["site_url"]); ?>/aj/admin/add_new_blog_article',
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: function() {
+                form_add_settings.find('.btn-primary').text('Please wait..');
+            },
+            beforeSubmit : function(arr, $form, options){
+                //arr.splice(0, 1);
+                tinymce.get("content").setContent(tinymce.activeEditor.getContent());
+                document.getElementById("content").value=tinymce.activeEditor.getContent();
+                arr.push({name:'content', value:btoa(unescape(encodeURIComponent($('#content').val())))});
+                arr.push({name:'category', value:$('#category').val()})
+            },
+            success: function(data) {
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $.toast(data.message,{
+                    duration: 5000,
+                    type: 'success',
+                    align: 'bottom',
+                    singleton: true
+                });
+                form_add_settings.find('.pp_load_loader').removeClass('loadingg');
+                form_add_settings.find('button[type="submit"]').removeAttr('disabled');
+                if (data.status == 200) {
+                    setTimeout(function () {
+                        window.location = '{{CONFIG site_url}}/blog';
+                    },3000);
+                }
+                else if (data.status == 400) {
+                    alert(data.message);
+                        $.toast(data.message,{
+                        duration: 5000,
+                        type: 'error',
+                        align: 'bottom',
+                        singleton: true
+                    });
+                }
+                form_add_settings.find('.btn-primary').text('{{LANG save}}');
+            }
+        });
+
+    });
+</script>

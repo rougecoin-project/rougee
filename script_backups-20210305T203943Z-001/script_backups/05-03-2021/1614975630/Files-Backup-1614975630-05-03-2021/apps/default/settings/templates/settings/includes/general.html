@@ -1,0 +1,105 @@
+<div class="sett-active">
+	<div class="header">
+		<h4>{{LANG general}} {{LANG settings}}</h4>
+		<div class="clear"></div>
+	</div>
+	<hr>
+	<form class="form row pp_sett_form" id="edit-general-settings">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+		<div class="pp_mat_input">
+			<input required="true" type="text" name="username" class="form-control" value="<?php echo($context['me']['username']) ?>">
+			<span class="bar"></span>
+			<label>{{LANG username}}*</label>
+		</div>
+		<div class="pp_mat_input" style="margin-bottom: 1.7em;">
+			<input required="true" type="email" name="email" class="form-control" value="<?php echo($context['me']['email']) ?>">
+			<span class="bar"></span>
+			<label>{{LANG email}}*</label>
+		</div>
+		<div class="pp_mat_select">
+			<label class="pp_mat_label">{{LANG gender}}*</label>
+			<div>
+				<select name="gender" class="form-control" required="true">
+					<option value="male" <?php if($context['me']['gender'] == 'male'){ ?> selected <?php } ?>>
+						{{LANG male}}
+					</option>
+					<option value="female" <?php if($context['me']['gender'] == 'female'){ ?> selected <?php } ?>>
+						{{LANG female}}
+					</option>
+				</select>
+				<span class="bar"></span>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="pp_mat_select">
+			<label class="pp_mat_label">{{LANG country}}</label>
+			<div>
+				<select name="country" class="form-control">
+					<?php foreach ($context['countries_name'] as $cid => $cname) { ?>
+						<option value="<?php echo($cid) ?>" <?php if($context['me']['country_id'] == $cid){ ?> selected <?php } ?>>
+							<?php echo $cname; ?>
+						</option>
+					<?php } ?>
+				</select>
+				<span class="bar"></span>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<?php if ($context['user']['admin'] == 1) { ?>
+		<br>
+			<div class="pp_mat_input" style="margin-bottom: 1.7em;">
+				<input required="true" type="wallet" name="wallet" class="form-control" value="<?php echo($context['me']['wallet']) ?>">
+				<span class="bar"></span>
+				<label>{{LANG wallet}}</label>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-9 col-sm-9 col-md-9">{{LANG activate_user}}</label>
+				<div class="col-xs-3 col-sm-3 col-md-3">
+					<input type="checkbox" <?php if($context['me']['active'] == 1){ ?> checked <?php } ?> class="tgl tgl-ios" id="active" name="active">
+					<label class="tgl-btn" for="active"></label>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-9 col-sm-9 col-md-9">{{LANG verify_user}}</label>
+				<div class="col-xs-3 col-sm-3 col-md-3">
+					<input type="checkbox" <?php if($context['me']['verified'] == 1){ ?> checked <?php } ?> class="tgl tgl-ios" id="verified" name="verified">
+					<label class="tgl-btn" for="verified"></label>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-9 col-sm-9 col-md-9">{{LANG pro_member}}</label>
+				<div class="col-xs-3 col-sm-3 col-md-3">
+					<input type="checkbox" <?php if($context['me']['is_pro'] == 1){ ?> checked <?php } ?> class="tgl tgl-ios" id="is_pro" name="is_pro">
+					<label class="tgl-btn" for="is_pro"></label>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<?php if ($config['business_account'] == 'on') { ?>
+			<div class="form-group">
+				<label class="col-xs-9 col-sm-9 col-md-9">{{LANG business_account}}</label>
+				<div class="col-xs-3 col-sm-3 col-md-3">
+					<input type="checkbox" <?php if($context['me']['business_account'] == 1){ ?> checked <?php } ?> class="tgl tgl-ios" id="business_account" name="business_account">
+					<label class="tgl-btn" for="business_account"></label>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<?php } ?>
+			
+		<?php } ?>
+
+		<div class="pp_load_loader"><button class="btn btn-info pp_flat_btn" type="submit"><span>{{LANG save_changes}}</span></button></div>
+		<div class="clear"></div>
+		<input type="hidden" name="user_id" value="<?php echo($context['me']['user_id']) ?>">
+		<input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+		</div>
+		<div class="col-md-2"></div>
+	</form>
+</div>
+<?php 
+include $context['dirname_theme'].'/main/templates/includes/lazy-load.html';
+include $context['dirname_theme'].'/settings/templates/settings/js/script.html';
+ ?>

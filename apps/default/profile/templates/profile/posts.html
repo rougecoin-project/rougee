@@ -1,0 +1,81 @@
+<div class="container container-profile user-posts__container">
+	<div class="user-posts new_prof_user_posts">
+		<?php  if (count($context['posts']) > 0) {
+			foreach ($context['posts'] as $key => $post_data) {
+				include 'includes/list.html';
+			}
+		} else{
+			include 'includes/no-posted.html';
+		} ?>
+	</div>
+	<div class="posts__loader hidden">
+		<div id="pp_loader"><div class="speeding_wheel"></div></div>
+	</div>
+</div>
+
+<script>
+	var ajax_url = '<?php echo($context['xhr_url']); ?>';
+	var user_id  = '<?php echo($context['user_data']['user_id']) ?>';
+	var gwidth = ($('.user-posts').width() / 3);
+	var config = {
+		selector: '.item',
+		gutter: 0,
+		animate: true,
+		animationOptions: { 
+			speed: 100, 
+			duration: 200
+		}
+	}
+		
+	if ($(window).width() > 992){
+		 config.width = 303.34;
+	};
+		
+	$(".user-posts").gridalicious(config);
+
+	jQuery(document).ready(function($) {
+		var scrolled = 0;
+		var last_id  = 0;
+
+		$(window).scroll(function() {
+		    if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+
+		    	if (scrolled == 0 && $('.user-postset').length > 0) {
+	                scrolled = 1;
+	                var list_ids = $("div.user-postset[id]").map(function() {
+	                	if($(this).attr('id') > 0) {
+							return $(this).attr('id');
+						}
+		            }).get();
+
+		            if (!list_ids) {
+		                return false;
+		            }
+					$('.posts__loader').removeClass('hidden');
+					$('.posts__loader #pp_loader').show();
+    				var last_id  = Math.min.apply(Math,list_ids);
+
+					$.ajax({
+						url: ajax_url + '/load-user-posts',
+						type: 'GET',
+						dataType: 'json',
+						data: {
+							offset:last_id,
+							user_id:user_id
+						},
+					}).done(function(data) {
+						if (data.status == 200) {
+							$(".user-posts").gridalicious('append', $(data.html));
+							scrolled = 0;
+						}
+						else{
+							$(window).unbind('scroll');
+						}
+						$('.posts__loader').addClass('hidden');
+						$('.posts__loader #pp_loader').hide();
+					});
+	       		}
+		    }
+		});
+	});
+</script>

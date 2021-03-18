@@ -1,0 +1,24 @@
+<li id="request_menu_<?php echo($context['user_data']->user_id) ?>">
+	<a href="javascript:void(0)">
+		<div class="notifications-list-item request-list-item">
+			<div class="notifier__avatar">
+				<img src="<?php echo(media($context['user_data']->avatar)) ?>" alt="Picture" class="img-circle img-res">
+			</div>
+			<div class="notif__body">
+				<div class="notif__text">
+					 <strong onclick="window.location.href = '<?php echo($context['user_data']->url) ?>'"><?php echo($context['user_data']->username) ?></strong>
+					<!-- <span class="notif__text"><?php echo lang($notif_data['type']) ?></span> -->
+				</div>
+				<time><span class="time-ago" title="<?php echo(ToDate($context['request']->time)) ?>"><?php echo(time2str($context['request']->time)) ?></span></time>
+			</div>
+			<div class="request-opts">
+				<button type="button" onclick="Pxp_AcceptFollowRequest(this,<?php echo($context['user_data']->user_id) ?>)" class="btn accept_request_btn accept_req" title="{{LANG accept}}">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+				</button>
+				<button type="button" onclick="Pxp_DeleteFollowRequest(this,<?php echo($context['user_data']->user_id) ?>)" class="btn accept_request_btn decline_req" title="{{LANG delete}}">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+				</button>
+			</div>
+		</div>
+	</a>
+</li>

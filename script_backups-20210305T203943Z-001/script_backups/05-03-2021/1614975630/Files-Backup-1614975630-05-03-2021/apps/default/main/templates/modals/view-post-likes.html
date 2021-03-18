@@ -1,0 +1,41 @@
+<div class="modal--dialog open" id="view-post-likes">
+	<div class="modal-outer">
+		<div class="modal-inner">
+			<h5 class="title"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users" color="#2196f3" style="background-color: rgba(33, 150, 243, 0.25)"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> {{LANG people_who_liked}}
+				<span class="pull-right" title="{{LANG close}}" onclick="$('#view-post-likes').remove();">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+				</span>
+			</h5>
+			<ul class="list-group" id="user-list">
+				<?php foreach ($context['users'] as $key => $udata) { ?>
+					<li class="list-group-item">
+						<div class="avatar">
+							<img src="<?php echo(media($udata['avatar'])) ?>" class="img-circle img-res">
+						</div>
+						<div class="user-info">
+							<a href="<?php echo(un2url($udata['username'])) ?>"><?php echo($udata['username']) ?></a>
+							<time>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <?php echo(time2str($udata['time'])) ?>
+							</time>
+						</div>
+						<?php if (IS_LOGGED && $udata['user_id'] != $context['user']['user_id']) { 
+							if (isset($udata['is_following']) && $udata['is_following'] == true) { ?>
+								<button class="btn btn-info btn-following" onclick="follow(<?php echo $udata['user_id']; ?>,this);">
+									<span>{{LANG following}}</span>
+								</button>
+							<?php } else{ ?>
+								<button class="btn btn-info" onclick="follow(<?php echo $udata['user_id']; ?>,this);">
+									<span>{{LANG follow}}</span>
+								</button>
+							<?php } ?>
+						<?php } elseif (IS_LOGGED == false) { ?>
+							<button class="btn btn-info" onclick="follow(<?php echo $udata['user_id']; ?>,this);">
+								<span>{{LANG follow}}</span>
+							</button>
+						<?php } ?>
+					</li>
+				<?php } ?>			
+			</ul>
+		</div>
+	</div>
+</div>

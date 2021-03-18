@@ -1,0 +1,65 @@
+<div class="block-header">
+    <h2 class="breadcrumb">Languages <i class="material-icons">keyboard_arrow_right</i> Manage Languages</h2>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6">
+        <div class="card">
+            <div class="header">
+                <h2>Manage & Edit Languages</h2>
+            </div>
+            <div class="body">
+               <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Language Name</th>
+                                <th style="text-align: center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $langs = $admin::getLangs();
+                                if (count($langs) > 0) {
+                                    foreach ($langs as $key => $lang) {
+                                        $context['lang_key']  = $key;   
+                                      $context['lang_name'] = $lang;  
+                                        $context['langs_len'] = len($langs);    
+                                      echo $admin->loadPage('manage-langs/list');
+                                    }
+                                }  
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div id="delete-modal" class="modal fade" role="dialog" data-id="">
+    <div class="modal-dialog">
+        <div class="modal-content modal-col-red">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">DELETE LANGUAGE</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to continue? this action can't be undo</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link waves-effect delete-button" data-dismiss="modal" data-type="lang">DELETE</button>
+                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  jQuery(document).ready(function($) {
+    $(document).on('click', '.delete-content',function(event) {
+      event.preventDefault();
+      $('#delete-modal').attr('data-id', $(this).attr('data-id')).modal('show');
+      $('.delete-button').attr('data-id', $(this).attr('data-id'));
+    });
+  });
+</script>

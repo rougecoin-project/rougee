@@ -1,0 +1,28 @@
+<?php foreach ($context['notifications'] as $key => $notif_data) { ?>
+<li>
+	<a href="<?php echo($notif_data['url']) ?>">
+		<div class="notifications-list-item">
+			<div class="notifier__avatar">
+				<?php if ($notif_data['type'] == 'bank_decline' || $notif_data['type'] == 'bank_pro') { ?>
+				    <img src="<?php echo($config['site_url'].'/media/img/icon.'.$config['favicon_extension']) ?>" alt="Picture" class="img-circle img-res">
+				<?php }else{ ?>
+					<img src="<?php echo(media($notif_data['avatar'])) ?>" alt="Picture" class="img-circle img-res">
+				<?php } ?>
+			</div>
+			<div class="notif__body">
+				<div class="notif__text">
+					<?php if ($notif_data['type'] == 'bank_decline' || $notif_data['type'] == 'bank_pro') { ?>
+						<strong><?php echo($config['site_name']) ?></strong>
+					<?php }else{ ?>
+						<strong><?php echo($notif_data['username']) ?></strong>
+					<?php } ?>
+					<span class="notif__text"><?php echo lang($notif_data['type']) ?></span>
+				</div>
+				<time>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <span class="time-ago" title="<?php echo(ToDate($notif_data['time'])) ?>"><?php echo(time2str($notif_data['time'])) ?></span>
+				</time>
+			</div>
+		</div>
+	</a>
+</li>
+<?php } ?>

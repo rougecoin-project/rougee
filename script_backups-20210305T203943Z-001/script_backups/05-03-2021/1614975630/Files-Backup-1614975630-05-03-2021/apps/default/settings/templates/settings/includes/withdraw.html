@@ -1,0 +1,67 @@
+<div class="sett-active">
+	<form class="form pp_sett_form" id="edit-withdraw-settings">
+		<div class="row my_wallet my_wallet_withdraw">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<div class="my_wallet_cont">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20,7V5c0-1.103-0.897-2-2-2H5C3.794,3,2,3.799,2,6v11c0,2.201,1.794,3,3,3h15c1.104,0,2-0.896,2-2V9 C22,7.896,21.104,7,20,7z M4,6c0-0.805,0.55-0.988,1-1h13v2H5.012C4.55,6.988,4,6.805,4,6z M19,15h-2v-3h2V15z"></path></svg> 
+					<h3>{{LANG available_balance}}<br><b><?php echo($context['currency_symbol'].$context['me']['balance']) ?></b></h3>
+				</div>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+		<div class="header">
+			<h4>{{LANG withdraw}} {{LANG settings}}</h4>
+			<div class="clear"></div>
+		</div>
+		<hr>
+		<br>
+		<br>
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8 create_ads_inputs">
+				<div class="pp_mat_input">
+					<input required="true" type="email" name="paypal_email" class="form-control" value="<?php echo($context['me']['paypal_email']) ?>">
+					<span class="bar"></span>
+					<label>{{LANG paypal_email}}*</label>
+				</div>
+				<div class="pp_mat_input">
+					<input required="true" type="number" name="amount" class="form-control" min="50">
+					<span class="bar"></span>
+					<span>{{LANG min}}: <?php echo $context['currency_symbol']; ?>50</span>
+					<label>{{LANG amount}}*</label>
+				</div>
+				<div class="pp_load_loader"><button class="btn btn-info pp_flat_btn" type="submit"><span>{{LANG send}}</span></button></div>
+				<div class="clear"></div>
+				<input type="hidden" name="user_id" value="<?php echo($context['me']['user_id']) ?>">
+				<input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+	</form>
+	<br>
+	<br>
+	<div>
+		<div class="ads-cont-wrapper">
+			<table class="table table-striped">
+				<thead>
+				  <tr>
+				    <th>{{LANG id}}</th>
+				    <th>{{LANG requested_at}}</th>
+				    <th>{{LANG amount}}</th>
+				    <th>{{LANG status}}</th>
+				  </tr>
+				</thead>
+				<tbody id="user-ads">
+					<?php foreach ($context['user_withdrawals'] as $key => $context['user_withdrawal']) {
+						include 'withdraw_list.html';
+					} ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<?php 
+include $context['dirname_theme'].'/main/templates/includes/lazy-load.html';
+include $context['dirname_theme'].'/settings/templates/settings/js/script.html';
+ ?>

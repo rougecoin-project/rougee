@@ -1,0 +1,304 @@
+body {
+	color: #c4c4c4;
+}
+body, .user-profile-page-content .user-heading:after {
+    background: #131313 !important;
+}
+.navbar-fixed-top, .home-page-container .home-posts-container .timeline-posts .header, .pp_pubbox_opt, .home-page-container .home-sidebar-right div.featured-posts, .home-page-container .home-sidebar-right div.stories, .loadding-pgbar .bar, .home-page-container .home-posts-container .timeline-posts .actions, .home-page-container .home-posts-container .timeline-posts .post-votes, .home-page-container .home-posts-container .timeline-posts .comments-area, .home-page-container .home-posts-container .timeline-posts div.caption, .home-page-container .home-posts-container .timeline-posts .comments-area .add-comment .form-group .emojionearea.emojionearea-inline, .follow-suggestions-cr, .explore-page-container .follow__suggestions-cr, .messages-container, .user-profile-page-content .navbar-bottom ul.navbar-nav li.active a.nav__item, .user-profile-page-content .navbar-bottom ul.navbar-nav li a.nav__item:hover, .settings-page-container .page-content>div, .settings-page-container .sidenav ul, .light__box .lightbox-outer .lightbox-inner .post-data .posts-votes .posts-votes-inner .heading, .light__box .lightbox-outer .lightbox-inner .post-data .posts-votes .posts-votes-inner .comments ul li .pp_com_body span, .light__box .lightbox-outer .lightbox-inner .post-data .posts-votes .posts-votes-inner .comment-box, .light__box .lightbox-outer .lightbox-inner .post-data .posts-votes .posts-votes-inner .comment-box .text-input .emojionearea.emojionearea-inline, .post-data-container .post-data-inner .sidebar, .post-data-container .post-data-inner .sidebar .sidebar__inner .pp_pst_caption, .post-data-container .post-data-inner .sidebar .sidebar__inner .comments .post-comments-list li .pp_com_body span, .post-data-container .post-data-inner .comment-box, .post-data-container .post-data-inner .comment-box .form .text-input .post_input_ .emojionearea.emojionearea-inline, .navbar-fixed-top #navbar-collapse form.navbar-search .search-result, .home-page-container .home-posts-container .timeline-posts .header div.dropdown ul li:hover, .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .post-editing-form, .post-editing-form .form-group .emojionearea, .emojionearea.form-control, .post-editing-form textarea.form-control, .modal--menu .modal-outer .modal-inner, .modal--dialog .modal-outer .modal-inner, .modal--menu .modal-outer .modal-inner ul li, .modal--dialog .modal-outer .modal-inner ul li, .confirm--modal .confirm--modal--inner, .confirm--modal .modal--inner, .dialog-modal .confirm--modal--inner, .dialog-modal .modal--inner, #embed_post, .add-post-bf--controls .btns .nds, .explore-page-container .explore-posts-container .explore-postset, .messages-container .row.content .conversation .send-message .delete-selected, .settings-page-container .page-content, .pp_startup, .light__box .lightbox-outer .lightbox-inner .post-data .posts-votes .posts-votes-inner .pp_light_caption, .light__box .lightbox-outer .lightbox-inner .post-data .posts-votes, .user-profile-page-content .following--ls .following--ls__item, .user-profile-page-content .followers--ls .followers--ls__item, .explore-page-container .explore-people-container .people .explore-people__item, .user-profile-page-content .navbar-bottom ul.navbar-nav li a.nav__item:focus, .home-page-container .home-posts-container .timeline-posts .comments-area .post-comments-list li.load-comments button, .go_pro_plan, .prof_new_look_posts .followers--ls .followers--ls__item, .prof_new_look_posts .following--ls .following--ls__item {
+	background: #212121 !important;
+}
+.navbar-fixed-top {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.messages-container.open .header-composition .interlocutor-info {
+    background: #333333 !important;
+}
+.pp_hero .w {
+	background: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='800' height='200' viewBox='0 0 800 200'%3e%3cpath d='M400 0C280 0 120 40 0 40v160h800v-160C680 40 520 0 400 0z' fill='%23212121'/%3e%3c/svg%3e");
+}
+hr, .pp_pubbox_opt .nds, .home-page-container .home-sidebar-right div.featured-posts h5, .home-page-container .home-sidebar-right div.stories h5, .home-page-container .home-posts-container .timeline-posts .comments-area .add-comment, .home-page-container .home-sidebar-right div.stories.activities div.list .item, .navbar-fixed-top #navbar-collapse form.navbar-search .input input, .post-editing-form .publish, .modal--menu.modal--dialog .list-group .list-group-item, .modal--dialog.modal--dialog .list-group .list-group-item, #embed_post, .messages-container .header-composition, .messages-container .pp_srch_msg .search-users .text-input input, .user-profile-page-content .user-heading div.user-info .avatar img, .settings-page-container .page-content, .settings-page-container .sidenav ul, .settings-page-container .page-content div.header .avatar-wrapper img, .s-users--ls-item, footer, .navbar-fixed-top .navbar-right li div.notifications-list div.dropdown-menu div.header, .navbar-fixed-top .navbar-right li div.notifications-list div.dropdown-menu li, .pp_startup .start_head, .open_camera_ a, .settings-page-container, .acc_stats_hdr, .acc_stats_hdr select, .fund div.list .item {
+    border-color: #424242 !important;
+}
+.terms-page__container .terms-page__inner .content {
+    background-color: #212121 !important;
+}
+.terms-page__container .terms-page__inner ul li a {
+    background-color: #212121 !important;
+    color: #fff !important;
+}
+.navbar-fixed-top #navbar-collapse form.navbar-search .input input {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #d2d2d2;
+}
+.settings-page-container .sidenav ul li.active a svg, .settings-page-container .sidenav ul li.active:hover a{
+    color: #fff !important;
+}
+.navbar-fixed-top .navbar-left li a, .navbar-fixed-top #navbar-collapse form.navbar-search .search-result .search-result--item .user-info, .navbar-fixed-top #navbar-collapse form.navbar-search .search-result .search-result--item .tag-info, .home-page-container .home-posts-container .timeline-posts .header div.dropdown span svg.feather, .dropdown-menu > li > a, .home-page-container .home-posts-container .timeline-posts .header div.dropdown ul li a, .home-page-container .home-sidebar-right div.featured-posts h5, .home-page-container .home-sidebar-right div.stories h5, .home-page-container .home-sidebar-right div.stories.activities div.list .item .caption_ a, .home-page-container .home-posts-container .timeline-posts .comments-area .post-comments-list li strong, .home-page-container .home-posts-container .timeline-posts .comments-area .post-comments-list li strong a, .follow-suggestions-cr div.fluid h5, .follow-suggestions-cr .cr-wrapper .owl-carousel .item .uname a, .post-editing-form .user-heading span, .post-editing-form .selecet-file-control button, .post-editing-form form#import-post-gifs div.search-input, .post-editing-form form#import-post-gifs div.search-input input, .post-editing-form form#embed-post-video div.fetch-url .video-url input, .post-editing-form form#embed-post-video div.fetch-url .video-url, .post-editing-form input.form-control, .post-editing-form textarea.form-control, .home-page-container .home-sidebar-right div.stories div.list .item .caption a, .modal--menu.modal--dialog .list-group .list-group-item .user-info a, .modal--dialog.modal--dialog .list-group .list-group-item .user-info a, .modal--menu h5.title span:hover, .modal--dialog.modal--dialog h5.title span:hover, .confirm--modal .confirm--modal--inner .confirm--modal--body, .confirm--modal .confirm--modal--inner .modal--body, .confirm--modal .modal--inner .confirm--modal--body, .confirm--modal .modal--inner .modal--body, .dialog-modal .confirm--modal--inner .confirm--modal--body, .dialog-modal .confirm--modal--inner .modal--body, .dialog-modal .modal--inner .confirm--modal--body, .dialog-modal .modal--inner .modal--body, #embed_post, .add-post-bf--controls .btns .nds, .explore-page-container .follow__suggestions-cr .fluid h5, .explore-page-container .follow__suggestions-cr .owl-carousel .item .uname a, .post-data-container .post-data-inner .sidebar .sidebar__inner .header .uname a, .post-data-container .post-data-inner .sidebar .sidebar__inner .comments .post-comments-list li strong a, .light__box .lightbox-outer .lightbox-inner .post-data .posts-votes .posts-votes-inner .heading .uname h6 a, .light__box .lightbox-outer .lightbox-inner .post-data .posts-votes .posts-votes-inner .comments ul li strong a, .messages-container .header-composition .interlocutor-info .left .uname a, .messages-container .header-composition .privacy-settings span, .messages-container .row.content .conversation .send-message form div.text-input textarea, .messages-container .row.content .chat-list ul li div.chat-list-item .chat-desc div.uname span.username, .messages-container .header-composition .interlocutor-info .right .dropdown ul li a, .footer__container .footer > ul.nav > li > a, .navbar-fixed-top .navbar-right li div.notifications-list div.dropdown-menu div.header, .navbar-fixed-top .navbar-right li div.notifications-list div.dropdown-menu li .notifications-list-item .notif__body .notif__text strong, .post-data-container .post-data-inner .comment-box .votes span, .open_camera_ a, .user-profile-page-content .following--ls .following--ls__item .user__info h5, .user-profile-page-content .followers--ls .followers--ls__item .user__info h5, .explore-page-container .explore-people-container .people .explore-people__item .user__info h5, .explore-page-container .explore-people-container .people .explore-people__item .user__info .user__stat span b, .home-page-container .home-posts-container .timeline-posts .comments-area .post-comments-list li.load-comments button, .prof_new_look_posts .followers--ls .followers--ls__item .user__info h5, .prof_new_look_posts .following--ls .following--ls__item .user__info h5 {
+    color: #d2d2d2;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus, .navbar-fixed-top .navbar-right li div.notifications-list:hover, .dropdown-menu > li > a:hover, .home-page-container .home-posts-container .timeline-posts .header div.dropdown ul li a:hover, .messages-container .header-composition .interlocutor-info .right .dropdown ul li a:hover, .user-profile-page-content .navbar-bottom ul.navbar-nav li.active a.nav__item, .user-profile-page-content .navbar-bottom ul.navbar-nav li a.nav__item:hover, .footer__container .footer > ul.nav > li > a:hover, .explore-page-container .follow__suggestions-cr .fluid h5 a:hover, .follow-suggestions-cr div.fluid h5 a:hover, .home-page-container .home-posts-container .timeline-posts .comments-area .post-comments-list li.load-comments button:hover, .fundMeta--author-text .main {
+    color: #ffffff;
+}
+.navbar-fixed-top .navbar-right li a, .navbar-fixed-top .navbar-right li div.notifications-list {
+    color: #b2b9be;
+}
+.pp_pubbox_opt .nds .create-new-post:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+#pp_loader .speeding_wheel {
+    border-top-color: rgba(255, 255, 255, 0.72);border-bottom-color: rgba(255, 255, 255, 0.72);
+}
+.home-page-container .home-posts-container .timeline-posts .header a.publisher-name {
+    color: rgba(255, 255, 255, 0.87);
+}
+.dropdown-menu, .footer__container .footer li.dropup ul:before, .navbar-fixed-top .navbar-right li div.notifications-list div.dropdown-menu, .navbar-fixed-top .navbar-right li div.notifications-list div.dropdown-menu div.header {
+	background: #151515;
+}
+.home-page-container .home-posts-container .timeline-posts .comments-area .post-comments-list li .pp_com_body span {
+    background: #3e3e3e;
+    color: #bebebe;
+}
+.follow-suggestions-cr .cr-wrapper .owl-carousel .item, .post-editing-form .selecet-file-control, .post-editing-form .selecet-file-control button, .post-editing-form form#import-post-gifs .content, .post-editing-form form#import-post-gifs div.search-input, .post-editing-form form#import-post-gifs .preview-video .fluid, .post-editing-form form#embed-post-video div.fetch-url .video-url, .form-control, .explore-page-container .follow__suggestions-cr .owl-carousel .item, .post-data-container .post-data-inner .sidebar .sidebar__inner .comments, .light__box .lightbox-outer .lightbox-inner .post-data .posts-votes .posts-votes-inner .comments, .messages-container .pp_srch_msg .search-users .text-input input, .open_camera_ a, .camera_3, .filters_3 {
+	background: #363636;
+}
+.post-editing-form .images-renderer .select-images {
+    background: rgba(255, 255, 255, 0.03);
+	border-color: #727272;
+    color: #929da5;
+}
+.btn-default {
+    color: #d2d2d2 !important;
+    background-color: #3e3e3e !important;
+    border-color: #191919 !important;
+}
+.post-editing-form .images-renderer ul li {
+    border-color: #4d4d4d;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+.emojionearea .emojionearea-editor {
+    color: #d2d2d2 !important;
+}
+body.active:after, .modal--menu:after, .modal--dialog:after, .confirm--modal, .dialog-modal {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.post-data-container .post-data-inner .sidebar .sidebar__inner .header .uname a span, .light__box .lightbox-outer .lightbox-inner .post-data .posts-votes .posts-votes-inner .heading .uname span, .empty_state, .navbar-fixed-top .navbar-right li div.notifications-list div.dropdown-menu li.no__notifications div {
+    color: #828282;
+}
+.post-data-container .post-data-inner .comment-box .votes .dropup span.dropdown-toggle, .light__box .lightbox-outer .lightbox-inner .post-data .posts-votes .posts-votes-inner .comments ul li .pp_com_body span, .messages-container .header-composition .interlocutor-info .right .dropdown span.dropdown-toggle, .messages-container .header-composition .privacy-settings a, .user-profile-page-content .navbar-bottom ul.navbar-nav li a.nav__item, .settings-page-container .sidenav ul li a, .settings-page-container .sidenav ul li a svg.feather, .navbar-fixed-top .navbar-right li div.notifications-list div.dropdown-menu li .notifications-list-item .notif__body .notif__text span, .post-data-container .post-data-inner .sidebar .sidebar__inner .comments .post-comments-list li .pp_com_body span {
+    color: #919191;
+}
+.messages-container .row.content .conversation {
+	background: #2a2a2a;
+}
+.messages-container .row.content .conversation .messages .message-list-item .message-list-item__inner .message__data p.message__text {
+	background: #212121;
+}
+.messages-container .row.content .chat-list ul li.active {
+    background: rgba(255, 255, 255, 0.06);
+}
+.messages-container .row.content .chat-list ul li:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+.messages-container .row.content .conversation .messages .message-list-item.active {
+    background: #3e3e3e;
+}
+.messages-container .row.content .conversation .send-message form .overlay {
+    background: rgba(0, 0, 0, 0.55);
+}
+.settings-page-container .page-content {
+	border-right: 1px solid #424242;
+}
+.pp_mat_input input, .pp_mat_input textarea, .pp_mat_select select {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+.form-control {
+    color: #cacaca;
+}
+.pp_mat_input label {
+    color: rgba(255, 255, 255, 0.38);
+}
+.tgl-ios + .tgl-btn {
+    background: rgb(79, 79, 79);
+}
+.tgl-ios + .tgl-btn:after {
+    background: rgb(134, 134, 134);
+}
+.img_container_1 {
+    background-color: #343434;
+}
+.footer__container .footer li.dropup .dropdown-toggle a {
+    color: #d2d2d2 !important;
+}
+.navbar-fixed-top .navbar-right li div.notifications-list.open > span > svg.feather {
+    color: #fff;
+    fill: #fff;
+}
+.modal--dialog.modal--dialog .list-group .list-group-item .btn-info {
+	background-color: #adadad;
+}
+.user-profile-page-content .following--ls .following--ls__item, .user-profile-page-content .followers--ls .followers--ls__item, .explore-page-container .explore-people-container .people .explore-people__item, .prof_new_look_posts .followers--ls .followers--ls__item, .prof_new_look_posts .following--ls .following--ls__item {
+	box-shadow: 0 0 0px 1px #383838;
+}
+body .emojionearea .emojionearea-button>div.emojionearea-button-open {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24'%3e%3cpath fill='%23d2d2d2' d='M12,17.5C14.33,17.5 16.3,16.04 17.11,14H6.89C7.69,16.04 9.67,17.5 12,17.5M8.5,11A1.5,1.5 0 0,0 10,9.5A1.5,1.5 0 0,0 8.5,8A1.5,1.5 0 0,0 7,9.5A1.5,1.5 0 0,0 8.5,11M15.5,11A1.5,1.5 0 0,0 17,9.5A1.5,1.5 0 0,0 15.5,8A1.5,1.5 0 0,0 14,9.5A1.5,1.5 0 0,0 15.5,11M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z' /%3e%3c/svg%3e") !important;
+}
+body .emojionearea .emojionearea-button>div.emojionearea-button-close {
+	background-position: center;background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24'%3e%3cpath fill='%23d2d2d2' d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z' /%3e%3c/svg%3e") !important;
+}
+.fund_info .notif__body .notif__text strong {color: #d2d2d2;}
+
+.like_comment {
+    background: #484848;
+}
+.cd-stretchy-nav ul a {
+    color: #c7c7c7;
+}
+.cd-stretchy-nav ul a:hover {
+    color: #fff;
+}
+.list-group-item {
+    background-color: #212121;
+    border-color: #424242;
+}
+.aff_link_input {
+    background-color: #131313;
+    color: #d1d1d1;
+}
+.aff_hiw svg {
+    background-color: #333333;
+}
+.payment_methods_modal .btn, .payment_methods_wallet_modal .btn {
+    color: #d3d3d3;
+    background-color: #212121;
+}
+.payment_methods_modal .btn:hover, .payment_methods_wallet_modal .btn:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+.ma_tabs ul:after {
+    background-color: #353535;
+}
+.ma_tabs ul li a {
+    border-color: #353535;
+    color: #a8a8a8;
+}
+.ma_tabs ul li a:hover {
+	color: #fff;
+}
+.ma_tabs ul li.active a {
+    border-bottom-color: #4CAF50;
+    color: #4CAF50;
+}
+.table > thead > tr > th {
+	border-color: #353535;
+}
+.settings-page-container .page-content>div.my_wallet {
+    background: linear-gradient(220deg, #0c5128 0%, #11a357 100%) !important;
+}
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #2b2b2b;
+    border-color: #131313;
+}
+.fundings, .fund_raise {
+	background: #212121;
+}
+.fundings .caption h3 a, .fund div.list .item .caption a {
+    color: #eaeaea;
+}
+.fund_progress, .fundings .caption .progress, .side_fund_item_progress {
+    background-color: #4b4b4e;
+}
+.go_pro_wave path {fill: #131313;}
+.side_fund_item {
+    border-color: #414141;
+}
+.table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: #353535;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    border-color: #3d3d3d;
+}
+.ads_act_icos {
+    color: #cbcbcb !important;
+}
+.settings-page-container .sidenav ul li a:hover, .settings-page-container .sidenav ul li a:hover svg.feather {
+    color: #fff;
+}
+.promoted_post {
+    background-color: #212121;
+}
+.fak_image {
+    border-color: #414141;
+    background: #333333;
+}
+.create_ads_inputs .pp_mat_input input, .create_ads_inputs .pp_mat_input textarea, .create_ads_inputs .pp_mat_select select, .ads_select_country_input .bootstrap-select>.dropdown-toggle {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+.ads_select_country_input .bootstrap-select>.dropdown-toggle {
+    color: #cbcbcb !important;
+}
+
+.sidebar_ad .side_ad_title a {
+    color: #6a6a6a;
+    text-decoration: none;
+}
+
+.pp_store_head_nav li a, .pp_blog_posts, .pp_blogs_sidebar, .pp_store_tratale, .pp_store_upload, #store_filter, .pp_store_head select {
+    background-color: #212121;
+}
+.pp_store_head_nav li a, .pp_store_head select, .pp_store_transct_list .store_buy a, .pp_blog_posts .header h2 a {
+    color: #fff;
+}
+.pp_store_head {
+    border-bottom-color: #353535;
+}
+#store_filter .pp_mat_input input, #store_filter .pp_mat_select select, .pp_store_upload .pp_mat_input input, .pp_store_upload .pp_mat_select select, .pp_store_upload .pp_mat_input textarea {
+    background-color: #3b3b3b !important;
+}
+#store_filter .pp_mat_input input:focus, #store_filter .pp_mat_select select:focus, .pp_store_upload .pp_mat_input input:focus, .pp_store_upload .pp_mat_select select:focus, .pp_store_upload .pp_mat_input textarea:focus {
+    background-color: #161616 !important;
+}
+.pp_store_pic_details .table > tbody > tr > td {
+    border-top-color: #464646;
+}
+.pp_store_tratale .table > thead > tr > th {
+    border-bottom: 1px solid #353535;
+}
+.pp_store_transct_list td {
+    border-top: 1px solid #333333 !important;
+}
+.pp_side_cat_list .item a {
+    color: #63b968;
+}
+
+.pp_store_license_select .lnce_name {
+    background-color: #1e1e1e;
+    box-shadow: inset 0 0 0 1px #525252;
+}
+.pp_store_license_select [type="radio"]:checked+span {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.modal-content {
+    background-color: #292929;
+}
+
+.pp_blog_posts .header .dropdown span svg.feather {
+    color: #d8d8d8;
+}
+.pp_blog_posts .header .dropdown ul li a {
+    color: #d2d2d2;
+}
+.pp_blog_posts .header .dropdown ul li a:hover {
+    color: #fff;
+}
+.pp_shared_post_author_innr {
+    border-color: #565656;
+}
+
+
+
+
+
+@media (max-width: 992px) {
+.pro_user_new_profile .ma_tabs li a {color: rgba(255, 255, 255, 0.7);}
+.pro_user_new_profile .ma_tabs li a:hover {color: #fff;}
+}

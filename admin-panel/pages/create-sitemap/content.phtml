@@ -1,0 +1,77 @@
+<?php 
+$site_url = $config['site_url'];
+?>
+
+<div class="block-header">
+    <h2 class="breadcrumb">Sitemap <i class="material-icons">keyboard_arrow_right</i> Create sitemap</h2>
+</div>
+<!-- Vertical Layout -->
+<div class="row">
+    <div class="col-lg-8 col-md-8 ">
+        <div class="card">
+            <div class="header">
+                <h2>Generate New Sitemap</h2>
+            </div>
+            <div class="body">
+                <form class="submit-sitemap-settings" method="POST">
+                    <div class="form-alert"></div>
+                    <div class="alert alert-info">
+                        The sitemap link is: <a href="<?php echo($site_url); ?>/sitemap-main.xml" style="color: #fff" target="_blank">
+                        <?php echo($site_url); ?>/sitemap-main.xml</a>
+                    </div>
+                    <div class="alert bg-teal">
+                        Last created sitemap: <span class="last-created"><?php echo($config['last_created_sitemap']); ?></span>
+                    </div>
+                    <div class="progress hidden">
+                        <div class="progress-bar bg-cyan progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                            0%
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">Generate New Sitemap</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+    <!-- #END# Vertical Layout -->
+<script>
+$(function() {
+    var form_site_settings = $('form.submit-sitemap-settings');
+
+    form_site_settings.ajaxForm({
+        url: acpajax_url('generate-sitemap'),
+        beforeSend: function() {
+            var percentage = (Math.floor(Math.random() * (75 - 35)) + 35);
+            form_site_settings.find('button').text('Please wait..').attr('disabled','true');
+            form_site_settings.find('.progress').removeClass('hidden');
+            form_site_settings.find('.progress-bar').width(percentage + '%').text(percentage + "%");
+        },
+        success: function(data) {
+            if (data.status == 200) {
+                $('.last-created').text(data.time);
+                form_site_settings.find('.form-alert').html($("<div>",{
+                    class:'alert alert-success',
+                    text:data.message
+                }));
+            }
+            else{
+                form_site_settings.find('.form-alert').html($("<div>",{
+                    class:'alert alert-danger',
+                    text:data.message
+                }));
+            }
+
+            form_site_settings.find('button').text('Generate New Sitemap').removeAttr('disabled');
+            form_site_settings.find('.progress').addClass('hidden');
+            form_site_settings.find('.progress-bar').width(0).text(0);
+
+            setTimeout(function(){
+                form_site_settings.find('.form-alert .alert').slideUp(400,function(){
+                    $(this).remove();
+                });
+            },3000);
+        }
+    });
+});
+</script>

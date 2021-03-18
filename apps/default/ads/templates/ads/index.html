@@ -1,0 +1,67 @@
+<div class="settings-page-container content-shadow">
+	<div class="page-content sett_avatr_chng">
+		<?php include 'header.html'; ?>
+		<div class="ads-cont-wrapper">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>{{LANG id}}</th>
+						<th>{{LANG company}}</th>
+						<th>{{LANG bidding}}</th>
+						<th>{{LANG clicks}}</th>
+						<th>{{LANG views}}</th>
+						<th>{{LANG status}}</th>
+						<th>{{LANG action}}</th>
+					</tr>
+				</thead>
+				<tbody id="user-ads">
+					<?php foreach ($context['user_ads'] as $key => $context['ad']) {
+						include 'list.html';
+					} ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<?php include $context['dirname_theme'].'/main/templates/modals/delete_ad.html'; ?>
+<script type="text/javascript">
+	$(document).on('click', '.delete-ad', function(event) {
+		var self = $(this);	
+		var id = self.attr('id');
+		$('div.delad--modal').data('id',id).fadeIn(250);
+	});
+	$(document).on('click','.delete--ad',function(event) {
+		var zis = $(this);
+		var id  = zis.parents('.confirm--modal').data('id');
+		
+
+		if (id) {
+			zis.parents('.confirm--modal').data('id',"").fadeOut(200);
+			$("#modal-progress").removeClass('hidden');
+			$.ajax({
+				url: link('profile/delete_ad'),
+				type: 'POST',
+				dataType: 'json',
+				data: {id:id},
+			})
+			.done(function(data) {
+				if (data.status == 200) {
+					$("tr[data-ad-id="+id+"]").slideUp(function(){
+						$(this).remove();
+					})
+				}
+				else{
+					scroll2top();
+					$.toast(data.message,{
+	                	duration: 5000, 
+	                	type: 'success',
+	                	align: 'bottom',
+	                	singleton: true
+	                });
+				}
+				$("#modal-progress").addClass('hidden');
+			});
+		}
+	});
+</script>

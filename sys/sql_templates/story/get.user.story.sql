@@ -1,0 +1,2 @@
+SELECT s.* {%if is_not_owner%},EXISTS (SELECT v1.`id` FROM `{%t_views%}` v1 WHERE v1.`story_id` = s.`id` AND v1.`user_id` = '{%user_id%}') AS `is_seen` {%endif%} {%if is_owner%} {@ `Select views if user is owner` @},(SELECT COUNT(v2.`id`) FROM `{%t_views%}` v2 WHERE v2.`story_id` = s.`id`) AS views {%endif%}
+	FROM `{%t_story%}` s WHERE s.`user_id` = '{%so_id%}' ORDER BY s.`id` ASC;

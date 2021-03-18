@@ -1,0 +1,55 @@
+<tr id="list-<?php echo($cd['report']['u2_id']); ?>" data-report="<?php echo($cd['report']['id']); ?>">
+	<td>
+		<span>
+			<?php echo($cd['report']['id']); ?>
+		</span>
+	</td>
+	<td>
+		<a href="<?php echo(un2url($cd['report']['u1_uname'])); ?>">
+			<img src="<?php echo(media($cd['report']['u1_uavatar'])); ?>" class="td-avatar" alt="report avatar">
+			<?php echo($cd['report']['u1_uname']); ?>
+		</a>
+	</td>
+	<td>
+		<span>
+			<?php echo(date('Y-F-d h:s',$cd['report']['time'])); ?>
+		</span>
+	</td>
+	<td>
+		<span>
+			<?php if ($cd['report']['type'] == 1): ?>
+				Account hacking
+			<?php elseif($cd['report']['type'] == 2): ?>
+				Impersonation Accounts
+			<?php elseif($cd['report']['type'] == 3): ?>
+				Violent threats
+			<?php elseif($cd['report']['type'] == 4): ?>
+				Sexual content
+			<?php elseif($cd['report']['type'] == 5): ?>
+				Children who have not reached the required age
+			<?php elseif($cd['report']['type'] == 6): ?>
+				Accounts expressing hatred 
+			<?php elseif($cd['report']['type'] == 7): ?>
+				Spam or Advertizing  
+			<?php elseif($cd['report']['type'] == 8): ?>
+				Copyrighted material
+			<?php endif; ?>
+		</span>
+	</td>
+	<td>
+		<a href="<?php echo(un2url($cd['report']['u2_uname'])); ?>">
+			<img src="<?php echo(media($cd['report']['u2_uavatar'])); ?>" class="td-avatar" alt="report avatar">
+			<?php echo($cd['report']['u2_uname']); ?>
+		</a>
+	</td>
+	<td>
+		<button class="btn btn-success waves-effect waves-light delete-report" data-id="<?php echo($cd['report']['id']); ?>">
+			<a href="javascript:void(0);">
+				MARK SAFE
+			</a>
+		</button>
+		<button class="btn btn-danger waves-effect waves-light delete-content" data-id="<?php echo($cd['report']['u2_id']); ?>">
+			DELETE
+		</button>
+	</td>
+</tr>

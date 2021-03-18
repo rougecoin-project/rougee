@@ -1,0 +1,61 @@
+<div class="block-header">
+    <h2 class="breadcrumb">Backup <i class="material-icons">keyboard_arrow_right</i> Create backup</h2>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card">
+            <div class="header">
+				<h2>Backup SQL &amp; Files</h2> 
+				<form class="form create-backup-form">
+					<br>
+					<div class="form-alert"></div>
+					<button type="submit" class="btn btn-warning waves-effect waves-light m-t-20">
+						Create New Full Backup
+					</button>
+				</form>
+				<br>
+				<div>Please note that it may take several minutes.</div>
+            </div>
+            <div class="body">
+				<h5>Last Backup: <span class="last_backup"> <?php echo($config['last_backup']) ?></span></h5>
+				<h5>Backups directory: ./script_backups/</h5>
+				<h5>Backup type: all files including ./upload folder and full backup of your database.</h5>
+				<h5>It's recommended to download the backups via FTP.</h5>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+		var form = $('.create-backup-form');
+		form.ajaxForm({
+	        url: acpajax_url('create-backup'),
+	        beforeSend: function() {
+	        	form.find('button[type="submit"]').text('Please wait').attr('disabled', 'true');
+	        },
+	        success: function(data) {
+	        	if (data.status == 200) {
+	        		form.find('.form-alert').html($("<div>",{
+	        			class:'alert alert-success',
+	        			text:data.message
+	        		}));
+
+	        		setTimeout(function(){
+	        			form.find('.form-alert .alert').slideUp(400,function(){
+	        				$(this).remove();
+	        			});
+	        		},3000);
+	        	}
+	        	else{
+	        		form.find('.form-alert').html($("<div>",{
+	        			class:'alert alert-danger',
+	        			text:data.message
+	        		}));
+	        	}
+
+	        	form.find('button[type="submit"]').text('Create New Full Backup').removeAttr('disabled');
+	        }
+	    });
+	});
+</script>

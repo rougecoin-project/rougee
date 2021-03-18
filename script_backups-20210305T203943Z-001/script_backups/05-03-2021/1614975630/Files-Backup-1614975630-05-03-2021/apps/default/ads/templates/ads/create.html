@@ -1,0 +1,190 @@
+<div class="settings-page-container content-shadow">
+<div class="page-content sett_avatr_chng">
+	<?php include 'header.html'; ?>
+		<div>
+			<form class="form row pp_sett_form create_ads_inputs create_ads_inputs_selects" id="create_ad" enctype="multipart/form-data">
+				<div class="col-md-6">
+					<div class="pp_mat_input">
+						<input required="true" type="text" name="company" class="form-control">
+						<span class="bar"></span>
+						<label>{{LANG company}}</label>
+					</div>
+					<div class="pp_mat_input">
+						<input required="true" type="text" name="url" class="form-control">
+						<span class="bar"></span>
+						<label>{{LANG url}}</label>
+					</div>
+					<div class="pp_mat_input">
+						<input required="true" type="text" name="title" class="form-control">
+						<span class="bar"></span>
+						<label>{{LANG title}}</label>
+					</div>
+					<div class="pp_mat_input" id="review-ads-location">
+						<input required="true" type="text" name="location" class="form-control" id="ads-location">
+						<span class="bar"></span>
+						<label>{{LANG location}}</label>
+						<div id="place"></div>
+					</div>
+					<div class="pp_mat_input">
+						<textarea class="form-control" name="description" rows="3"></textarea>
+						<span class="bar"></span>
+						<label>{{LANG description}}</label>
+					</div>
+					<div class="pp_mat_select ads_select_country_input">
+						<label class="pp_mat_label">{{LANG country}}</label>
+						<div>
+							 <select class="form-control selectpicker show-menu-arrow show-tick" multiple name="country[]" data-live-search="true" title="{{LANG country}}" data-actions-box="true">
+				              	<?php foreach ($context['countries_name'] as $cid => $cname) { ?>
+									<option value="<?php echo($cid) ?>">
+										<?php echo $cname; ?>
+									</option>
+								<?php } ?>
+				          	</select>
+							<span class="bar"></span>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="pp_mat_select">
+						<label class="pp_mat_label">{{LANG bidding}}</label>
+						<div>
+							<select name="bidding" class="form-control">
+								<option value="clicks"><?php echo str_replace('{{PRICE}}',  $context['currency_symbol'] . $config['ad_c_price'], $context['lang']['pay_per_click']); ?></option>
+								<option value="views"><?php echo str_replace('{{PRICE}}', $context['currency_symbol'] . $config['ad_v_price'], $context['lang']['pay_per_imprssion']); ?></option>
+							</select>
+							<span class="bar"></span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="pp_mat_select">
+						<label class="pp_mat_label">{{LANG placement}}</label>
+						<div>
+							<select name="appears" class="form-control">
+								<option value="post"><?php echo $context['lang']['post']; ?></option>
+								<option value="sidebar"><?php echo $context['lang']['sidebar']; ?></option>
+							</select>
+							<span class="bar"></span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="pp_mat_select">
+						<label class="pp_mat_label">{{LANG gender}}</label>
+						<div>
+							<select name="gender" class="form-control">
+								<option value="all">{{LANG all}}</option>
+								<option value="male">{{LANG male}}</option>
+								<option value="female">{{LANG female}}</option>
+							</select>
+							<span class="bar"></span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="fak_image">
+						<div id="fake_img_holder"></div>
+						<div class="upload_fk_image" onclick="document.getElementById('image').click(); return false">
+							<div class="upload_fk_image_content">
+								<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" /></svg> {{LANG upload_file}}
+							</div>
+						</div>
+					</div>
+
+					<input type="file" id="image" name="image" class="hidden">
+					<input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<div class="pp_load_loader"><button class="btn btn-info pp_flat_btn" type="submit"><span>{{LANG submit}}</span></button></div>
+			</form>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+
+<script type="text/javascript">
+
+	<?php if ($config['google_map']) { ?>
+    $("#ads-location").keyup(function(event) {
+        if ($(this).val().length >= 3) {
+        	setTimeout(function () {
+        		$("#review-ads-location #place").html('<iframe width="100%" frameborder="0" style="border:0;margin-top: 10px;" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $config['google_map_api']; ?>&q=' + $("#ads-location").val() + '&language=en"></iframe>');
+        	},1000);
+        }
+        else{
+        	setTimeout(function () {
+        		$("#review-ads-location #place").html('<iframe width="100%" frameborder="0" style="border:0;margin-top: 10px;" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $config['google_map_api']; ?>&q=us&language=en"></iframe>');
+        	},1000);
+        }
+  	});
+   <?php } ?>
+
+
+	jQuery(document).ready(function($) {
+			
+
+		$("form#create_ad").ajaxForm({
+			url: link('profile/create_ad'),
+			type: 'POST',
+			dataType: 'json',
+			beforeSubmit: function(arr,form){
+				
+				$(form).find('.pp_load_loader').addClass('loadingg');
+				$(form).find('button[type="submit"]').attr('disabled','true');
+			},
+			success: function(data,stat,xhr,form){
+				scroll2top();
+				$.toast(data.message,{
+                	duration: 5000, 
+                	type: 'success',
+                	align: 'bottom',
+                	singleton: true
+                });
+                if (data.status == 200) {
+                	setTimeout(function () {
+                		window.location.href = "{{CONFIG site_url}}/ads";
+                	},2000);
+                }
+				$(form).find('.pp_load_loader').removeClass('loadingg');
+                $(form).find('button[type="submit"]').removeAttr('disabled');
+			}
+		});
+
+		
+	});
+
+
+
+
+
+	$('.selectpicker').selectpicker({});
+
+$(document).ready(function() {
+	$("#image").on('change', function() {
+	//Get count of selected files
+	var product_countFiles = $(this)[0].files.length;
+	var product_imgPath = $(this)[0].value;
+	var extn = product_imgPath.substring(product_imgPath.lastIndexOf('.') + 1).toLowerCase();
+	var product_image_holder = $("#fake_img_holder");
+	product_image_holder.empty();
+	if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+		if (typeof(FileReader) != "undefined") {
+		//loop for each file selected for uploaded.
+		for (var i = 0; i < product_countFiles; i++) 
+		{
+			var product_reader = new FileReader();
+			product_reader.onload = function(e) {
+				$("<img />", {
+                    "src": e.target.result,
+                    "class": "thumb-image"
+                  }).appendTo(product_image_holder);
+                }
+                product_image_holder.show();
+                product_reader.readAsDataURL($(this)[0].files[i]);
+              }
+            } else {
+              product_image_holder.html("<p>This browser does not support FileReader.</p>");
+            }
+         }
+	});
+});
+</script>

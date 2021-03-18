@@ -1,0 +1,137 @@
+<div class="container-fluid">
+    <div class="block-header">
+        <h2>Design > Change Site Design</h2>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h2>Change Site Design</h2><br>
+                </div>
+                <div class="body">
+                    
+                    <form class="d-settings" method="POST">
+                    	<h4>Welcome Page</h4><hr>
+                        <div class="d-settings-alert form-alert"></div>
+                        <div class="input-group">
+                    	   <span>Favicon</span>
+                           <span class="btn btn-default btn-file">
+		                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#4caf50" class="feather feather-camera"><path d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"></path></svg>
+		                     <input type="file" id="favicon" accept="image/x-png, image/gif, image/jpeg" name="favicon">
+		                   </span>
+		                    <div class="form-group hidden" id="favicon-i">
+					            <input type="text" class="form-control" readonly>
+					        </div>
+                        </div>
+                        <br><h4>Header</h4><hr>
+                        <div class="input-group">
+                    	   <span>Logo (470x75)</span>
+                           <span class="btn btn-default btn-file">
+		                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#4caf50" class="feather feather-camera"><path d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"></path></svg>
+		                     <input type="file" id="logo" accept="image/x-png, image/gif, image/jpeg" name="logo">
+		                   </span>
+		                    <div class="form-group hidden" id="logo-i">
+					            <input type="text" class="form-control" readonly>
+					        </div>
+                        </div>
+                        <div class="input-group">
+                            <span>Light Logo (470x75)</span>
+                            <span class="btn btn-default btn-file">
+		                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#4caf50" class="feather feather-camera"><path d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"></path></svg>
+		                     <input type="file" id="light-logo" accept="image/x-png, image/gif, image/jpeg" name="light-logo">
+		                   </span>
+                            <div class="form-group hidden" id="logo-li">
+                                <input type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <label for="night_mode">Design Mode</label>
+                        <div class="form-group">
+                            <input type="radio" name="site_display_mode" id="night_mode-night" value="night" <?php echo ($config['site_display_mode'] == 'night') ? 'checked': '';?>>
+                            <label for="night_mode-night" class="m-l-20">Night</label>
+                            <input type="radio" name="site_display_mode" id="night_mode-light" value="day" <?php echo ($config['site_display_mode'] == 'day') ? 'checked': '';?>>
+                            <label for="night_mode-light" class="m-l-20">Light</label>
+                        </div>
+
+
+                        <div>Please make sure to clean your browser cache after changing the design settings.</div>
+                        <input type="hidden" name="hash_id" value="">
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+$(function() {
+    $("#background-image").change(function () {
+         var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+         $("#background-image-i input").val(filename);
+         $("#background-image-i").removeClass('hidden');
+    });
+    $("#favicon").change(function () {
+         var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+         $("#favicon-i input").val(filename);
+         $("#favicon-i").removeClass('hidden');
+    });
+    $("#logo").change(function () {
+         var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+         $("#logo-i input").val(filename);
+         $("#logo-i").removeClass('hidden');
+    });
+    $("#light-logo").change(function () {
+        var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+        $("#logo-li input").val(filename);
+        $("#logo-li").removeClass('hidden');
+    });
+    var form_d_settings = $('form.d-settings');
+    form_d_settings.ajaxForm({
+        url: acpajax_url('update_design_setting'),
+        beforeSend: function() {
+            form_d_settings.find('.waves-effect').text('Please wait..');
+        },
+        success: function(data) {
+            if (data.status == 200) {
+                form_d_settings.find('.waves-effect').text('Save');
+                $(form_d_settings).find('div.form-alert').scroll2().html($('<div>',{
+                    class:'alert alert-success',
+                    text:'Settings has been updated successfully'
+                }));
+                setTimeout(function(){
+                    form_d_settings.find('div.form-alert .alert').slideUp('fast',function(){
+                        $(this).remove(); 
+                    })    
+                },3000);
+            }
+        }
+    });
+});
+</script>
+<style>
+.colorpicker {
+    z-index: 0 !important;
+}
+.btn-file input[type=file]{
+        position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    opacity: 0;
+    outline: none;
+    background: #fff;
+    cursor: inherit;
+    display: block;
+}
+.btn-file {
+    position: relative;
+    overflow: hidden;
+    margin-left: 25px;
+}
+</style>

@@ -1,0 +1,78 @@
+<div class="container-fluid">
+    <div class="block-header">
+        <h2>Advertisements > Advertisements System Settings</h2>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h2>Advertisements Settings</h2>
+                </div>
+                <div class="body">
+                    <form class="ads-settings" method="POST">
+                        <div class="form-alert"></div>
+                        <label for="user_ads">Advertisements System <span class="black" data-toggle="popover" data-trigger="hover" data-content="Allow users to create ads."><i class="fa fa-question-circle fa-fw"></i></span></label>
+                        <div class="form-group">
+                            <input type="radio" name="user_ads" id="user_ads-enabled" value="on" <?php echo ($config['user_ads'] == 'on') ? 'checked': '';?>>
+                            <label for="user_ads-enabled">Enabled</label>
+                            <input type="radio" name="user_ads" id="user_ads-disabled" value="off" <?php echo ($config['user_ads'] == 'off') ? 'checked': '';?>>
+                            <label for="user_ads-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <br>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="ad_v_price" name="ad_v_price" class="form-control" value="<?php echo $config['ad_v_price'];?>">
+                                <label class="form-label">Cost by View (Per Ad)</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="ad_c_price" name="ad_c_price" class="form-control" value="<?php echo $config['ad_c_price'];?>">
+                                <label class="form-label">Cost by Click (Per Ad)</label>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <br><br>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+jQuery(document).ready(function($) {
+    var proform = $("form.ads-settings");
+    proform.ajaxForm({
+        url: acpajax_url('general-settings'),
+        type: 'POST',
+        dataType: 'json',
+        beforeSubmit: function(arr,form){
+            $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+        },
+        success: function(data, status, xhr, form){
+            if (data.status == 200) {
+                $(form).find('div.form-alert').scroll2().html($('<div>',{
+                    class:'alert alert-success',
+                    text:'Settings has been updated successfully'
+                }));
+                setTimeout(function(){
+                    proform.find('div.form-alert .alert').slideUp('fast',function(){
+                        $(this).remove(); 
+                    })    
+                },1000);
+            }
+            else{
+                $(form).find('div.form-alert').scroll2().html($('<div>',{
+                    class:'alert alert-warning',
+                    text: data.error
+                }));
+            }
+
+            proform.find('button[type=submit]').text('Save').removeAttr('disabled');
+        }
+    });
+});
+</script>

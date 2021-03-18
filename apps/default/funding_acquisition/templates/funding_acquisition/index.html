@@ -1,0 +1,116 @@
+<div class="settings-page-container content-shadow">
+<div class="page-content sett_avatr_chng">
+        <div class="create_ads_inputs">
+            <form class="form row pp_sett_form" id="create_fund" enctype="multipart/form-data">
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<h3 class="text-center">{{LANG funding}}</h3>
+					<br>
+                <div class="col-md-12">
+                    <div class="pp_mat_input">
+                        <input required="true" type="text" name="title" class="form-control">
+                        <span class="bar"></span>
+                        <label>{{LANG title}}</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="pp_mat_input">
+                        <input required="true" type="text" name="amount" class="form-control">
+                        <span class="bar"></span>
+                        <label>{{LANG amount}}</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="pp_mat_input">
+                        <textarea class="form-control" name="description" rows="3"></textarea>
+                        <span class="bar"></span>
+                        <label>{{LANG description}}</label>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="col-md-12">
+					<div class="fak_image">
+						<div id="fake_img_holder"></div>
+						<div class="upload_fk_image" onclick="document.getElementById('image').click(); return false">
+							<div class="upload_fk_image_content">
+								<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" /></svg> {{LANG upload_file}}
+							</div>
+						</div>
+					</div>
+                </div>
+				<input type="file" id="image" name="image" class="hidden">
+                <input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+                <div class="clear"></div>
+                <div class="pp_load_loader"><button class="btn btn-info pp_flat_btn" type="submit"><span>{{LANG submit}}</span></button></div>
+				</div>
+				<div class="col-md-2"></div>
+            </form>
+        </div>
+    </div>
+	<div class="clear"></div>
+</div>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $("form#create_fund").ajaxForm({
+        url: link('profile/create_fund'),
+        type: 'POST',
+        dataType: 'json',
+        beforeSubmit: function(arr,form){
+            
+            $(form).find('.pp_load_loader').addClass('loadingg');
+            $(form).find('button[type="submit"]').attr('disabled','true');
+        },
+        success: function(data,stat,xhr,form){
+            scroll2top();
+            $.toast(data.message,{
+                duration: 5000, 
+                type: 'success',
+                align: 'bottom',
+                singleton: true
+            });
+            if (data.status == 200) {
+                setTimeout(function () {
+                    window.location.href = "{{CONFIG site_url}}/funding";
+                },2000);
+            }
+            $(form).find('.pp_load_loader').removeClass('loadingg');
+            $(form).find('button[type="submit"]').removeAttr('disabled');
+        }
+    });
+
+    
+});
+
+$('.selectpicker').selectpicker({});
+
+$(document).ready(function() {
+	$("#image").on('change', function() {
+	//Get count of selected files
+	var product_countFiles = $(this)[0].files.length;
+	var product_imgPath = $(this)[0].value;
+	var extn = product_imgPath.substring(product_imgPath.lastIndexOf('.') + 1).toLowerCase();
+	var product_image_holder = $("#fake_img_holder");
+	product_image_holder.empty();
+	if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+		if (typeof(FileReader) != "undefined") {
+		//loop for each file selected for uploaded.
+		for (var i = 0; i < product_countFiles; i++) 
+		{
+			var product_reader = new FileReader();
+			product_reader.onload = function(e) {
+				$("<img />", {
+                    "src": e.target.result,
+                    "class": "thumb-image"
+                  }).appendTo(product_image_holder);
+                }
+                product_image_holder.show();
+                product_reader.readAsDataURL($(this)[0].files[i]);
+              }
+            } else {
+              product_image_holder.html("<p>This browser does not support FileReader.</p>");
+            }
+         }
+	});
+});
+</script>

@@ -1,0 +1,96 @@
+<?php 
+$about_us = $admin->getPage('about_us');
+?>
+
+<div class="block-header">
+    <h2 class="breadcrumb">Pages <i class="material-icons">keyboard_arrow_right</i> About us</h2>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Write about of this website</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form site-about-us-form">
+                        <div class="form-alert"></div>
+                        <div class="form-group">
+                            <textarea name="about_us" id="about-us"><?php echo $about_us; ?></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="<?php echo pxp_acp_link('plugins/tinymce/tinymce.js');?>"></script>
+<script>
+    jQuery(document).ready(function($) {
+        tinymce.init({
+            selector: '#about-us',
+            relative_urls: false,
+            remove_script_host: false,
+            height:500,
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | preview fullpage | forecolor backcolor emoticons',
+            plugins: [
+                'advlist autolink link  lists charmap  preview hr anchor spellchecker',
+                'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ]
+        });
+
+        var about_us_form = $("form.site-about-us-form");
+
+        about_us_form.submit(function(event) {
+            var text = tinymce.activeEditor.getContent({format: 'raw'});
+            if (!text){
+                about_us_form.find('div.form-alert').scroll2().html($('<div>',{
+                    class:'alert alert-danger',
+                    text:'Can not save changes, something went wrong Please try again'
+                }));
+
+                setTimeout(function(){
+                    window.location.reload();
+                });
+
+                return false;
+            }
+            else{
+                $("#about-us").val(text);
+            }   
+        });
+
+        about_us_form.ajaxForm({
+            url: acpajax_url('about-us'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSubmit: function(arr,form){
+                arr[0]['value'] = btoa(unescape(encodeURIComponent(arr[0]['value'])));
+                $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+            },
+            success: function(data, status, xhr, form){
+                if (data.status == 200) {
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-success',
+                        text: data.message
+                    }));
+                    setTimeout(function(){
+                        about_us_form.find('div.form-alert .alert').slideUp('fast',function(){
+                            $(this).remove(); 
+                        })    
+                    },3000);
+                }
+                else{
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-warning',
+                        text: data.message
+                    }));
+                }
+
+                about_us_form.find('button[type=submit]').text('Save').removeAttr('disabled');
+            }
+        });
+    });
+</script>

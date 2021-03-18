@@ -1,0 +1,443 @@
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<div class="fund_raise_parent">
+	<div class="row">
+        <div class="col-md-8">
+			<div class="fund_raise">
+            <h2 class="fund_title"><?php echo($context['fund']->title) ?></h2>
+            <?php if( $me["user_id"] <> $context['fund']->user_id ){?>
+
+                <?php if ($context['is_reported']) { ?>
+                    <button id="btn-report" class="btn btn-warning" onclick="report_fund(<?php echo $context['fund']->id;?>);" style="position: relative;float: right;margin-top: -70px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users" color="#000"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg> {{LANG cancel_report}}
+                    </button>
+                <?php } else{ ?>
+                    <button id="btn-report" class="btn btn-warning" data-modal-menu="report-fund" style="position: relative;float: right;margin-top: -70px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users" color="#000"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg> {{LANG report_fund}}
+                    </button>
+                <?php } ?>
+
+                <div class="modal--menu" id="report-fund">
+                    <div class="modal-outer">
+                        <div class="modal-inner">
+                            <h5 class="title"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users" color="#000"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg> {{LANG report_fund}} 
+                            <span class="pull-right" title="{{LANG cancel}}" data-modal--menu-dismiss>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </span>
+                            </h5>
+
+                            <form class="fund_report_form">
+                                <input class="hidden" type="text" name="fund_id" value="<?php echo($context['fund']->id) ?>">
+                                <textarea name="report_message" id="report_message" style="width: 96%;height: 150px;margin: 10px;"></textarea>
+                            </form>
+                            <button class="btn btn-warning" onclick="report_fund(<?php echo $context['fund']->id;?>);" style="float: right;margin: 0px 10px 10px 10px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users" color="#000"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg>
+                                {{LANG report_fund}}               
+                            </button>
+                        </div>
+                        <div class="overlay hidden">
+                            <div id="pp_loader"><div class="speeding_wheel"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function report_fund(post_id){
+                        if (not(is_logged())) {
+                            redirect('welcome');
+                            return false;
+                        }
+                        if (!post_id) {
+                            return false;
+                        }
+                        var message = $('#report_message').val();
+                        $.ajax({
+                            url: link('main/fund_report'),
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {id: post_id, message: message},
+                        })
+                        .done(function(data) {
+                            if (data.status == 200 && data.code == 1) {
+                                $('#btn-report').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users" color="#000"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg> {{LANG cancel_report}}');
+                                $('#btn-report').attr('onclick','report_fund(<?php echo $context['fund']->id;?>);');
+                                $('#btn-report').removeAttr( "data-modal-menu" );
+                            }
+                            else if(data.status == 200 && data.code == 0){
+                                $('#btn-report').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users" color="#000"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg> {{LANG report_fund}}');
+                                $('#btn-report').attr('data-modal-menu','report-fund');
+                                $('#btn-report').removeAttr( "onclick" );
+                            }
+                            $('#report-fund').removeClass('open');
+                            $.toast(data.message,{
+                                duration: 5000, 
+                                type: '',
+                                align: 'top-right',
+                                singleton: false
+                            });
+                        });
+                    }
+                </script>
+
+            <?php } ?>
+            <img src="<?php echo($context['fund']->image) ?>" class="fund_main_img">
+			<div class="aff_share_container fund_share">
+				<a class="social-btn-parent facebook" rel="publisher" href="javascript:void(0);" onclick="OpenShareWindow('https://www.facebook.com/sharer/sharer.php?u=' + window.location.href)" target="_blank">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,2V2H17V6H15C14.31,6 14,6.81 14,7.5V10H14L17,10V14H14V22H10V14H7V10H10V6A4,4 0 0,1 14,2H17Z" /></svg>
+				</a>
+				<a class="social-btn-parent twitter" href="javascript:void(0);" onclick="OpenShareWindow('https://twitter.com/intent/tweet?text=' + window.location.href)" target="_blank">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+				</a>
+				<a class="social-btn-parent whatsapp" href="javascript:void(0);" onclick="OpenShareWindow('https://api.whatsapp.com/send?text=' + window.location.href)" data-action="share/whatsapp/share" target="_blank">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16.75,13.96C17,14.09 17.16,14.16 17.21,14.26C17.27,14.37 17.25,14.87 17,15.44C16.8,16 15.76,16.54 15.3,16.56C14.84,16.58 14.83,16.92 12.34,15.83C9.85,14.74 8.35,12.08 8.23,11.91C8.11,11.74 7.27,10.53 7.31,9.3C7.36,8.08 8,7.5 8.26,7.26C8.5,7 8.77,6.97 8.94,7H9.41C9.56,7 9.77,6.94 9.96,7.45L10.65,9.32C10.71,9.45 10.75,9.6 10.66,9.76L10.39,10.17L10,10.59C9.88,10.71 9.74,10.84 9.88,11.09C10,11.35 10.5,12.18 11.2,12.87C12.11,13.75 12.91,14.04 13.15,14.17C13.39,14.31 13.54,14.29 13.69,14.13L14.5,13.19C14.69,12.94 14.85,13 15.08,13.08L16.75,13.96M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C10.03,22 8.2,21.43 6.65,20.45L2,22L3.55,17.35C2.57,15.8 2,13.97 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12C4,13.72 4.54,15.31 5.46,16.61L4.5,19.5L7.39,18.54C8.69,19.46 10.28,20 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z" /></svg>
+				</a>
+				<a class="social-btn-parent pinterest" href="javascript:void(0);" onclick="OpenShareWindow('https://pinterest.com/pin/create/button/?url=' + window.location.href)" target="_blank">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M9.04,21.54C10,21.83 10.97,22 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2A10,10 0 0,0 2,12C2,16.25 4.67,19.9 8.44,21.34C8.35,20.56 8.26,19.27 8.44,18.38L9.59,13.44C9.59,13.44 9.3,12.86 9.3,11.94C9.3,10.56 10.16,9.53 11.14,9.53C12,9.53 12.4,10.16 12.4,10.97C12.4,11.83 11.83,13.06 11.54,14.24C11.37,15.22 12.06,16.08 13.06,16.08C14.84,16.08 16.22,14.18 16.22,11.5C16.22,9.1 14.5,7.46 12.03,7.46C9.21,7.46 7.55,9.56 7.55,11.77C7.55,12.63 7.83,13.5 8.29,14.07C8.38,14.13 8.38,14.21 8.35,14.36L8.06,15.45C8.06,15.62 7.95,15.68 7.78,15.56C6.5,15 5.76,13.18 5.76,11.71C5.76,8.55 8,5.68 12.32,5.68C15.76,5.68 18.44,8.15 18.44,11.43C18.44,14.87 16.31,17.63 13.26,17.63C12.29,17.63 11.34,17.11 11,16.5L10.33,18.87C10.1,19.73 9.47,20.88 9.04,21.57V21.54Z" /></svg>
+				</a>
+				<a class="social-btn-parent linkedin" href="javascript:void(0);" onclick="OpenShareWindow('https://www.linkedin.com/shareArticle?mini=true&amp;url=' + window.location.href)" target="_blank">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21,21H17V14.25C17,13.19 15.81,12.31 14.75,12.31C13.69,12.31 13,13.19 13,14.25V21H9V9H13V11C13.66,9.93 15.36,9.24 16.5,9.24C19,9.24 21,11.28 21,13.75V21M7,21H3V9H7V21M5,3A2,2 0 0,1 7,5A2,2 0 0,1 5,7A2,2 0 0,1 3,5A2,2 0 0,1 5,3Z" /></svg>
+				</a>
+			</div>
+            <p><?php echo($context['fund']->description) ?></p>
+			</div>
+        </div>
+		<div class="col-md-4 fund_col-md">
+			<div class="fund_raise">
+			<p>{{LANG total_donations}} (<?php echo $context['fund']->all_donation; ?>)</p>
+            <div class="progress fund_progress">
+              <div class="progress-bar" role="progressbar" style="width: <?php echo $context['fund']->bar; ?>%" aria-valuenow="<?php echo $context['fund']->bar; ?>" aria-valuemin="0" aria-valuemax="<?php echo($context['fund']->amount) ?>"></div>
+            </div>
+            <p class="text-center"><?php echo $context['currency_symbol'].$context['fund']->raised; ?> {{LANG raised_of}} <?php echo $context['currency_symbol'].$context['fund']->amount; ?></p>
+			<hr>
+			<h3 class="text-center fund_dnt_hd"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M9.06,1.93C7.17,1.92 5.33,3.74 6.17,6H3A2,2 0 0,0 1,8V10A1,1 0 0,0 2,11H11V8H13V11H22A1,1 0 0,0 23,10V8A2,2 0 0,0 21,6H17.83C19,2.73 14.6,0.42 12.57,3.24L12,4L11.43,3.22C10.8,2.33 9.93,1.94 9.06,1.93M9,4C9.89,4 10.34,5.08 9.71,5.71C9.08,6.34 8,5.89 8,5A1,1 0 0,1 9,4M15,4C15.89,4 16.34,5.08 15.71,5.71C15.08,6.34 14,5.89 14,5A1,1 0 0,1 15,4M2,12V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V12H13V20H11V12H2Z" /></svg></span>{{LANG donate}}</h3>
+            <div class="fund_input">
+                <input type="number" name="amount" class="form-control" placeholder="0.00" id="donate_amount" onkeyup="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                <div id="place"></div>
+            </div>
+            <div class="fund_butns">
+                <?php if (!empty($config['paypal_id']) && !empty($config['paypal_secret'])) { ?>
+                <button class="btn btn-default pp_flat_btn" onclick="Pxp_DonateUsingPaypal(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8.32,21.97C8.21,21.92 8.08,21.76 8.06,21.65C8.03,21.5 8,21.76 8.66,17.56C9.26,13.76 9.25,13.82 9.33,13.71C9.46,13.54 9.44,13.54 10.94,13.53C12.26,13.5 12.54,13.5 13.13,13.41C16.38,12.96 18.39,11.05 19.09,7.75C19.13,7.53 19.17,7.34 19.18,7.34C19.18,7.33 19.25,7.38 19.33,7.44C20.36,8.22 20.71,9.66 20.32,11.58C19.86,13.87 18.64,15.39 16.74,16.04C15.93,16.32 15.25,16.43 14.05,16.46C13.25,16.5 13.23,16.5 13,16.65C12.83,16.82 12.84,16.79 12.45,19.2C12.18,20.9 12.08,21.45 12.04,21.55C11.97,21.71 11.83,21.85 11.67,21.93L11.56,22H10C8.71,22 8.38,22 8.32,21.97V21.97M3.82,19.74C3.63,19.64 3.5,19.47 3.5,19.27C3.5,19 6.11,2.68 6.18,2.5C6.27,2.32 6.5,2.13 6.68,2.06L6.83,2H10.36C14.27,2 14.12,2 15,2.2C17.62,2.75 18.82,4.5 18.37,7.13C17.87,10.06 16.39,11.8 13.87,12.43C13,12.64 12.39,12.7 10.73,12.7C9.42,12.7 9.32,12.71 9.06,12.85C8.8,13 8.59,13.27 8.5,13.6C8.46,13.67 8.23,15.07 7.97,16.7C7.71,18.33 7.5,19.69 7.5,19.72L7.47,19.78H5.69C4.11,19.78 3.89,19.78 3.82,19.74V19.74Z" /></svg> {{LANG paypal}}
+                </button>
+                <?php } ?>
+                <?php if ($config['credit_card'] == 'on') { ?>
+                <button class="btn btn-success pp_flat_btn" onclick="Pxp_DonateUsingStripe(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20,8H4V6H20M20,18H4V12H20M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" /></svg> {{LANG credit_card}}
+                </button>
+                <?php } ?>
+                <?php if ($config['credit_card'] == 'on' && $config['bank_payment'] == 'on') { ?>
+                <div class="clear"></div>
+                <br>
+                <?php } ?>
+                <?php if ($config['bank_payment'] == 'on') { ?>
+
+                <button class="bank_payment btn" onclick="Pxp_BankPayment('');">
+                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="47.001px" height="47.001px" viewBox="0 0 47.001 47.001" style="enable-background:new 0 0 47.001 47.001;" xml:space="preserve"><path fill="currentColor" d="M44.845,42.718H2.136C0.956,42.718,0,43.674,0,44.855c0,1.179,0.956,2.135,2.136,2.135h42.708c1.18,0,2.136-0.956,2.136-2.135C46.979,43.674,46.023,42.718,44.845,42.718z"></path><path fill="currentColor" d="M4.805,37.165c-1.18,0-2.136,0.956-2.136,2.136s0.956,2.137,2.136,2.137h37.37c1.18,0,2.136-0.957,2.136-2.137s-0.956-2.136-2.136-2.136h-0.533V17.945h0.533c0.591,0,1.067-0.478,1.067-1.067s-0.478-1.067-1.067-1.067H4.805c-0.59,0-1.067,0.478-1.067,1.067s0.478,1.067,1.067,1.067h0.534v19.219H4.805z M37.37,17.945v19.219h-6.406V17.945H37.37zM26.692,17.945v19.219h-6.406V17.945H26.692z M9.609,17.945h6.406v19.219H9.609V17.945z"></path><path fill="currentColor" d="M2.136,13.891h42.708c0.007,0,0.015,0,0.021,0c1.181,0,2.136-0.956,2.136-2.136c0-0.938-0.604-1.733-1.443-2.021l-21.19-9.535c-0.557-0.25-1.194-0.25-1.752,0L1.26,9.808c-0.919,0.414-1.424,1.412-1.212,2.396C0.259,13.188,1.129,13.891,2.136,13.891z"></path></svg>
+                        {{LANG bank_transfer}}              
+                </button>
+                <?php } ?>
+                <input type="hidden" class="form-control" id="fund_id" value="<?php echo($context['fund']->id) ?>">
+            </div>
+			</div>
+			<div class="fund_raise">
+				<div class="fund-meta-desc">
+			 	<div class="fundMeta--author-avatar">
+				 	<a href="<?php echo($context['fund']->user_data->url) ?>" data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($context['fund']->user_data->username) ?>">
+						<img src="<?php echo($context['fund']->user_data->avatar) ?>" alt="User Image">
+					</a>
+				</div>
+				<div class="fundMeta--author-text">
+					<div><a class="main" href="<?php echo($context['fund']->user_data->url) ?>" data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($context['fund']->user_data->username) ?>"><?php echo($context['fund']->user_data->name) ?></a></div>
+					<time class="time-ago" title="<?php echo(ToDate($context['fund']->time)) ?>"><?php echo(time2str($context['fund']->time)); ?></time>
+				</div>
+		 	</div>
+			</div>
+			<div class="fund_raise">
+				<h4 class="mt-0">{{LANG recent_donations}}</h4>
+			<?php if (empty($context['recent'])) { ?>
+				<h5 class="empty_state">
+					<svg xmlns="http://www.w3.org/2000/svg" class="confetti" viewBox="0 0 1081 601"><path class="st0" d="M711.8 91.5c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C695.2 84 702.7 91.5 711.8 91.5zM711.8 64.1c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S705.9 64.1 711.8 64.1z"></path><path class="st0" d="M74.5 108.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C57.9 100.9 65.3 108.3 74.5 108.3zM74.5 81c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7S68.6 81 74.5 81z"></path><path class="st1" d="M303 146.1c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C286.4 138.6 293.8 146.1 303 146.1zM303 118.7c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7C292.3 123.5 297.1 118.7 303 118.7z"></path><path class="st2" d="M243.4 347.4c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7S234.2 347.4 243.4 347.4zM243.4 320c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7S237.5 320 243.4 320z"></path><path class="st1" d="M809.8 542.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C793.2 534.8 800.7 542.3 809.8 542.3zM809.8 514.9c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S803.9 514.9 809.8 514.9z"></path><path class="st3" d="M1060.5 548.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C1043.9 540.8 1051.4 548.3 1060.5 548.3zM1060.5 520.9c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S1054.6 520.9 1060.5 520.9z"></path><path class="st3" d="M387.9 25.2l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L387.9 25.2z"></path><path class="st3" d="M368.3 498.6l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L368.3 498.6z"></path><path class="st3" d="M16.4 270.2l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L16.4 270.2z"></path><path class="st2" d="M824.7 351.1l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L824.7 351.1z"></path><path class="st1" d="M146.3 573.6H138v-8.3c0-1.3-1-2.3-2.3-2.3s-2.3 1-2.3 2.3v8.3h-8.3c-1.3 0-2.3 1-2.3 2.3s1 2.3 2.3 2.3h8.3v8.3c0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3v-8.3h8.3c1.3 0 2.3-1 2.3-2.3S147.6 573.6 146.3 573.6z"></path><path class="st1" d="M1005.6 76.3h-8.3V68c0-1.3-1-2.3-2.3-2.3s-2.3 1-2.3 2.3v8.3h-8.3c-1.3 0-2.3 1-2.3 2.3s1 2.3 2.3 2.3h8.3v8.3c0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3v-8.3h8.3c1.3 0 2.3-1 2.3-2.3S1006.8 76.3 1005.6 76.3z"></path><path class="st1" d="M95.5 251.6c-3.5 0-6.3 2.8-6.3 6.3 0 3.5 2.8 6.3 6.3 6.3s6.3-2.8 6.3-6.3S99 251.6 95.5 251.6z"></path><path class="st0" d="M1032 281.8c-3.5 0-6.3 2.8-6.3 6.3s2.8 6.3 6.3 6.3 6.3-2.8 6.3-6.3S1035.5 281.8 1032 281.8z"></path><path class="st2" d="M741.6 139.3c-3.5 0-6.3 2.8-6.3 6.3s2.8 6.3 6.3 6.3 6.3-2.8 6.3-6.3S745 139.3 741.6 139.3z"></path><path class="st3" d="M890.7 43.5c3.3 0 6-2.7 6-6s-2.7-6-6-6 -6 2.7-6 6C884.8 40.8 887.4 43.5 890.7 43.5z"></path><path class="st0" d="M164.3 537.6c3.3 0 6-2.7 6-6s-2.7-6-6-6 -6 2.7-6 6C158.4 535 161 537.6 164.3 537.6z"></path></svg>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="#607D8B" width="24" height="24" viewBox="0 0 24 24" class="feather feather-media"><path d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z"></path></svg> {{LANG no_users_yet}}
+				</h5>
+			<?php } ?>
+            <?php if (!empty($context['recent'])) { ?>
+                <div class="fund">
+                    <div class="fluid list">
+                        <?php if ($context['recent']) {
+                            foreach ($context['recent'] as $key => $user) { ?>
+                         <div class="item fund_item" data-recent="<?php echo($user->id) ?>">
+                            <div class="wrapper">
+                                <img class="img-circle" src="<?php echo($user->user_data->avatar) ?>" alt="Picture" />
+                            </div>
+                            <div class="caption">
+                                <a href="<?php echo($user->user_data->url) ?>" data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($user->user_data->username) ?>"><?php echo $user->user_data->name; ?></a>
+
+                                <p><?php echo $context['currency_symbol'].$user->amount; ?><span class="middot">·</span><time class="time-ago" title="<?php echo(ToDate($user->time)) ?>"><?php echo(time2str($user->time)); ?></time>
+                                </p>
+                            </div>
+                        </div>
+                        <?php } } ?>
+                    </div>
+                    <?php if (count($context['recent']) > 8) { ?>
+                        <!-- <div class="pp_load_loader fund_btn"><button class="btn btn-info pp_flat_btn" onclick="Pxp_LoadMoreFund(this)"><span>{{LANG load_more}}</span></button></div> -->
+                    <?php } ?>
+                </div>
+            <?php } ?>
+			</div>
+        </div>
+		<div class="clear"></div>
+	</div>
+</div>
+
+
+<div class="confirm--modal bank_payment_donate_modal" style="display: none !important;">
+    <div class="confirm--modal--inner">
+        <div class="confirm--modal--body dt_bank_trans_modal">
+            <h5>{{LANG bank_transfer}}</h5>
+            <div class="bank_alert"></div>
+            <?php echo $config['bank_description'];?>
+            <br>
+            <br>
+            <?php if (!empty($config['bank_transfer_note'])) { ?>
+            <div class="dt_user_profile">
+                <ul class="dt_prof_vrfy">
+                    <li><?php echo $config['bank_transfer_note'];?></li>
+                </ul>
+            </div>
+            <?php } ?>
+            <div class="fak_image">
+                <div id="fake_img_holder"></div>
+                <div class="upload_fk_image" onclick="document.getElementById('upload-image').click(); return false">
+                    <div class="upload_fk_image_content">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" /></svg> {{LANG upload_file}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="confirm--modal--footer">
+            <button class="btn btn-default" data-confirm--modal-dismiss>{{LANG cancel}}</button>
+            <button class="btn btn-danger btn-red send_bank">{{LANG send}}</button>
+            <form class="bank_transfer_form">
+                <input class="hidden" id="upload-image" type="file" name="image" multiple accept="image/*">
+                <input class="hidden" type="text" name="type" value="donate">
+                <input class="hidden" type="text" name="price" id="donate_price">
+                <input class="hidden" type="text" name="fund_id" value="<?php echo($context['fund']->id) ?>">
+                <input type="reset" id="configreset" value="Reset" class="hidden">
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#upload-image").on('change', function() {
+    //Get count of selected files
+    var product_countFiles = $(this)[0].files.length;
+    var product_imgPath = $(this)[0].value;
+    var extn = product_imgPath.substring(product_imgPath.lastIndexOf('.') + 1).toLowerCase();
+    var product_image_holder = $("#fake_img_holder");
+    product_image_holder.empty();
+    if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+        if (typeof(FileReader) != "undefined") {
+        //loop for each file selected for uploaded.
+        for (var i = 0; i < product_countFiles; i++) 
+        {
+            var product_reader = new FileReader();
+            product_reader.onload = function(e) {
+                $("<img />", {
+                    "src": e.target.result,
+                    "class": "thumb-image"
+                  }).appendTo(product_image_holder);
+                }
+                product_image_holder.show();
+                product_reader.readAsDataURL($(this)[0].files[i]);
+              }
+            } else {
+              product_image_holder.html("<p>This browser does not support FileReader.</p>");
+            }
+         }
+    });
+});
+
+    $(document).on('click', '.send_bank', function(event) {
+        $(".bank_transfer_form").submit();
+    });
+
+    $(".bank_transfer_form").ajaxForm({
+        type:'POST',
+        dataType:'json',
+        url: link('go_pro/bank_transfer'),
+        success:function(data){
+            if (data.status == 200) {
+                $('.bank_alert').html($('<div>',{
+                    class:'alert alert-success',
+                    text:data.message
+                }));
+                setTimeout(function(){
+                    window.location.href = site_url('');
+                },3000);
+            }
+            else{
+                $('.bank_alert').html($('<div>',{
+                    class:'alert alert-danger',
+                    text:data.message
+                }));
+
+            }
+            setTimeout(function(){
+                $('.alert-danger').slideUp('fast',function(){
+                    $(this).remove(); 
+                })    
+                 $('.alert-success').slideUp('fast',function(){
+                    $(this).remove(); 
+                }) 
+            },2000);
+        }
+    });
+
+    function Pxp_BankPayment(type) {
+        var amount = $('#donate_amount').val();
+        var fund_id = $('#fund_id').val();
+
+        if (amount > 0 && fund_id > 0) {
+            $('#donate_price').attr('value', amount);
+            var click_event = "$('#upload-image').trigger('click');";
+            $(".images-renderer").html('<div class="select-images" onclick="'+click_event+'"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg><h5>{{LANG choose_an_image}}</h5></span></div>');
+            $('#configreset').click();
+            $('.bank_payment_donate_modal').fadeIn(250);
+        }
+        else{
+            scroll2top();
+            $.toast("{{LANG please_fill_fields}}",{
+                duration: 5000, 
+                type: 'success',
+                align: 'bottom',
+                singleton: true
+            });
+        }
+    }
+
+	function OpenShareWindow(url, windowName) {
+           newwindow = window.open(url, windowName, 'height=600,width=800');
+           if (window.focus) {
+              newwindow.focus();
+           }
+           return false;
+        }
+		
+    function Pxp_LoadMoreFund(self) {
+        var last_id = $('.fund_item').last().attr('data-recent');
+        var fund_id = <?php echo $context['fund']->id; ?>;
+        $(self).find('span').text('{{LANG please_wait}}');
+        $.post(link('profile/load_more_recent_raise'), {id: last_id,fund_id:fund_id}, function(data, textStatus, xhr) {
+            if (data.status == 200) {
+                if (data.html != '') {
+                    $('.list').append(data.html);
+                    $(self).find('span').text('{{LANG load_more}}');
+                }
+                else{
+                    $('.fund_btn').remove();
+                }
+            }
+            else{
+                scroll2top();
+                $.toast(data.message,{
+                    duration: 5000, 
+                    type: 'success',
+                    align: 'bottom',
+                    singleton: true
+                });
+            }
+        });
+    }
+
+
+    function Pxp_DonateUsingStripe(self) {
+        $(self).find('span').html("{{LANG please_wait}}");
+        $('.pp_flat_btn').attr('disabled', 'true');
+        var amount = $('#donate_amount').val();
+        var fund_id = $('#fund_id').val();
+
+        if (amount > 0 && fund_id > 0) {
+
+            var handler = StripeCheckout.configure({
+                key: "<?php echo $config['stripe_id'];?>",
+                locale: 'english',
+                image: '',
+                token: function(token) {
+                  $.post(link('go_pro/stripe_donate'), {stripeToken:token.id,fund_id:fund_id,amount:amount}, function (data) {
+                     if (data.status == 200) {
+                        location.reload();
+                     } else {
+                        $('.pp_flat_btn').removeAttr('disabled');
+                        $(self).find('span').html("{{LANG donate}}");
+                     }
+                  });
+                }
+            });
+
+            handler.open({
+               name: "<?php echo $config['site_name']?>",
+               description: "Donate to <?php echo($context['fund']->user_data->name) ?>",
+               amount: amount+'00',
+               currency: '<?php echo $config['currency']?>',
+               opened: function () {
+                   $('.btn-cart').removeAttr('disabled');
+                   $('.go_pro--modal').fadeOut(250);
+               }
+            });
+
+            $(window).on('popstate', function() {
+               handler.close();
+            });
+        }
+        else{
+            scroll2top();
+            $.toast("{{LANG please_fill_fields}}",{
+                duration: 5000, 
+                type: 'success',
+                align: 'bottom',
+                singleton: true
+            });
+            $('.pp_flat_btn').removeAttr('disabled');
+            $(self).find('span').html("{{LANG donate}}");
+        }
+        
+    }    
+    function Pxp_DonateUsingPaypal(self) {
+        $(self).find('span').html("{{LANG please_wait}}");
+        $('.pp_flat_btn').attr('disabled', 'true');
+        var amount = $('#donate_amount').val();
+        var fund_id = $('#fund_id').val();
+
+        if (amount > 0 && fund_id > 0) {
+            $.post(link('go_pro/paypal_donate'), {amount: amount,fund_id: fund_id}, function(data, textStatus, xhr) {
+                if (data.status == 200) {
+                    window.location.href = data.url;
+                }
+                else{
+                    scroll2top();
+                    $.toast(data.message,{
+                        duration: 5000, 
+                        type: 'success',
+                        align: 'bottom',
+                        singleton: true
+                    });
+                }
+                $('.pp_flat_btn').removeAttr('disabled');
+                $(self).find('span').html("{{LANG donate}}");
+            });
+
+        }
+        else{
+            scroll2top();
+            $.toast("{{LANG please_fill_fields}}",{
+                duration: 5000, 
+                type: 'success',
+                align: 'bottom',
+                singleton: true
+            });
+            $('.pp_flat_btn').removeAttr('disabled');
+            $(self).find('span').html("{{LANG donate}}");
+        }
+    }
+</script>

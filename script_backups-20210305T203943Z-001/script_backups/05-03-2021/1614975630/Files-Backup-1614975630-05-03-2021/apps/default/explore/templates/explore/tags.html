@@ -1,0 +1,150 @@
+
+	<div class="explore-page-container explore-tags">
+		<h4 class="text-center" style="background-image: url('{{CONFIG site_url}}/media/img/tags.svg');"># <?php echo $context['tag']; ?> <span><b><?php echo $context['total_count']; ?></b> {{LANG posts}}</span></h4>
+		<?php if ($context['follow']) { ?>
+		<div class="follow__suggestions-cr">
+			<?php if ($context['follow']) { ?>
+			<div class="container">
+				<div class="fluid">
+					<h5>{{LANG follow_suggestions}}<a href="<?php echo(pxp_link('explore/people')); ?>" data-ajax="ajax_loading.php?app=explore&apph=people" class="pull-right">{{LANG see_all}} <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+					</h5>
+				</div>
+				<div class="owl-carousel" id="follow__suggestions-cr">
+					<?php foreach ($context['follow'] as $key => $user_data) { ?>
+						<div class="item">
+							<div class="avatar">
+								<img data-lazy="<?php echo($user_data['avatar']) ?>" class="img-circle">
+							</div>
+							<div class="uname">
+								<a href="<?php echo($user_data['url']) ?>" data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($user_data['username']) ?>">
+									<strong><?php echo($user_data['username']) ?></strong>
+								</a>
+								<span><?php echo($user_data['name']) ?></span>
+							</div>
+							<div class="button">
+								<button onclick="follow(<?php echo($user_data['user_id']) ?>,this);">
+						  			<span>{{LANG follow}}</span>
+						  		</button>
+							</div>
+						</div>
+					<?php } ?>
+				</div>
+			</div>
+			<?php } ?>
+		</div>
+	    <?php } ?>
+		<div class="container">
+			<div class="explore-posts-container">
+				<?php if ($context['posts']) {
+					foreach ($context['posts'] as $key => $post_data) {
+						include 'includes/list.html';
+					}
+				} else{ 
+					include 'includes/no-posts-found.html';
+				} ?>
+			</div>
+		</div>
+	</div>
+	<?php 
+	include $context['dirname_theme'].'/main/templates/modals/delete-post.html';
+	include $context['dirname_theme'].'/main/templates/modals/embed_post.html';
+	include $context['dirname_theme'].'/main/templates/includes/lazy-load.html';
+	include $context['dirname_theme'].'/main/templates/modals/delete-comment.html';
+	 ?>
+
+	<script>
+
+		var ajax_url = '{$xhr_url}';
+
+		jQuery(document).ready(function($) {
+			var gwidth   = ($('.explore-posts-container').width() / 3);
+			var scrolled = 0;
+			var last_id  = 0;
+
+			var config = {
+				selector: '.item',
+				gutter: 0,
+				animate: true,
+				animationOptions: { 
+					speed: 100, 
+					duration: 200
+				}
+			}
+		
+			if ($(window).width() > 992){
+				config.width = gwidth;
+			};
+		
+			$(".explore-posts-container").gridalicious(config);
+
+			$(document).ready(function(){
+				$('#follow__suggestions-cr').slick({
+				infinite: false,
+				slidesToShow: 5,
+				variableWidth: false,
+				slidesToScroll: 1,
+				autoplay: false,
+				autoplaySpeed: 2000,
+				responsive: [
+					{
+						breakpoint: 1024,
+						settings: {
+							slidesToShow: 4
+						}
+					},
+					{
+						breakpoint: 800,
+						settings: {
+							slidesToShow: 3
+						}
+					},
+					{
+						breakpoint: 600,
+						settings: {
+							slidesToShow: 2
+						}
+					},
+					{
+						breakpoint: 300,
+						settings: {
+							slidesToShow: 1
+						}
+					}
+				]
+				});
+			});
+
+			$(window).scroll(function() {
+			    if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+			    	if (scrolled == 0) {
+		                scrolled = 1;
+		                var list_ids = $("div.explore-postset[id]").map(function() {
+			                return $(this).attr('id');
+			            }).get();
+
+			            if (!list_ids) {
+			                return false;
+			            }
+			            
+        				var last_id = Math.min.apply(Math,list_ids);
+
+						$.ajax({
+							url: link('posts/explore-tags'),
+							type: 'GET',
+							dataType: 'json',
+							data: {offset:last_id},
+						}).done(function(data) {
+							if (data.status == 200) {
+								$(".explore-posts-container").gridalicious('append', $(data.html));
+								scrolled = 0;
+							}
+							else{
+								$(window).unbind('scroll');
+							}
+						});
+		       		}
+			    }
+			});
+		});
+
+	</script>

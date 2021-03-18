@@ -1,0 +1,89 @@
+<div class="container-fluid">
+    <div class="block-header">
+        <h2>Users > Affiliates System > Affiliates Settings</h2>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h2>Affiliates Settings</h2>
+                </div>
+                <div class="body">
+                    <div class="form-alert affiliates-settings-alert"></div>
+                    <form class="affiliates-settings" method="POST">
+                        <label for="affiliate_system">Affiliates System</label>
+                        <div class="form-group">
+                            <input type="radio" name="affiliate_system" id="affiliate_system-enabled" value="1" <?php echo ($config['affiliate_system'] == 1) ? 'checked': '';?>>
+                            <label for="affiliate_system-enabled">Enabled</label>
+                            <input type="radio" name="affiliate_system" id="affiliate_system-disabled" value="0" <?php echo ($config['affiliate_system'] == 0) ? 'checked': '';?>>
+                            <label for="affiliate_system-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <label for="affiliate_type">User will earn money when</label>
+                        <select class="form-control show-tick" id="affiliate_type" name="affiliate_type">
+                          <option value="0" <?php echo ($config['affiliate_type'] == 0) ? 'selected': '';?> >New user is registred</option>
+                          <!-- <option value="1" <?php echo ($config['affiliate_type'] == 1) ? 'selected': '';?> >New user is registred & bought a pro package</option> -->
+                        </select>
+                        <div class="clearfix"></div>
+                        <br><br>
+                        <!-- <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="m_withdrawal" name="m_withdrawal" class="form-control" value="<?php echo $wo['config']['m_withdrawal']?>">
+                                <label class="form-label">Minimum withdrawal request</label>
+                            </div>
+                        </div><br> -->
+                        <div class="form-group form-float amount_ref">
+                            <div class="form-line">
+                                <input type="text" id="amount_ref" name="amount_ref" class="form-control" value="<?php echo $config['amount_ref']?>">
+                                <label class="form-label">Amount <small>The price you'll pay for each new referred user. Default 0.10</small></label>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group form-float amount_percent_ref">
+                            <div class="form-line">
+                                <input type="number" min="0" max="100" id="amount_percent_ref" name="amount_percent_ref" class="form-control" value="<?php echo $config['amount_percent_ref']?>">
+                                <label class="form-label">Amount % <small>The price you'll pay for each new referred user. After he join any pro package.</small></label>
+                            </div>
+                        </div> -->
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+    jQuery(document).ready(function($) {
+        var gsform = $("form.affiliates-settings");
+
+        gsform.ajaxForm({
+            url: acpajax_url('general-settings'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSubmit: function(arr,form){
+                $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+            },
+            success: function(data, status, xhr, form){
+                if (data.status == 200) {
+                    $('.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-success',
+                        text:'Settings has been updated successfully'
+                    }));
+                    setTimeout(function(){
+                        $('.alert').slideUp('fast',function(){
+                            $(this).remove(); 
+                        })    
+                    },1000);
+                }
+                else{
+                    $('.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-warning',
+                        text: data.error
+                    }));
+                }
+
+                gsform.find('button[type=submit]').text('Save').removeAttr('disabled');
+            }
+        });
+    });
+</script>

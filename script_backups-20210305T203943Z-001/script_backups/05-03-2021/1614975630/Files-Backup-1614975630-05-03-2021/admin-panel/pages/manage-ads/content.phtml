@@ -1,0 +1,79 @@
+<?php 
+
+
+$ads = $admin::$db->orderBy('id', 'DESC')->get(T_ADS);
+
+ ?>
+<div class="container-fluid">
+    <div class="block-header">
+        <h2>Advertisements > Manage User Advertisements</h2>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Manage User Advertisements</h2>
+                </div>
+                <div class="body">
+                   <div class="table-responsive1">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                      <th>ID</th>
+					                  <th>Website</th>
+					                  <th>User</th>
+					                  <th>Added</th>
+					                  <th>Clicks</th>
+					                  <th>Views</th>
+					                  <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($ads as $key => $context['ad']) {
+                                  $user = $admin::$db->where('user_id',$context['ad']->user_id)->getOne(T_USERS);
+                                  $context['user'] = o2array($admin->userData($user));
+                                  $context['ad'] = o2array($context['ad']);
+                                  echo $admin->loadPage('manage-ads/list');
+                                 } 
+				                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    </div>
+<!-- #END# Vertical Layout -->
+<div id="delete-modal" class="modal fade" role="dialog" data-id="">
+    <div class="modal-dialog">
+        <div class="modal-content modal-col-red">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">DELETE USER AD</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to continue? this action can't be undo</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link waves-effect delete-button" data-dismiss="modal" data-type="ad" data-id="">DELETE</button>
+                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(function () {
+  $('table').DataTable();
+});
+$(function () {
+  $(document).on('click', '.delete-content',function(event) {
+        event.preventDefault();
+        $('#delete-modal .delete-button').attr('data-id', $(this).attr('data-id')); 
+    $('#delete-modal').attr('data-id', $(this).attr('data-id')).modal('show');
+  });
+});
+</script>

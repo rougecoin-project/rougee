@@ -1,0 +1,38 @@
+<div class="content-shadow">
+	<div class="page-content">
+		<div class="pp_store_head">
+			<ul class="list-unstyled pp_store_head_nav">
+				<?php if($context['owner']) {?>
+				<li><a href="{{CONFIG site_url}}/store/{{ME username}}/items" data-ajax="ajax_loading.php?app=store&apph=store&user={{ME username}}&page=items"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,18H6V14H12M21,14V12L20,7H4L3,12V14H4V20H14V14H18V20H20V14M20,4H4V6H20V4Z" /></svg> {{LANG my_store}}</a></li>
+				<li><a href="{{CONFIG site_url}}/store/{{ME username}}/history" data-ajax="ajax_loading.php?app=store&apph=store&user={{ME username}}&page=history"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13.5,8H12V13L16.28,15.54L17,14.33L13.5,12.25V8M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3" /></svg> {{LANG history}}</a></li>
+				<?php } else {?>
+				<li><a href="{{CONFIG site_url}}/store/<?php echo($context['user_data']['username']) ?>/items" data-ajax="ajax_loading.php?app=store&apph=store&user=<?php echo($context['user_data']['username']) ?>&page=items"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,18H6V14H12M21,14V12L20,7H4L3,12V14H4V20H14V14H18V20H20V14M20,4H4V6H20V4Z" /></svg> {{LANG store}}</a></li>
+				<?php } ?>
+			</ul>
+			<div>
+				<ul class="list-unstyled pp_store_head_nav">
+					<?php if($context['owner']) {?>
+					<li><a href="{{CONFIG site_url}}/store/{{ME username}}/upload" data-ajax="ajax_loading.php?app=store&apph=store&user={{ME username}}&page=upload"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg> {{LANG upload}}</a></li>
+					<?php } else {?>
+					<?php } ?>
+				</ul>
+			</div>
+		</div>
+    </div>
+	
+    <?php if( $context['page'] == 'upload' || $context['page'] == 'history' || $context['page'] == 'update' ){ ?>
+    <div class="page-content page-<?php echo $context['page']; ?>">
+        <?php include 'includes/'.$context['page'].'.html'; ?>
+    </div>
+    <?php } else { ?>
+		<div class="row">
+			<div class="col-lg-12">
+				<?php include 'includes/filter.html'; ?>
+			</div>
+			<div class="col-lg-12">
+				<?php include 'includes/'.$context['page'].'.html'; ?>
+			</div>
+		</div>
+    <?php }?>
+    <div class="clear"></div>
+</div>

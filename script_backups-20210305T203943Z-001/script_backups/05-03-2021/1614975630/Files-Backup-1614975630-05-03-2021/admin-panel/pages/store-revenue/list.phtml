@@ -1,0 +1,18 @@
+<tr id="<?php  echo $cd['item']['id'];?>">
+    <td><?php  echo $cd['item']['id'];?></td>
+    <td>
+        <a href="<?php echo $config['site_url'] . '/@' . $cd['item']['user']['username']; ?>" target="_blank">
+            <img src="<?php echo $cd['item']['user']['avatar'];?>" class="setting-avatar" alt="<?php echo $cd['item']['user']['username'];?> Profile Picture">
+            <?php echo $cd['item']['user']['name']; ?>
+        </a>
+    </td>
+    <td id="edit_<?php echo $cd['item']['product']['id'];?>">
+        <a href="<?php echo $config['site_url'] . '/store/' . $cd['item']['product']['id']; ?>" target="_blank">
+            <img src="<?php echo media($cd['item']['product']['small_file']);?>" class="setting-avatar" alt="<?php echo $cd['item']['product']['title'];?>">
+            <?php echo $cd['item']['product']['title'];?>
+        </a>
+    </td>
+    <td><?php  echo $config['currency'] .' '.$cd['item']['amount'];?></td>
+    <td><?php  echo $config['currency'] .' '.$cd['item']['admin_com'];?></td>
+    <td><?php echo(time2str($cd['item']['time'])); ?></td>
+</tr>

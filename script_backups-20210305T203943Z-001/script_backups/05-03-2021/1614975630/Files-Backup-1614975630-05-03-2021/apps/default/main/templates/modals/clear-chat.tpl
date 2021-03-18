@@ -1,0 +1,12 @@
+<div class="confirm--modal clearchat--modal" style="display: none !important;">
+	<div class="confirm--modal--inner">
+		<div class="confirm--modal--body">
+			<h5><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-delete" color="#ff1100" style="background-color: rgba(255, 17, 0, 0.25)"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> {lang('clear_messages')}?</h5>
+			<p>{lang('confirm_clear_messages')}</p>
+		</div>
+		<div class="confirm--modal--footer">
+			<button class="btn btn-default" data-confirm--modal-dismiss>{lang('cancel')}</button>
+			<button class="btn btn-danger btn-red clear--chat">{lang('ok')}</button>
+		</div>
+	</div>
+</div>

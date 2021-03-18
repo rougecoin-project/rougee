@@ -1,0 +1,72 @@
+<div class="notification-settings noti-active">
+	<div class="header">
+		<h4>{{LANG notif_settings}}</h4>
+		<div class="clear"></div>
+	</div>
+	<hr>
+	<form class="form row pp_sett_form" id="edit-notification-settings">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+		<div class="fluid">
+			<div class="col-md-12">
+				<p><strong>{{LANG receive_notif_when}}:</strong></p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-9 col-sm-9 col-md-9">{{LANG liked_my_post}}</label>
+			<div class="col-xs-3 col-sm-3 col-md-3">
+				<input type="checkbox" <?php if($context['me']['n_on_like']){ ?> checked <?php } ?> class="tgl tgl-ios" id="on_like_post" name="on_like_post">
+				<label class="tgl-btn" for="on_like_post"></label>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-9 col-sm-9 col-md-9">{{LANG commented_my_post}}</label>
+			<div class="col-xs-3 col-sm-3 col-md-3">
+				<input type="checkbox" <?php if($context['me']['n_on_comment']){ ?> checked <?php } ?> class="tgl tgl-ios" id="on_commnet_post" name="on_commnet_post">
+				<label class="tgl-btn" for="on_commnet_post"></label>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-9 col-sm-9 col-md-9">{{LANG replied_my_comment}}</label>
+			<div class="col-xs-3 col-sm-3 col-md-3">
+				<input type="checkbox" <?php if($context['me']['n_on_comment_reply']){ ?> checked <?php } ?> class="tgl tgl-ios" id="on_comment_reply" name="on_comment_reply">
+				<label class="tgl-btn" for="on_comment_reply"></label>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-9 col-sm-9 col-md-9">{{LANG liked_my_comment}}</label>
+			<div class="col-xs-3 col-sm-3 col-md-3">
+				<input type="checkbox" <?php if($context['me']['n_on_comment_like']){ ?> checked <?php } ?> class="tgl tgl-ios" id="on_comment_like" name="on_comment_like">
+				<label class="tgl-btn" for="on_comment_like"></label>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-9 col-sm-9 col-md-9">{{LANG followed_me}}</label>
+			<div class="col-xs-3 col-sm-3 col-md-3">
+				<input type="checkbox" <?php if($context['me']['n_on_follow']){ ?> checked <?php } ?> class="tgl tgl-ios" id="on_follow" name="on_follow">
+				<label class="tgl-btn" for="on_follow"></label>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-9 col-sm-9 col-md-9">{{LANG mentioned_me}}</label>
+			<div class="col-xs-3 col-sm-3 col-md-3">
+				<input type="checkbox" <?php if($context['me']['n_on_mention']){ ?> checked <?php } ?> class="tgl tgl-ios" id="on_mention" name="on_mention">
+				<label class="tgl-btn" for="on_mention"></label>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="pp_load_loader"><button class="btn btn-info pp_flat_btn" type="submit"><span>{{LANG save_changes}}</span></button></div>
+		<input type="hidden" name="user_id" value="<?php echo($context['me']['user_id']) ?>">
+		<input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+		</div>
+		<div class="col-md-2"></div>
+	</form>
+</div>
+<?php 
+include $context['dirname_theme'].'/settings/templates/settings/js/script.html';
+ ?>

@@ -1,0 +1,19 @@
+<div class="confirm--modal embedpost--modal" style="display: none !important;">
+	<div class="confirm--modal--inner">
+		<div class="confirm--modal--body">
+			<h5><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-delete"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg> {{LANG embed}}</h5>
+			<textarea cols="30" rows="3" class="form-control" id="embed_post" onclick="select()"></textarea>
+		</div>
+		<div class="confirm--modal--footer">
+			<button class="btn btn-default" data-confirm--modal-dismiss>{{LANG cancel}}</button>
+			<button class="btn btn-success copy-embed-code">{{LANG copy}}</button>
+		</div>
+	</div>
+</div>
+
+<script>
+$(".copy-embed-code").click(function(){
+    $("#embed_post").select();
+    document.execCommand('copy');
+});
+</script>

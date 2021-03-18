@@ -1,0 +1,84 @@
+<?php 
+$playtube_links_on = ($config['playtube_links'] == 'on') ? 'checked' : '';
+$playtube_links_off = ($config['playtube_links'] == 'off') ? 'checked' : '';
+ ?>
+<div class="block-header">
+    <h2 class="breadcrumb">Settings <i class="material-icons">keyboard_arrow_right</i> Playtube Support</h2>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Playtube Support</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form general-settings-form">
+                        <div class="form-alert"></div>
+
+                        <div class="form-group form-float"> 
+                            <div class="form-line">
+                                <input type="text" id="playtube" name="playtube" class="form-control" value="<?php echo($config['playtube_url']); ?>">
+                                <label class="form-label">
+                                    The Site Link that uses PlayTube script, e.g. https://playtubescript.com
+                                </label>
+                            </div>
+                        </div>
+                        <div>This feature allows you to integrate PlayTube script with your site, so videos will be embedded in the post box if someone shares a link from your site.</div>
+                        <br>
+                        <div>
+                            <a href="https://codecanyon.net/item/playtube-the-ultimate-php-video-sharing-platform/20759294">
+                                What is PlayTube?
+                            </a>
+                        </div>
+                        <br><br>
+                        <label for="upload_system">Playtube Links System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $playtube_links_on; ?> name="playtube_links"  value="on" id="playtube_links-enabled">
+                            <label for="playtube_links-enabled" id="playtube_links-enabled">Enabled</label>
+                            <input type="radio" <?php echo $playtube_links_off; ?> name="playtube_links" id="playtube_links-disabled" value="off">
+                            <label for="playtube_links-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(document).ready(function($) {
+        var gsform = $("form.general-settings-form");
+
+        gsform.ajaxForm({
+            url: acpajax_url('playtube_support'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSubmit: function(arr,form){
+                $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+            },
+            success: function(data, status, xhr, form){
+                if (data.status == 200) {
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-success',
+                        text:'Settings has been updated successfully'
+                    }));
+                    setTimeout(function(){
+                        gsform.find('div.form-alert .alert').slideUp('fast',function(){
+                            $(this).remove(); 
+                        })    
+                    },1000);
+                }
+                else{
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-warning',
+                        text: data.error
+                    }));
+                }
+
+                gsform.find('button[type=submit]').text('Save').removeAttr('disabled');
+            }
+        });
+    });
+</script>

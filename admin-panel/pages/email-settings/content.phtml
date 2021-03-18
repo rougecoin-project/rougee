@@ -1,0 +1,107 @@
+<?php
+$smtp      = ($config['smtp_or_mail']    == 'smtp') ? 'checked' : '';
+$mail      = ($config['smtp_or_mail']    == 'mail') ? 'checked' : '';
+$tls       = ($config['smtp_encryption'] == 'tls')  ? 'checked' : '';
+$ssl       = ($config['smtp_encryption'] == 'ssl')  ? 'checked' : '';
+$mail_host = $config['smtp_host'];
+$mail_user = $config['smtp_username'];
+$mail_pass = $config['smtp_password'];
+$mail_port = $config['smtp_port'];
+?>
+
+<div class="block-header">
+    <h2 class="breadcrumb">Settings <i class="material-icons">keyboard_arrow_right</i> E-Mail Settings</h2>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Other settings</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form email-settings-form" method="POST">
+                    	<div class="form-alert"></div>
+                        <label for="smtp_or_mail">Server Type</label>
+                        <div class="form-group">
+                            <input type="radio" name="smtp_or_mail" id="smtp_or_mail-enabled" value="smtp" <?php echo($smtp); ?>>
+                            <label for="smtp_or_mail-enabled">SMTP Server</label>
+                            <input type="radio" name="smtp_or_mail" id="smtp_or_mail-disabled" value="mail" <?php echo($mail); ?>>
+                            <label for="smtp_or_mail-disabled" class="m-l-20">Server Mail (Default)</label>
+                        </div>
+                        <br>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="smtp_host" name="smtp_host" class="form-control" value="<?php echo($mail_host); ?>">
+                                <label class="form-label">SMTP Host</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="smtp_username" name="smtp_username" class="form-control" value="<?php echo($mail_user); ?>">
+                                <label class="form-label">SMTP Username</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="smtp_password" name="smtp_password" class="form-control" value="<?php echo($mail_pass); ?>">
+                                <label class="form-label">SMTP Password</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="smtp_port" name="smtp_port" class="form-control" value="<?php echo($mail_port); ?>">
+                                <label class="form-label">SMTP Port</label>
+                            </div>
+                        </div>
+                        <label for="smtp_encryption">SMTP Encryption</label>
+                        <div class="form-group">
+                            <input type="radio" name="smtp_encryption" id="smtp_encryption-enabled" value="tls" <?php echo($tls); ?>>
+                            <label for="smtp_encryption-enabled">TLS</label>
+                            <input type="radio" name="smtp_encryption" id="smtp_encryption-disabled" value="ssl" <?php echo($ssl); ?>>
+                            <label for="smtp_encryption-disabled" class="m-l-20">SSL</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    jQuery(document).ready(function($) {
+        var esform = $("form.email-settings-form");
+
+        esform.ajaxForm({
+            url: acpajax_url('email-settings'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSubmit: function(arr,form){
+                $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+            },
+            success: function(data, status, xhr, form){
+                if (data.status == 200) {
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-success',
+                        text:'Settings has been updated successfully'
+                    }));
+                    setTimeout(function(){
+                        esform.find('div.form-alert .alert').slideUp('fast',function(){
+                            $(this).remove(); 
+                        })    
+                    },1000);
+                }
+                else{
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-warning',
+                        text: data.error
+                    }));
+                }
+
+                esform.find('button[type=submit]').text('Save').removeAttr('disabled');
+            }
+        });
+    });
+</script>

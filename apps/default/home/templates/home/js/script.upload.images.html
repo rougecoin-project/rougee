@@ -1,0 +1,378 @@
+<script>
+	var recordedBlobs;
+ 	var ms;
+ 	var canvas = document.querySelector('#jeeFaceFilterCanvas');
+
+
+ 	var minutesLabel = document.getElementById("minutes");
+	var secondsLabel = document.getElementById("seconds");
+	var totalSeconds = 0;
+	var video_timer_;
+	
+
+	function setTime() {
+	  ++totalSeconds;
+	  secondsLabel.innerHTML = pad(totalSeconds % 60);
+	  minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+	}
+
+	function pad(val) {
+	  var valString = val + "";
+	  if (valString.length < 2) {
+	    return "0" + valString;
+	  } else {
+	    return valString;
+	  }
+	}
+
+
+	function handleDataAvailable(event) {
+	  if (event.data && event.data.size > 0) {
+	    recordedBlobs.push(event.data);
+	  }
+	}
+	function show_filters() {
+		$('#filters_container').show();
+	}
+	function record_video_() {
+		video_timer_ = setInterval(setTime, 1000);
+		$('.camera_4').hide();
+		$('.camera_6').hide();
+		$('.camera_timer').show();
+		$('.camera_7').css('display', 'flex');
+		try {
+	    	const stream = canvas.captureStream();
+			ms = stream;
+
+			const gumVideo = document.querySelector('#jeeFaceFilterCanvas');
+			gumVideo.srcObject = stream;
+		    
+			  
+		  } catch (e) {
+		    console.error('navigator.getUserMedia error:', e);
+		  }
+		  recordedBlobs = [];
+		  let options = {mimeType: 'video/webm;codecs=vp9'};
+		  if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+		    console.error(`${options.mimeType} is not Supported`);
+		    errorMsgElement.innerHTML = `${options.mimeType} is not Supported`;
+		    options = {mimeType: 'video/webm;codecs=vp8'};
+		    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+		      console.error(`${options.mimeType} is not Supported`);
+		      errorMsgElement.innerHTML = `${options.mimeType} is not Supported`;
+		      options = {mimeType: 'video/webm'};
+		      if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+		        console.error(`${options.mimeType} is not Supported`);
+		        errorMsgElement.innerHTML = `${options.mimeType} is not Supported`;
+		        options = {mimeType: ''};
+		      }
+		    }
+		  }
+
+		  try {
+		    mediaRecorder = new MediaRecorder(ms, options);
+		  } catch (e) {
+		    console.error('Exception while creating MediaRecorder:', e);
+		    console.log(e);
+		    return;
+		  }
+
+		  mediaRecorder.ondataavailable = handleDataAvailable;
+		  mediaRecorder.start(10); // collect 10ms of data
+
+	}
+
+	function stop_record_video_() {
+		clearInterval(video_timer_);
+		totalSeconds = 0;
+		secondsLabel.innerHTML = '00';
+		minutesLabel.innerHTML = '00';
+		window.rvideo_thumb = capture_canvas_image('jeeFaceFilterCanvas', 'png');
+		$('.camera_4').show();
+		$('.camera_6').show();
+		$('.camera_7').css('display', 'none');
+		$('.camera_timer').hide();
+		mediaRecorder.stop();
+
+  		const recordedVideo = document.querySelector('video#video_');
+  		const superBuffer = new Blob(recordedBlobs, {type: 'video/mp4'});
+  		window.rvideo = superBuffer;
+		recordedVideo.src = null;
+		recordedVideo.srcObject = null;
+		recordedVideo.src = window.URL.createObjectURL(superBuffer);
+		recordedVideo.controls = true;
+		recordedVideo.play();
+		if ($('#jeeFaceFilterCanvas').is(":visible")) {
+			$('#camera_container').hide();
+			$('#video_test').show();
+		}
+	}
+
+	function open_camera() {
+		navigator.getMedia = ( navigator.getUserMedia || // use the proper vendor prefix
+		                     navigator.webkitGetUserMedia ||
+		                     navigator.mozGetUserMedia ||
+		                     navigator.msGetUserMedia);
+
+		navigator.getMedia({video: true}, function() {
+		  add_face_filter('cloud');
+		  $('#from_camera_button').hide();
+		$('.images-renderer').hide();
+		$('#camera_container').show();
+		}, function() {
+			$.toast("<?php echo lang('no_camera'); ?>",{
+            	duration: 5000, 
+            	type: '',
+            	align: 'top-right',
+            	singleton: false
+            });
+		  $('#from_camera_button').show();
+		  $('#camera_container').hide();
+		  $('.images-renderer').show();
+		});
+
+		
+		
+	}
+	function capture_image_() {
+		if ($('#jeeFaceFilterCanvas').is(":visible")) {
+			window.cframe = capture_canvas_image('jeeFaceFilterCanvas', 'png');
+			$('#filter_image_').attr('src', window.cframe.dataUri);
+			$('#camera_container').hide();
+			$('#capture_test').show();
+		}
+
+	}
+	function close_camera_() {
+		$('#camera_container').hide();
+		$('#from_camera_button').show();
+		$('.images-renderer').show();
+		delete window.rvideo;
+		delete window.cframe;
+		delete window.rvideo_thumb;
+		clearInterval(video_timer_);
+		totalSeconds = 0;
+		secondsLabel.innerHTML = '00';
+		minutesLabel.innerHTML = '00';
+		if (typeof (mediaRecorder) != 'undefined') {
+			if (mediaRecorder.state == 'recording') {
+				mediaRecorder.stop();
+			}
+		}
+		$('.camera_4').show();
+		$('.camera_6').show();
+		$('.camera_7').css('display', 'none');
+		$('.camera_timer').hide();
+	}
+	
+	function close_image_() {
+		$('#capture_test').hide();
+		$('#camera_container').show();
+		$('#video_test').hide();
+		$('#filter_image_').attr('src', '');
+		delete window.rvideo;
+		delete window.cframe;
+		delete window.rvideo_thumb;
+	}
+	function close_video_() {
+		$('#capture_test').hide();
+		$('#video_test').hide();
+		$('#camera_container').show();
+		$('#video_').attr('src', '');
+		
+		delete window.rvideo;
+		delete window.cframe;
+		delete window.rvideo_thumb;
+		
+	}
+	jQuery(document).ready(function($) {
+
+       	var attach = new Array();
+
+
+		$("#upload-post-image").submit(function(event) {
+			event.preventDefault();
+			if(typeof (JEEFACEFILTERAPI) != 'undefined'){
+				var tracks = JEEFACEFILTERAPI.getVideoInfo().getTracks();
+	          if (typeof(tracks) != 'undefined'){
+	              for (var i = 0; i < tracks.length; i++) {
+	                  tracks[i].stop();
+	              }
+	          }
+		        
+
+
+		        $('.fireworks').remove();
+		        $('.faceDeform').remove();
+		        $('.dog_face').remove();
+		        $('.football').remove();
+		        $('.matrix').remove();
+		        $('.luffys_hat_1').remove();
+		        $('.luffys_hat_2').remove();
+		        $('.cloud').remove();
+			}
+
+			let caption = $(this).find('textarea').val();
+			
+			let images   = document.getElementById('upload-images').files;
+			
+
+			if ((images.length < 1 && typeof (window.cframe && window.cframe.dataUri) == 'undefined' && (typeof (window.rvideo) == 'undefined') ) ) {
+				$("#upload-post-image").find('.select-images').addClass('active');	
+				return false;
+			}
+
+			var formData = new FormData();
+			if (typeof (window.cframe && window.cframe.dataUri) != 'undefined' && images.length < 1 && typeof (window.rvideo) == 'undefined') {
+			var thumb   = new File([base64_2_blob(window.cframe.dataUri)], "thumb.png", {type:"image/png"});
+				formData.append('filter_image',thumb);
+			}
+			if (typeof (window.rvideo) != 'undefined' && typeof (window.rvideo_thumb) != 'undefined' && images.length < 1 && typeof (window.cframe && window.cframe.dataUri) == 'undefined') {
+				var video   = new File([window.rvideo], "video.mp4", {type:'video/mp4'});
+				formData.append('filter_video',video);
+				var video_thumb   = new File([base64_2_blob(window.rvideo_thumb.dataUri)], "thumb.png", {type:"image/png"});
+				formData.append('filter_video_thumb',video_thumb);
+			}
+			formData.append('attach',attach);
+			formData.append('caption',caption);
+			if (images.length > 0) {
+				for (var i = 0; i < images.length; i++) {
+					formData.append('images['+i+']',images[i]);
+				}
+			}
+			
+			
+
+
+			var action = $(this).attr('action') + '?hash=' + $(this).find('input[name=hash]').val();
+			$("#upload-post-image").find('button[type="submit"]').attr('disabled', 'true');
+			$.ajax({
+				processData: false,
+				url: action,
+				type: 'POST',
+				dataType: 'json',
+				data: formData,
+				contentType: false,
+				beforeSend: function() {
+					$('#xprogress').css({'display':'block'});
+					$('#xprogress').css({'width':'0%'});
+					// progress.removeClass('hide');
+					// bar.width('0%');
+					// bar.show();
+				},
+				complete: function() {
+					$('#xprogress').css({'display':'none'});
+					$('#xprogress').css({'width':'0%'});
+				},
+				xhr: function() {
+					var xhr = new window.XMLHttpRequest();
+					xhr.upload.addEventListener("progress", function(evt){
+						if (evt.lengthComputable) {
+							var percentComplete = evt.loaded / evt.total;
+							percentComplete = parseInt(percentComplete * 100);
+							console.log(percentComplete);
+							$('#xprogress').css({'display':'block'});
+							$('#xprogress').css({'width':percentComplete + "%"});
+
+							$('#xprogress').html( percentComplete + "%");
+							// bar.width(percentComplete + '%');
+							// if (percentComplete === 100) {
+							// 	// 			bar.hide();
+							// 	// 			progress.hide();
+							// 	//                                     progress.addClass('hide');
+							// 	// 			status.hide();
+							// 	$( '.select_profile_image' ).show();
+							// }else{
+							// 	progress.removeClass('hide');
+							// }
+						}
+					}, false);
+					return xhr;
+				}
+			})
+			.done(function(data) {
+				if (data.status == 200) {
+					$(".home-posts-container").prepend(data.html);
+				}
+
+				if (data.message) {
+					$.toast(data.message,{
+	                	duration: 5000, 
+	                	type: '',
+	                	align: 'top-right',
+	                	singleton: false
+	                });
+				}
+
+				$("body").removeClass('active');
+				$("#create-newpost").empty();
+				$(".user-heading #pp_loader").fadeOut(100);
+				$("#upload-post-image").find('button[type="submit"]').attr('disabled', 'false');
+				delete window.rvideo;
+				delete window.cframe;
+				delete window.rvideo_thumb;
+			});
+		});
+
+		
+		$("#upload-images").change(function(event) {
+			files = $(this).prop('files');
+			$(".images-renderer").empty();
+			var ul = $("<ul>",{
+				class:'img-list'
+			});
+			for (var i = 0; i < files.length; i++) {
+				image     = files[i];
+				attach[i] = i;
+
+				if (!image.type.match('image.*')) {
+					continue;
+				}
+				
+				var reader = new FileReader();
+					reader.onload = (function(theFile) {
+						return function(e) {
+							ul.append($('<li>',{
+								html:'<img src="'+e.target.result+'" style="background:no-repeat left center;background-size: contain;width: 100%;"><span style="padding-top: inherit;">' + theFile.name + '</span><span>' + Math.round(theFile.size/1024) +'KB' + '</span>'
+							}).append($('<span>',{
+								html:'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="feather feather-close"><path d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z" /></svg>',
+								class:'remove-img',
+								id:i
+							})));
+						};
+					})(image);
+					reader.readAsDataURL(image);
+			}
+
+			$(".images-renderer").append(ul);
+		});
+
+		$(document).on('click', '.images-renderer .remove-img', function(event) {
+			delete(attach[$(this).attr('id')]);
+			$(this).parent('li').hide('200', function() {
+				$(this).remove();
+				if ($(".img-list").find('li').length < 1) {
+					$("#create-newpost").fadeOut(100,function(){
+						$(this).empty();
+						$('body').removeClass('active');	
+					});
+				}
+			});
+		});
+
+		$("#upload-post-image textarea").emojioneArea({
+			pickerPosition: "bottom",
+		    tonesStyle: "radio",
+		    filters: {
+		        flags : false,
+		        objects : false,
+		        travel_places : false,
+		        activity : false
+		    }
+		});
+
+		
+
+
+	});
+</script>

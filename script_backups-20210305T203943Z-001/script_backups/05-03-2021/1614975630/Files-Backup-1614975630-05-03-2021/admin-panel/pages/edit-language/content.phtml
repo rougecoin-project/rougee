@@ -1,0 +1,155 @@
+<?php 
+$langs = $admin::getLangs();
+$page  = (!empty($_GET['page-id'])) ? $_GET['page-id'] : 1;
+$lang  = (!empty($_GET['id'])) ? $_GET['id'] : '';
+
+if (empty($lang) || !in_array($lang,array_keys( $langs))) {
+    header("Location: " . pxp_acp_link(''));
+    exit();
+}
+
+$langs = $admin::$db->orderBy('`id`', 'ASC')->get(T_LANGS, null, array("`id`","`lang_key`","`$lang`"));
+
+?>
+
+<div class="block-header">
+    <h2 class="breadcrumb">Languages <i class="material-icons">keyboard_arrow_right</i> Edit Languages</h2>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card">
+            <div class="header">
+                <h2>Manage &amp; Edit Languages</h2>
+            </div>
+            <div class="body">
+                <div class="table-responsive1">
+                    <table class="table table-bordered table-striped table-hover" id="table-language">
+                        <thead>
+                            <tr>
+                            	<th>ID</th>
+                                <th>Key Name</th>
+                                <th>Value</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+    				            if (count($langs) > 0) {
+    				                foreach ($langs as $row) {
+                                        $context['lkey'] = $row->lang_key;
+                                        $context['lval'] = $row->{"$lang"};
+                                        $context['lid']  = $row->id;
+    				                    echo $admin->loadPage('edit-language/list');
+    				                }
+    				            }
+                                else{
+                                    echo $admin::createHtmlEl('tr',null,$admin::createHtmlEl('td',array(
+                                        'colspan' => 4,
+                                        'class' => 'empty-table',
+                                    ),"No data found to display"));
+                                }  
+				            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+
+<div class="modal fade" id="edit-lang-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="edit-key-settings" method="POST">
+                <div class="modal-body">
+                    <div class="form-alert"></div>
+                    <div class="data text-center">
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            <label class="form-label pull-left">
+                                Edit language key: <span class="key"></span>
+                            </label>
+                            <div>
+                                <textarea class="form-control val" rows="4" name="val"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" value="" class="lang-id">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-save btn btn-link waves-effect">SAVE CHANGES</button>
+                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+$('.btn-edit-lang-key').click(function(event) {
+    var key = $(this).data('key');
+    var lid = $(this).data('id');
+
+    if(key && $.isNumeric(lid)){
+        var val = $("#edit-lang-"+lid).find('span').text();
+        var mod = $('#edit-lang-modal');
+
+        mod.find('.key').text(key);
+        mod.find('.lang-id').val(lid);
+        mod.find('.val').val($.trim(val));
+        mod.modal('show'); 
+    }
+});
+    jQuery(document).ready(function($) {
+        
+        $('table').DataTable();
+        $("form#edit-key-settings").submit(function(event) {
+            event.preventDefault();
+            var lid = $(this).find('.lang-id').val();
+            var val = $(this).find('.val').val();
+            var zis = $(this);
+            var mod = $('#edit-lang-modal');
+
+            zis.find('button[type="submit"]').attr('disabled', 'true');
+
+            $.ajax({
+                url: acpajax_url('edit-lang-key'),
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    lang: '<?php echo($lang); ?>',
+                    id:lid,
+                    val:val
+                },
+            })
+            .done(function(data) {
+                if (data.status == 200) {
+                    zis.find('.form-alert').html($("<div>",{
+                        class:"alert alert-success",
+                        text:data.message
+                    }));
+                }
+                else{
+                    zis.find('.form-alert').html($("<div>",{
+                        class:"alert alert-warning",
+                        text:data.message
+                    }));  
+                }
+
+                $("#edit-lang-"+lid).find('span').text(val);
+
+                setTimeout(function(){
+                    mod.find('.form-alert').empty();
+                    mod.find('.key').text('');
+                    mod.find('.lang-id').val('');
+                    mod.find('.val').val('');
+                    mod.modal('hide');
+                    zis.find('button[type="submit"]').removeAttr('disabled');
+                },1500);
+            });
+        });
+    });
+</script>

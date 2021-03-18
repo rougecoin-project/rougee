@@ -1,0 +1,41 @@
+<?php if (!empty($config['paypal_id']) && !empty($config['paypal_secret'])) { ?>
+<button class="btn btn-paypal" onclick="Pxp_GetPayPalLink('<?php echo($context['pay_type']) ?>');">
+	<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve"> <path style="fill:#002987;" d="M428.876,132.28c0.867-7.045,1.32-14.218,1.32-21.497C430.196,49.6,380.597,0,319.413,0H134.271 c-11.646,0-21.589,8.41-23.521,19.894l-68.22,405.475c-2.448,14.55,8.768,27.809,23.521,27.809h67.711 c11.646,0,21.776-8.404,23.707-19.889c0,0,0.113-0.673,0.317-1.885h0.001l-9.436,56.086C146.195,500.313,156.08,512,169.083,512 h59.237c10.265,0,19.029-7.413,20.731-17.535l16.829-100.02c2.901-17.242,17.828-29.867,35.311-29.867h15.562 c84.53,0,153.054-68.525,153.054-153.054C469.807,178.815,453.639,149.902,428.876,132.28z"></path> <path style="fill:#0085CC;" d="M428.876,132.28c-10.594,86.179-84.044,152.91-173.086,152.91h-51.665 c-11.661,0-21.732,7.767-24.891,18.749l-30.882,183.549C146.195,500.312,156.08,512,169.083,512h59.237 c10.265,0,19.029-7.413,20.731-17.535l16.829-100.02c2.901-17.242,17.828-29.867,35.311-29.867h15.562 c84.53,0,153.054-68.525,153.054-153.054l0,0C469.807,178.815,453.639,149.902,428.876,132.28z"></path> <path style="fill:#00186A;" d="M204.125,285.19h51.665c89.043,0,162.493-66.731,173.086-152.909 c-15.888-11.306-35.304-17.978-56.29-17.978h-134.85c-15.353,0-28.462,11.087-31.01,26.227l-27.493,163.408 C182.392,292.956,192.464,285.19,204.125,285.19z"></path> </svg>
+	{{LANG paypal}}				
+</button>
+<?php } ?>
+
+<?php if ($config['credit_card'] == 'on') { ?>
+	<button class="btn-cart btn btn-stripe-payment" onclick="Pxp_StripePayment('<?php echo($context['pay_type']) ?>',<?php echo($config['pro_price'].'00') ?>);">
+		<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58 58" xml:space="preserve"> <g id="XMLID_9_"> <path id="XMLID_114_" style="fill:#8798CC;" d="M54.783,50H3.217C1.44,50,0,48.56,0,46.783V11.217C0,9.44,1.44,8,3.217,8h51.566 C56.56,8,58,9.44,58,11.217v35.566C58,48.56,56.56,50,54.783,50"></path> <rect id="XMLID_113_" y="13" style="fill:#556180;" width="58" height="8"></rect> <path id="XMLID_112_" style="fill:#B0D3F0;" d="M15,26H6c-0.553,0-1,0.448-1,1s0.447,1,1,1h9c0.553,0,1-0.448,1-1S15.553,26,15,26"></path> <path id="XMLID_111_" style="fill:#B0D3F0;" d="M29,27c0-0.552-0.447-1-1-1h-9c-0.553,0-1,0.448-1,1s0.447,1,1,1h9 C28.553,28,29,27.552,29,27"></path> <path id="XMLID_110_" style="fill:#B0D3F0;" d="M7,31H6c-0.553,0-1,0.448-1,1s0.447,1,1,1h1c0.553,0,1-0.448,1-1S7.553,31,7,31"></path> <path id="XMLID_109_" style="fill:#B0D3F0;" d="M13,31h-2c-0.553,0-1,0.448-1,1s0.447,1,1,1h2c0.553,0,1-0.448,1-1S13.553,31,13,31 "></path> <path id="XMLID_108_" style="fill:#B0D3F0;" d="M18,31h-1c-0.553,0-1,0.448-1,1s0.447,1,1,1h1c0.553,0,1-0.448,1-1S18.553,31,18,31 "></path> <path id="XMLID_107_" style="fill:#B0D3F0;" d="M24,31h-2c-0.553,0-1,0.448-1,1s0.447,1,1,1h2c0.553,0,1-0.448,1-1S24.553,31,24,31 "></path> <path id="XMLID_106_" style="fill:#B0D3F0;" d="M27.29,31.29C27.109,31.48,27,31.74,27,32c0,0.26,0.109,0.52,0.29,0.71 C27.478,32.89,27.728,33,28,33c0.26,0,0.519-0.11,0.71-0.29C28.89,32.52,29,32.26,29,32c0-0.26-0.11-0.52-0.29-0.71 C28.34,30.92,27.66,30.92,27.29,31.29"></path> <rect id="XMLID_105_" x="36" y="34" style="fill:#91BAE1;" width="16" height="10"></rect> </g> </svg>
+		{{LANG credit_card}}
+	</button>
+<?php } ?>
+
+<?php if ($config['bank_payment'] == 'on') { ?>
+<button class="bank_payment btn btn-bank-payments" onclick="Pxp_BankPayment('<?php echo($context['pay_type']) ?>');">
+		<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="47.001px" height="47.001px" viewBox="0 0 47.001 47.001" xml:space="preserve"><path fill="currentColor" d="M44.845,42.718H2.136C0.956,42.718,0,43.674,0,44.855c0,1.179,0.956,2.135,2.136,2.135h42.708c1.18,0,2.136-0.956,2.136-2.135C46.979,43.674,46.023,42.718,44.845,42.718z"></path><path fill="currentColor" d="M4.805,37.165c-1.18,0-2.136,0.956-2.136,2.136s0.956,2.137,2.136,2.137h37.37c1.18,0,2.136-0.957,2.136-2.137s-0.956-2.136-2.136-2.136h-0.533V17.945h0.533c0.591,0,1.067-0.478,1.067-1.067s-0.478-1.067-1.067-1.067H4.805c-0.59,0-1.067,0.478-1.067,1.067s0.478,1.067,1.067,1.067h0.534v19.219H4.805z M37.37,17.945v19.219h-6.406V17.945H37.37zM26.692,17.945v19.219h-6.406V17.945H26.692z M9.609,17.945h6.406v19.219H9.609V17.945z"></path><path fill="currentColor" d="M2.136,13.891h42.708c0.007,0,0.015,0,0.021,0c1.181,0,2.136-0.956,2.136-2.136c0-0.938-0.604-1.733-1.443-2.021l-21.19-9.535c-0.557-0.25-1.194-0.25-1.752,0L1.26,9.808c-0.919,0.414-1.424,1.412-1.212,2.396C0.259,13.188,1.129,13.891,2.136,13.891z"></path></svg>
+		{{LANG bank_transfer}}				
+</button>
+<?php } ?>
+
+<?php if ($config['paysera'] == 'on') { ?>
+	<button class="btn-cart btn btn-sms-payment" onclick="PayViaSms();">
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11,17V7H4V17H11M11,3A2,2 0 0,1 13,5V19A2,2 0 0,1 11,21H4C2.89,21 2,20.1 2,19V5A2,2 0 0,1 4,3H11M16.5,3H21.5A1.5,1.5 0 0,1 23,4.5V7.5A1.5,1.5 0 0,1 21.5,9H18L15,12V9L15,4.5A1.5,1.5 0 0,1 16.5,3Z"></path></svg>
+		{{LANG sms}}
+	</button>
+<?php } ?>
+
+<?php if ($config['paystack'] == "on" && !empty($config['paystack_secret_key']) && !empty($config['paystack_public_key'])) { ?>
+	<button class="btn-cart btn btn-paystack-payment" onclick="PayViaPaystack();">
+		<img src="{{CONFIG site_url}}/media/img/paystack.png" width="35" height="35">
+		{{LANG paystack}}
+	</button>
+<?php } ?>
+
+<?php if ($config['razorpay'] == "on" && !empty($config['razorpay_key']) && !empty($config['razorpay_secret'])) { ?>
+	<button id="rzp-button1" class="btn-cart btn btn-razorpay-payment" onclick="PayViaRazorpay();">
+		<img src="{{CONFIG site_url}}/media/img/razorpay.png" width="35" height="35">
+		{{LANG razorpay}}
+	</button>
+<?php } ?>

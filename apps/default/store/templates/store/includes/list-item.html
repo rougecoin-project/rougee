@@ -1,0 +1,26 @@
+<div class="item wrapper lazy_"  data-post-id="<?php echo($post_data['post_id']) ?>">
+	<div class="explore-postset" id="<?php echo($post_data['post_id']) ?>" data-post-id="<?php echo($post_data['post_id']) ?>" data-post-views="<?php echo($post_data['views']) ?>" data-post-sells="<?php echo($post_data['sells']) ?>" data-post-download="<?php echo($post_data['downloads']) ?>" data-post-date="<?php echo($post_data['created_date']) ?>"  style="position: relative;">
+		<div class="image" onclick="storelightbox('<?php echo($post_data['post_id']) ?>','<?php echo($context['app_name']) ?>');" style="background-image: url('<?php echo(media($post_data['thumb'])) ?>');">
+			<span class="category">
+				<div class="pp_store_item_lilinfo">
+					<p><?php echo($context['currency_symbol'].getStoreItemPrice($post_data['license_options'])) ?></p>
+					<p><?php echo($post_data['category_name']) ?></p>
+				</div>
+			</span>
+			<div class="caption">
+				<div>
+					<div class="user__">
+						<?php if( !$context['owner'] ){?>
+							<img src="<?php echo(media($post_data['avatar'])) ?>" class="img-circle">
+							<a href="<?php echo(un2url($post_data['username'])) ?>" class="publisher-name"><?php echo($post_data['username']) ?></a>
+						<?php } ?>
+						<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> <?php echo($post_data['views']) ?></span>
+						<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> <?php echo($post_data['downloads']) ?></span>
+						<!--<span style="float: left;width: 100%;"><?php echo($post_data['title']) ?></span>
+						<span style="float: left;color: #fff;font-size: 15px;margin: 0px 7px 0px 10px;" class="time-ago" title="<?php echo(ToDate($post_data['created_date'])) ?>"><?php echo(time2str($post_data['created_date'])); ?></span>-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

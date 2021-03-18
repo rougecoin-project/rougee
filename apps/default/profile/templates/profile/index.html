@@ -1,0 +1,273 @@
+<style>.user-profile-page-content .user-heading::before {background-image: url('<?php echo $context['user_data']['avatar']; ?>');}</style>
+	<div class="user-profile-page-content">
+		<div class="user-heading">
+			<div class="container container-profile user-info">
+				<div class="avatar animated bounceIn">
+					<img src="<?php echo $context['user_data']['avatar']; ?>" class="img-circle">
+					<?php if ($config['raise_money'] == 'on' && !empty($context['fund'])) { ?>
+						<?php if ($config['raise_money_type'] == 0 || ($config['raise_money_type'] == 1 && $context['user_data']['verified'])) { ?>
+						<a href="{{CONFIG site_url}}/user_funding/<?php echo($context['user_data']['username']) ?>" class="usr_prof_fundng" data-ajax="ajax_loading.php?app=user_funding&apph=user_funding&user=<?php echo($context['user_data']['username']) ?>" title="{{LANG user_funding}}">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10s10-4.486,10-10S17.514,2,12,2z M13,16.915V18h-2v-1.08 C8.661,16.553,8,14.918,8,14h2c0.011,0.143,0.159,1,2,1c1.38,0,2-0.585,2-1c0-0.324,0-1-2-1c-3.48,0-4-1.88-4-3 c0-1.288,1.029-2.584,3-2.915V6.012h2v1.109c1.734,0.41,2.4,1.853,2.4,2.879h-1l-1,0.018C13.386,9.638,13.185,9,12,9 c-1.299,0-2,0.516-2,1c0,0.374,0,1,2,1c3.48,0,4,1.88,4,3C16,15.288,14.971,16.584,13,16.915z"/></svg>
+						</a>
+					<?php } } ?>
+				</div>
+				<div class="info">	
+					<div class="uname animated fadeInUpBig">
+						<a href="<?php echo $context['user_data']['url']; ?>" data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($context['user_data']['username']) ?>">
+							<h4><?php echo $context['user_data']['username']; ?> 
+							<?php if ($context['user_data']['verified'] > 0) { ?>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#00BCD4" class="verified-color feather feather-check-circle"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>
+							<?php } ?>
+							</h4>
+						</a>
+						<?php if (IS_LOGGED) {  ?>
+							<div class="modal-menu dropdown">
+							<span class="dropdown-toggle" data-toggle="dropdown">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+							</span>
+							<ul class="dropdown-menu zoom">
+								<?php if ($context['is_owner']) { ?>
+									<li><a href="{{CONFIG site_url}}/settings/privacy/{{ME username}}" data-ajax="ajax_loading.php?app=settings&apph=settings&user=<?php echo($context['user_data']['username']) ?>&page=privacy">{{LANG profile_privacy}}</a></li>
+									<li><a href="{{CONFIG site_url}}/settings/notifications/{{ME username}}" data-ajax="ajax_loading.php?app=settings&apph=settings&user=<?php echo($context['user_data']['username']) ?>&page=notifications">{{LANG notifications}}</a></li>
+
+									<?php if ($config['business_account'] == 'on' && $context['user_data']['business_account']) { ?>
+										<li><a href="{{CONFIG site_url}}/account_analytics" data-ajax="ajax_loading.php?app=account_analytics&apph=account_analytics">{{LANG account_analytics}}</a></li>
+									<?php } ?>
+									
+									<?php if ($config['raise_money'] == 'on') { ?>
+										<?php if ($config['raise_money_type'] == 0 || ($config['raise_money_type'] == 1 && $context['user_data']['verified'])) { ?>
+											<li><a href="{{CONFIG site_url}}/funding" data-ajax="ajax_loading.php?app=funding&apph=funding">{{LANG manage_funding}}</a></li>
+											<li><a href="{{CONFIG site_url}}/funding_acquisition" data-ajax="ajax_loading.php?app=funding_acquisition&apph=funding_acquisition">{{LANG funding_acquisition}}</a></li>
+									<?php } } ?>
+									
+									<li><a href="{{CONFIG site_url}}/signout">{{LANG logout}}</a></li>
+								<?php } ?>
+
+								<?php if (!$context['is_owner']) { ?>
+									<?php if ($context['is_reported']) { ?>
+										<li class="report-profile" onclick="report_profile('<?php echo($context['user_data']['user_id']) ?>',-1);"><a href="javascript:void(0);">{{LANG cancel_report}}</a></li>
+									<?php } else{ ?>
+										<li class="report-profile" data-modal-menu="report-profile"><a href="javascript:void(0);">{{LANG report_user}}</a></li>
+									<?php } ?>
+									<?php if ($context['is_blocked']) { ?>
+										<li onclick="block_user('<?php echo($context['user_data']['user_id']) ?>',-1);"><a href="javascript:void(0);">{{LANG unblock}}</a></li>
+									<?php } else{ ?>
+										<li onclick="block_user('<?php echo($context['user_data']['user_id']) ?>',1);"><a href="javascript:void(0);">{{LANG block_user}}</a></li>
+									<?php } ?>
+								<?php } ?>
+							</ul>
+							</div>
+						<?php } ?>
+					</div>
+		            <div class="clear"></div>
+		            <p class="fluid status animated fadeInUpBig"><?php echo($context['user_data']['about']) ?></p>
+					<ul class="navbar-nav nav justify-content-center social-links animated fadeInUpBig">
+						<?php if($context['user_data']['website']){ ?>
+							<li class="btn-website">
+								<a href="<?php echo($context['user_data']['website']) ?>" rel="nofollow"><svg xmlns="http://www.w3.org/2000/svg" class="feather feather-website" width="24" height="24" viewBox="0 0 24 24" fill="#f3f3f3"><path d="M16.36,14C16.44,13.34 16.5,12.68 16.5,12C16.5,11.32 16.44,10.66 16.36,10H19.74C19.9,10.64 20,11.31 20,12C20,12.69 19.9,13.36 19.74,14M14.59,19.56C15.19,18.45 15.65,17.25 15.97,16H18.92C17.96,17.65 16.43,18.93 14.59,19.56M14.34,14H9.66C9.56,13.34 9.5,12.68 9.5,12C9.5,11.32 9.56,10.65 9.66,10H14.34C14.43,10.65 14.5,11.32 14.5,12C14.5,12.68 14.43,13.34 14.34,14M12,19.96C11.17,18.76 10.5,17.43 10.09,16H13.91C13.5,17.43 12.83,18.76 12,19.96M8,8H5.08C6.03,6.34 7.57,5.06 9.4,4.44C8.8,5.55 8.35,6.75 8,8M5.08,16H8C8.35,17.25 8.8,18.45 9.4,19.56C7.57,18.93 6.03,17.65 5.08,16M4.26,14C4.1,13.36 4,12.69 4,12C4,11.31 4.1,10.64 4.26,10H7.64C7.56,10.66 7.5,11.32 7.5,12C7.5,12.68 7.56,13.34 7.64,14M12,4.03C12.83,5.23 13.5,6.57 13.91,8H10.09C10.5,6.57 11.17,5.23 12,4.03M18.92,8H15.97C15.65,6.75 15.19,5.55 14.59,4.44C16.43,5.07 17.96,6.34 18.92,8M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg><span><?php echo $context['user_data']['website']; ?></span></a>
+							</li>
+						<?php } ?>
+						<?php if($context['user_data']['google']){ ?>
+							<li class="btn-social">
+								<a href="<?php echo($context['user_data']['google']) ?>"><svg xmlns="http://www.w3.org/2000/svg" class="feather feather-google" width="24" height="24" viewBox="0 0 24 24" fill="#db4437"><path d="M23,11H21V9H19V11H17V13H19V15H21V13H23M8,11V13.4H12C11.8,14.4 10.8,16.4 8,16.4C5.6,16.4 3.7,14.4 3.7,12C3.7,9.6 5.6,7.6 8,7.6C9.4,7.6 10.3,8.2 10.8,8.7L12.7,6.9C11.5,5.7 9.9,5 8,5C4.1,5 1,8.1 1,12C1,15.9 4.1,19 8,19C12,19 14.7,16.2 14.7,12.2C14.7,11.7 14.7,11.4 14.6,11H8Z" /></svg></a>
+							</li>
+						<?php } ?>
+						<?php if($context['user_data']['facebook']){ ?>
+							<li class="btn-social">
+								<a href="<?php echo($context['user_data']['facebook']) ?>"><svg xmlns="http://www.w3.org/2000/svg" class="feather feather-facebook" width="24" height="24" viewBox="0 0 24 24" fill="#4267b3"><path d="M17,2V2H17V6H15C14.31,6 14,6.81 14,7.5V10H14L17,10V14H14V22H10V14H7V10H10V6A4,4 0 0,1 14,2H17Z" /></svg></a>
+							</li>
+						<?php } ?>
+						<?php if($context['user_data']['twitter']){ ?>
+							<li class="btn-social">
+								<a href="<?php echo($context['user_data']['twitter']) ?>"><svg xmlns="http://www.w3.org/2000/svg" class="feather feather-twitter" width="24" height="24" viewBox="0 0 24 24" fill="#1da1f2"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg></a>
+							</li>
+						<?php } ?>
+					</ul>
+					<?php if ($context['user_data']['business_account'] == 1 && $config['business_account'] == 'on') { ?>
+					<?php if (!empty($context['user_data']['b_phone']) || !empty($context['user_data']['b_site']) || !empty($context['user_data']['b_email'])) { ?>
+						<nav class="cd-stretchy-nav">
+							<a class="cd-nav-trigger" href="javascript:void(0);"><span aria-hidden="true"></span></a>
+							<ul class="list-unstyled">
+								<?php if (!empty($context['user_data']['b_phone'])) { ?>
+									<li>
+										<a href="javascript:void(0);" onclick="window.location.href = 'tel:<?php echo($context['user_data']['b_phone']) ?>'"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z" /></svg> <span>{{LANG call_now}}</span></a>
+									</li>
+								<?php } ?>
+								<?php if (!empty($context['user_data']['b_site'])) { ?>
+									<li>
+										<a href="javascript:void(0);" onclick="window.location.href = '<?php echo($context['user_data']['b_site']) ?>'"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" /></svg> <span><?php echo lang($context['call_action'][$context['user_data']['b_site_action']]); ?></span></a>
+									</li>
+								<?php } ?>
+								<?php if (!empty($context['user_data']['b_email'])) { ?>
+									<li>
+										<a href="javascript:void(0);" onclick="window.location.href = 'mailto:<?php echo($context['user_data']['b_phone']) ?>'"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" /></svg> <span>{{LANG send_email}}</span></a>
+									</li>
+								<?php } ?>
+							</ul>
+							<span aria-hidden="true" class="stretchy-nav-bg"></span>
+						</nav>
+						<script>
+							jQuery(document).ready(function(){if($('.cd-stretchy-nav').length>0){var stretchyNavs=$('.cd-stretchy-nav');stretchyNavs.each(function(){var stretchyNav=$(this),stretchyNavTrigger=stretchyNav.find('.cd-nav-trigger');stretchyNavTrigger.on('click',function(event){event.preventDefault();stretchyNav.toggleClass('nav-is-visible');});});$(document).on('click',function(event){(!$(event.target).is('.cd-nav-trigger')&&!$(event.target).is('.cd-nav-trigger span'))&&stretchyNavs.removeClass('nav-is-visible');});}});
+						</script>
+					<?php } ?>
+					<?php } ?>
+					<?php if (!$context['is_owner'] && !$context['is_blocked']) {
+						if ($context['is_following'] === 2) {
+
+						 ?>
+							<button class="btn btn-follow btn-requested animated fadeInUpBig" onclick="follow(<?php echo $context['user_data']['user_id']; ?> ,this);" data-profile-type="<?php echo($context['user_data']['p_privacy']) ?>">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg> <span>{{LANG requested}}</span>
+							</button>
+						<?php }elseif($context['is_following'] > 0){ ?>
+							<button class="btn btn-follow btn-following animated fadeInUpBig" onclick="follow(<?php echo $context['user_data']['user_id']; ?> ,this);" data-profile-type="<?php echo($context['user_data']['p_privacy']) ?>">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg> <span>{{LANG following}}</span>
+							</button>
+						<?php } else{ ?>
+							<button class="btn btn-follow animated fadeInUpBig" onclick="follow(<?php echo $context['user_data']['user_id']; ?>,this);" data-profile-type="<?php echo($context['user_data']['p_privacy']) ?>">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg> <span>{{LANG follow}}</span>
+							</button>
+						<?php } ?>
+						<?php if ($context['chat_privacy'] == 1) { ?>
+							<a href="{{CONFIG site_url}}/messages/<?php echo($context['user_data']['username']) ?>"  class="btn btn-follow btn-message btn_links animated fadeInUpBig">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> <span>{{LANG message}}</span>
+							</a>
+							<?php if ($config['video_chat'] == 1) { ?>
+								<a href="javascript:void(0);" onclick="Wo_GenerateVideoCall(<?php echo($me['user_id']) ?>)" class="btn btn-follow btn_links animated fadeInUpBig">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-video"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg> <span>{{LANG video_call}}</span>
+								</a>
+								<input type="hidden" id="vxd" name="vx" value="<?php echo($context['user_data']['user_id']) ?>">
+							<?php } ?>
+						<?php } ?>
+					<?php } ?>
+
+					<?php if($context['is_blocked']){ ?>
+						<button class="btn btn-info btn-unblock animated fadeInUpBig" onclick="block_user('<?php echo($context['user_data']['user_id']) ?>',-1);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-unlock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg> {{LANG unblock}}</button>
+					<?php } ?>
+					<?php if($context['is_owner'] || IS_ADMIN){ ?>
+						<a href="{{CONFIG site_url}}/settings/general/<?php echo($context['user_data']['username']) ?>" class="btn btn-info btn_links animated fadeInUpBig" data-ajax="ajax_loading.php?app=settings&apph=settings&user=<?php echo($context['user_data']['username']) ?>&page=general">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon><line x1="3" y1="22" x2="21" y2="22"></line></svg> {{LANG profile_settings}}
+						</a>
+					<?php } ?>
+				</div>
+			</div>
+		</div>
+		
+		<div class="navbar-bottom">
+			<div class="container container-profile">
+				<ul class="navbar-nav nav justify-content-center">
+					<li class="nav-item <?php if($context['page'] == 'posts'){ ?>active<?php } ?>">
+						<a class="nav__item"  <?php if($context['navbar'] && $context['total_posts'] > 0 ){ ?>href="<?php echo($context['user_data']['url']) ?>/posts" data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($context['user_data']['username']) ?>&page=posts"<?php } ?> >
+							<?php echo $context['total_posts']; ?><span>  {{LANG posts}}</span>
+						</a>
+					</li>
+					<li class="nav-item <?php if($context['page'] == 'followers'){ ?>active<?php } ?>">
+						<a class="nav__item"  <?php if($context['navbar'] && $context['user_followers']){ ?>href="<?php echo($context['user_data']['url']) ?>/followers" data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($context['user_data']['username']) ?>&page=followers"<?php } ?>>
+							<?php echo $context['user_followers']; ?> <span>{{LANG followers}}</span>
+						</a>
+					</li>
+					<li class="nav-item <?php if($context['page'] == 'following'){ ?>active<?php } ?>">
+						<a class="nav__item"  <?php if($context['navbar'] && $context['user_following']){ ?>href="<?php echo($context['user_data']['url']) ?>/following" data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($context['user_data']['username']) ?>&page=following"<?php } ?>>
+							<?php echo $context['user_following']; ?><span>{{LANG following}}</span>
+						</a>
+					</li>
+					<?php if($context['is_owner']){ ?>
+						<li class="nav-item <?php if($context['page'] == 'favourites'){ ?>active<?php } ?>">
+							<a class="nav__item"  <?php if($context['favourites']){ ?>href="<?php echo($context['user_data']['url']) ?>/favourites" data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($context['user_data']['username']) ?>&page=favourites"<?php } ?>>
+								<?php echo $context['favourites']; ?><span>{{LANG favourites}}</span>
+							</a>
+						</li>
+						<?php if($context['user_data']['is_pro']){ ?>
+						<li class="nav-item <?php if($context['page'] == 'boosted_posts'){ ?>active<?php } ?>">
+							<a class="nav__item"  <?php if($context['boosted_posts_count']){ ?>href="<?php echo($context['user_data']['url']) ?>/boosted_posts" data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($context['user_data']['username']) ?>&page=boosted_posts"<?php } ?>>
+								<?php echo $context['boosted_posts_count']; ?><span>{{LANG boosted_posts}}</span>
+							</a>
+						</li>
+						<?php } ?>
+					<?php } ?>
+				</ul>
+			</div>
+		</div>
+		<?php 
+		if($context['is_blocked']){ ?>
+			<div class="profile-blocked container">
+				<h5 class="empty_state">
+					<svg xmlns="http://www.w3.org/2000/svg" class="confetti" viewBox="0 0 1081 601"><path class="st0" d="M711.8 91.5c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C695.2 84 702.7 91.5 711.8 91.5zM711.8 64.1c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S705.9 64.1 711.8 64.1z"/><path class="st0" d="M74.5 108.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C57.9 100.9 65.3 108.3 74.5 108.3zM74.5 81c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7S68.6 81 74.5 81z"/><path class="st1" d="M303 146.1c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C286.4 138.6 293.8 146.1 303 146.1zM303 118.7c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7C292.3 123.5 297.1 118.7 303 118.7z"/><path class="st2" d="M243.4 347.4c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7S234.2 347.4 243.4 347.4zM243.4 320c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7S237.5 320 243.4 320z"/><path class="st1" d="M809.8 542.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C793.2 534.8 800.7 542.3 809.8 542.3zM809.8 514.9c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S803.9 514.9 809.8 514.9z"/><path class="st3" d="M1060.5 548.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C1043.9 540.8 1051.4 548.3 1060.5 548.3zM1060.5 520.9c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S1054.6 520.9 1060.5 520.9z"/><path class="st3" d="M387.9 25.2l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L387.9 25.2z"/><path class="st3" d="M368.3 498.6l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L368.3 498.6z"/><path class="st3" d="M16.4 270.2l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L16.4 270.2z"/><path class="st2" d="M824.7 351.1l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L824.7 351.1z"/><path class="st1" d="M146.3 573.6H138v-8.3c0-1.3-1-2.3-2.3-2.3s-2.3 1-2.3 2.3v8.3h-8.3c-1.3 0-2.3 1-2.3 2.3s1 2.3 2.3 2.3h8.3v8.3c0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3v-8.3h8.3c1.3 0 2.3-1 2.3-2.3S147.6 573.6 146.3 573.6z"/><path class="st1" d="M1005.6 76.3h-8.3V68c0-1.3-1-2.3-2.3-2.3s-2.3 1-2.3 2.3v8.3h-8.3c-1.3 0-2.3 1-2.3 2.3s1 2.3 2.3 2.3h8.3v8.3c0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3v-8.3h8.3c1.3 0 2.3-1 2.3-2.3S1006.8 76.3 1005.6 76.3z"/><path class="st1" d="M95.5 251.6c-3.5 0-6.3 2.8-6.3 6.3 0 3.5 2.8 6.3 6.3 6.3s6.3-2.8 6.3-6.3S99 251.6 95.5 251.6z"/><path class="st0" d="M1032 281.8c-3.5 0-6.3 2.8-6.3 6.3s2.8 6.3 6.3 6.3 6.3-2.8 6.3-6.3S1035.5 281.8 1032 281.8z"/><path class="st2" d="M741.6 139.3c-3.5 0-6.3 2.8-6.3 6.3s2.8 6.3 6.3 6.3 6.3-2.8 6.3-6.3S745 139.3 741.6 139.3z"/><path class="st3" d="M890.7 43.5c3.3 0 6-2.7 6-6s-2.7-6-6-6 -6 2.7-6 6C884.8 40.8 887.4 43.5 890.7 43.5z"/><path class="st0" d="M164.3 537.6c3.3 0 6-2.7 6-6s-2.7-6-6-6 -6 2.7-6 6C158.4 535 161 537.6 164.3 537.6z"/></svg>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="#607D8B" class="feather feather-block" width="24" height="24" viewBox="0 0 24 24"><path d="M15,14C17.67,14 23,15.33 23,18V20H7V18C7,15.33 12.33,14 15,14M15,12A4,4 0 0,1 11,8A4,4 0 0,1 15,4A4,4 0 0,1 19,8A4,4 0 0,1 15,12M5,9.59L7.12,7.46L8.54,8.88L6.41,11L8.54,13.12L7.12,14.54L5,12.41L2.88,14.54L1.46,13.12L3.59,11L1.46,8.88L2.88,7.46L5,9.59Z" /></svg>
+				</h5>
+				<h4>{{LANG u_blocked_zis_usr}}</h4>
+				<p>{{LANG unblock2see_profile}}</p>
+				<button class="btn btn-info error_unblock" onclick="block_user('<?php echo($context['user_data']['user_id']) ?>',-1);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-unlock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg> {{LANG unblock}}</button>
+			</div>
+		<?php } else{
+			if ($context['user_data']['p_privacy'] == 0 && !$context['is_owner']) {
+
+		 ?>
+				<div class="container container-profile">
+					<div class="private-profile">
+						<h5 class="empty_state">
+							<svg xmlns="http://www.w3.org/2000/svg" class="confetti" viewBox="0 0 1081 601"><path class="st0" d="M711.8 91.5c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C695.2 84 702.7 91.5 711.8 91.5zM711.8 64.1c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S705.9 64.1 711.8 64.1z"/><path class="st0" d="M74.5 108.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C57.9 100.9 65.3 108.3 74.5 108.3zM74.5 81c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7S68.6 81 74.5 81z"/><path class="st1" d="M303 146.1c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C286.4 138.6 293.8 146.1 303 146.1zM303 118.7c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7C292.3 123.5 297.1 118.7 303 118.7z"/><path class="st2" d="M243.4 347.4c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7S234.2 347.4 243.4 347.4zM243.4 320c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7S237.5 320 243.4 320z"/><path class="st1" d="M809.8 542.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C793.2 534.8 800.7 542.3 809.8 542.3zM809.8 514.9c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S803.9 514.9 809.8 514.9z"/><path class="st3" d="M1060.5 548.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C1043.9 540.8 1051.4 548.3 1060.5 548.3zM1060.5 520.9c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S1054.6 520.9 1060.5 520.9z"/><path class="st3" d="M387.9 25.2l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L387.9 25.2z"/><path class="st3" d="M368.3 498.6l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L368.3 498.6z"/><path class="st3" d="M16.4 270.2l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L16.4 270.2z"/><path class="st2" d="M824.7 351.1l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L824.7 351.1z"/><path class="st1" d="M146.3 573.6H138v-8.3c0-1.3-1-2.3-2.3-2.3s-2.3 1-2.3 2.3v8.3h-8.3c-1.3 0-2.3 1-2.3 2.3s1 2.3 2.3 2.3h8.3v8.3c0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3v-8.3h8.3c1.3 0 2.3-1 2.3-2.3S147.6 573.6 146.3 573.6z"/><path class="st1" d="M1005.6 76.3h-8.3V68c0-1.3-1-2.3-2.3-2.3s-2.3 1-2.3 2.3v8.3h-8.3c-1.3 0-2.3 1-2.3 2.3s1 2.3 2.3 2.3h8.3v8.3c0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3v-8.3h8.3c1.3 0 2.3-1 2.3-2.3S1006.8 76.3 1005.6 76.3z"/><path class="st1" d="M95.5 251.6c-3.5 0-6.3 2.8-6.3 6.3 0 3.5 2.8 6.3 6.3 6.3s6.3-2.8 6.3-6.3S99 251.6 95.5 251.6z"/><path class="st0" d="M1032 281.8c-3.5 0-6.3 2.8-6.3 6.3s2.8 6.3 6.3 6.3 6.3-2.8 6.3-6.3S1035.5 281.8 1032 281.8z"/><path class="st2" d="M741.6 139.3c-3.5 0-6.3 2.8-6.3 6.3s2.8 6.3 6.3 6.3 6.3-2.8 6.3-6.3S745 139.3 741.6 139.3z"/><path class="st3" d="M890.7 43.5c3.3 0 6-2.7 6-6s-2.7-6-6-6 -6 2.7-6 6C884.8 40.8 887.4 43.5 890.7 43.5z"/><path class="st0" d="M164.3 537.6c3.3 0 6-2.7 6-6s-2.7-6-6-6 -6 2.7-6 6C158.4 535 161 537.6 164.3 537.6z"/></svg>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="#607D8B" class="feather feather-lock" width="24" height="24" viewBox="0 0 24 24"><path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z" /></svg>
+						</h5>
+						<h4>{{LANG profile_is_private}}</h4>
+					</div>
+				</div>
+			<?php } elseif ($context['user_data']['p_privacy'] == 1 && !$context['is_owner'] && (!$context['is_following'] || $context['is_following'] === 2)) { 
+				?>
+				<div class="container container-profile">
+					<div class="private-profile">
+						<h5 class="empty_state">
+							<svg xmlns="http://www.w3.org/2000/svg" class="confetti" viewBox="0 0 1081 601"><path class="st0" d="M711.8 91.5c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C695.2 84 702.7 91.5 711.8 91.5zM711.8 64.1c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S705.9 64.1 711.8 64.1z"/><path class="st0" d="M74.5 108.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C57.9 100.9 65.3 108.3 74.5 108.3zM74.5 81c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7S68.6 81 74.5 81z"/><path class="st1" d="M303 146.1c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C286.4 138.6 293.8 146.1 303 146.1zM303 118.7c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7C292.3 123.5 297.1 118.7 303 118.7z"/><path class="st2" d="M243.4 347.4c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7S234.2 347.4 243.4 347.4zM243.4 320c5.9 0 10.7 4.8 10.7 10.7 0 5.9-4.8 10.7-10.7 10.7s-10.7-4.8-10.7-10.7S237.5 320 243.4 320z"/><path class="st1" d="M809.8 542.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C793.2 534.8 800.7 542.3 809.8 542.3zM809.8 514.9c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S803.9 514.9 809.8 514.9z"/><path class="st3" d="M1060.5 548.3c9.2 0 16.7-7.5 16.7-16.7s-7.5-16.7-16.7-16.7 -16.7 7.5-16.7 16.7C1043.9 540.8 1051.4 548.3 1060.5 548.3zM1060.5 520.9c5.9 0 10.7 4.8 10.7 10.7s-4.8 10.7-10.7 10.7 -10.7-4.8-10.7-10.7S1054.6 520.9 1060.5 520.9z"/><path class="st3" d="M387.9 25.2l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L387.9 25.2z"/><path class="st3" d="M368.3 498.6l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L368.3 498.6z"/><path class="st3" d="M16.4 270.2l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L16.4 270.2z"/><path class="st2" d="M824.7 351.1l7.4-7.4c1.1-1.1 1.1-3 0-4.1s-3-1.1-4.1 0l-7.4 7.4 -7.4-7.4c-1.1-1.1-3-1.1-4.1 0s-1.1 3 0 4.1l7.4 7.4 -7.4 7.4c-1.1 1.1-1.1 3 0 4.1s3 1.1 4.1 0l7.4-7.4 7.4 7.4c1.1 1.1 3 1.1 4.1 0s1.1-3 0-4.1L824.7 351.1z"/><path class="st1" d="M146.3 573.6H138v-8.3c0-1.3-1-2.3-2.3-2.3s-2.3 1-2.3 2.3v8.3h-8.3c-1.3 0-2.3 1-2.3 2.3s1 2.3 2.3 2.3h8.3v8.3c0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3v-8.3h8.3c1.3 0 2.3-1 2.3-2.3S147.6 573.6 146.3 573.6z"/><path class="st1" d="M1005.6 76.3h-8.3V68c0-1.3-1-2.3-2.3-2.3s-2.3 1-2.3 2.3v8.3h-8.3c-1.3 0-2.3 1-2.3 2.3s1 2.3 2.3 2.3h8.3v8.3c0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3v-8.3h8.3c1.3 0 2.3-1 2.3-2.3S1006.8 76.3 1005.6 76.3z"/><path class="st1" d="M95.5 251.6c-3.5 0-6.3 2.8-6.3 6.3 0 3.5 2.8 6.3 6.3 6.3s6.3-2.8 6.3-6.3S99 251.6 95.5 251.6z"/><path class="st0" d="M1032 281.8c-3.5 0-6.3 2.8-6.3 6.3s2.8 6.3 6.3 6.3 6.3-2.8 6.3-6.3S1035.5 281.8 1032 281.8z"/><path class="st2" d="M741.6 139.3c-3.5 0-6.3 2.8-6.3 6.3s2.8 6.3 6.3 6.3 6.3-2.8 6.3-6.3S745 139.3 741.6 139.3z"/><path class="st3" d="M890.7 43.5c3.3 0 6-2.7 6-6s-2.7-6-6-6 -6 2.7-6 6C884.8 40.8 887.4 43.5 890.7 43.5z"/><path class="st0" d="M164.3 537.6c3.3 0 6-2.7 6-6s-2.7-6-6-6 -6 2.7-6 6C158.4 535 161 537.6 164.3 537.6z"/></svg>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="#607D8B" class="feather feather-lock" width="24" height="24" viewBox="0 0 24 24"><path d="M12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8H17V6A5,5 0 0,0 12,1M12,2.9C13.71,2.9 15.1,4.29 15.1,6V8H8.9V6C8.9,4.29 10.29,2.9 12,2.9M11,11H13V15H11V11M11,17H13V19H11V17Z" /></svg>
+						</h5>
+						<h4>{{LANG profile_is_private}}</h4>
+						<p>{{LANG follow2see_profile}}</p>
+					</div>
+				<div class="container container-profile">
+			<?php } else{ 
+				?>
+				<div class="fluid include">
+					<?php include $context['content_page']; ?>
+				</div>
+			<?php } ?>
+	    <?php } ?>
+	</div>
+		<?php
+	include $context['dirname_theme'].'/main/templates/modals/delete-post.html';
+	include $context['dirname_theme'].'/main/templates/modals/embed_post.html';
+	include $context['dirname_theme'].'/main/templates/modals/delete-comment.html';
+?>
+	<?php if (!$context['is_owner']) { ?>
+		<div class="modal--menu" id="report-profile">
+			<div class="modal-outer">
+				<div class="modal-inner">
+					<h5 class="title"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users" color="#000"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg> {{LANG report_user}}
+					<span class="pull-right" title="{{LANG cancel}}" data-modal--menu-dismiss>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+					</span>
+					</h5>
+					<ul class="list-group">
+						<li class="list-group-item" onclick="report_profile('<?php echo($context['user_data']['user_id']) ?>',1);"><a href="javascript:void(0);">{{LANG report_t1}}</a></li>
+						<li class="list-group-item" onclick="report_profile('<?php echo($context['user_data']['user_id']) ?>',2);"><a href="javascript:void(0);">{{LANG report_t2}}</a></li>
+						<li class="list-group-item" onclick="report_profile('<?php echo($context['user_data']['user_id']) ?>',3);"><a href="javascript:void(0);">{{LANG report_t3}}</a></li>
+						<li class="list-group-item" onclick="report_profile('<?php echo($context['user_data']['user_id']) ?>',4);"><a href="javascript:void(0);">{{LANG report_t4}}</a></li>
+						<li class="list-group-item" onclick="report_profile('<?php echo($context['user_data']['user_id']) ?>',5);"><a href="javascript:void(0);">{{LANG report_t5}}</a></li>
+						<li class="list-group-item" onclick="report_profile('<?php echo($context['user_data']['user_id']) ?>',6);"><a href="javascript:void(0);">{{LANG report_t6}}</a></li>
+						<li class="list-group-item" onclick="report_profile('<?php echo($context['user_data']['user_id']) ?>',7);"><a href="javascript:void(0);">{{LANG report_t7}}</a></li>
+						<li class="list-group-item" onclick="report_profile('<?php echo($context['user_data']['user_id']) ?>',8);"><a href="javascript:void(0);">{{LANG report_t8}}</a></li>
+					</ul>
+				</div>
+				<div class="overlay hidden">
+					<div id="pp_loader"><div class="speeding_wheel"></div></div>
+				</div>
+			</div>
+		</div>
+		<?php 
+		include $context['dirname_theme'].'/main/templates/modals/block-user.html';
+		include $context['dirname_theme'].'/main/templates/modals/unblock-user.html';
+
+		 ?>
+	<?php } ?>
+	<?php
+	 include 'js/script.html';
+	 include $context['dirname_theme'].'/main/templates/includes/lazy-load.html';
+	 ?>

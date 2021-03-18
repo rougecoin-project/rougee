@@ -1,0 +1,31 @@
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+    <div class="card theme-item">
+        <div class="header">
+            <h2>
+                <?php echo $cd['theme_item']['name']; ?> v<?php echo $cd['theme_item']['version']; ?> 
+                <small>
+                    <a href="mailto:<?php echo $cd['theme_item']['email']; ?>"><?php echo $cd['theme_item']['author']; ?></a>  
+                </small>
+            </h2>
+            <?php if ($config['theme'] == $cd['theme_item']['folder']): ?>
+                <span class="header-dropdown m-r--5">
+                  <i class="material-icons active">check_circle</i>  
+                </span>  
+            <?php else: ?>
+                <ul class="header-dropdown m-r--5">
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">more_vert</i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li class="activate-theme" data-theme="<?php echo($cd['theme_item']['folder']); ?>">
+                                <a href="javascript:void(0);" class=" waves-effect waves-block">Activate</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            <?php endif; ?>
+        </div>
+        <div class="cover" style="background-image: url('<?php echo $cd['theme_item']['cover']; ?>');"> </div>
+    </div>
+</div>

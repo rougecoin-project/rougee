@@ -1,0 +1,305 @@
+<?php 
+$site_name = $config['site_name'];
+$site_desc = $config['site_desc'];
+$site_email = $config['site_email'];
+$keywords = $config['meta_keywords'];
+$obscene = $config['obscene'];
+$caption_len = $config['caption_len'];
+$comment_len = $config['comment_len'];
+$story_duration = $config['story_duration'];
+$watermark_on = ($config['watermark'] == 'on') ? 'checked' : '';
+$watermark_off = ($config['watermark'] == 'off') ? 'checked' : '';
+
+$blog_system_on = ($config['blog_system'] == 'on') ? 'checked' : '';
+$blog_system_off = ($config['blog_system'] == 'off') ? 'checked' : '';
+
+$video_chat_on = ($config['video_chat'] == '1') ? 'checked' : '';
+$video_chat_off = ($config['video_chat'] == '0') ? 'checked' : '';
+
+
+$watermark_link = $config['watermark_link'];
+$google_analytics = $admin::decode($config['google_analytics']);
+$langs = $admin::getLangs();
+?>
+
+<div class="block-header">
+    <h2 class="breadcrumb">Settings <i class="material-icons">keyboard_arrow_right</i> Site Settings</h2>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Website Settings</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form site-settings-form">
+                    	<div class="form-alert"></div>
+						<div class="form-group form-float">
+							<div class="form-line">
+                                <input type="text" id="site_name" name="site_name" class="form-control" value="<?php echo($site_name); ?>">
+                                <label class="form-label">
+                                    Site name
+                                </label>
+                            </div>	
+						</div>
+						<div class="form-group form-float">
+							<div class="form-line">
+                                <input type="email" id="site_email" name="site_email" class="form-control" value="<?php echo($site_email); ?>">
+                                <label class="form-label">
+                                    Email
+                                </label>
+                            </div>	
+						</div>
+						<div class="form-group form-float">
+							<div class="form-line">
+                                <input type="text" id="meta_keywords" name="meta_keywords" class="form-control" value="<?php echo($keywords); ?>">
+                                <label class="form-label">
+                                    Site keywords
+                                </label>
+                            </div>	
+						</div>
+                        
+                        
+						<div class="form-group form-float">
+							<div class="form-line">
+                                <textarea id="site_desc" name="site_desc" class="form-control"><?php echo($site_desc); ?></textarea>
+                                <label class="form-label">
+                                    Site description
+                                </label>
+                            </div>	
+						</div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" class="form-control" value="<?php echo($config['server_key']); ?>" disabled>
+                                <label class="form-label">
+                                    Server Key
+                                </label>
+                            </div>  
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+                <div class="card">
+            <div class="header">
+                <h2>Image Watermark</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form site-settings-form">
+                        <div class="form-alert"></div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input id="watermark_link" name="watermark_link" class="form-control" value="<?php echo($watermark_link); ?>">
+                                <label class="form-label">
+                                    Image watermark, (jpg, png, jpeg) url.
+                                </label>
+                            </div>  
+                        </div>
+                        <label for="upload_system">Image Watermark System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $watermark_on; ?> name="watermark"  value="on" id="watermark-enabled">
+                            <label for="watermark-enabled" id="watermark-enabled">Enabled</label>
+                            <input type="radio" <?php echo $watermark_off; ?> name="watermark" id="watermark-disabled" value="off">
+                            <label for="watermark-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <p>Example :: media/img/icon.png</p>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="header">
+                <h2>Google Analytics</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form site-settings-form">
+                    	<div class="form-alert"></div>
+						<div class="form-group">
+							<div class="form-line">
+                                <textarea name="google_analytics" id="google_analytics" rows="10" class="form-control"><?php echo($google_analytics); ?></textarea>
+                                <label class="form-label" for="google_analytics">
+                                   Google Analytics Code
+                                </label>
+                            </div>	
+						</div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Other settings</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form site-settings-form">
+                    	<div class="form-alert"></div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="obscene" name="obscene" class="form-control" value="<?php echo($obscene); ?>">
+                                <label class="form-label">
+                                    Obscene words and expressions 
+                                </label>  
+                            </div>
+                            <div>
+                                <a href="https://github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words">
+                                    https://github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words
+                                </a>
+                            </div>
+                        </div>
+						<div class="form-group form-float">
+							<div class="form-line">
+                                <input type="number" id="story_duration" name="story_duration" class="form-control" value="<?php echo($story_duration); ?>">
+                                <label class="form-label">
+                                    User story slide/video duration in seconds
+                                </label>  
+                            </div>
+						</div>
+						<div>
+							<label for="language">Default Language</label>
+	                        <select class="form-control show-tick" id="language" name="language">
+	                        	<option value="">-- Please select --</option>
+	                        	<?php foreach ($langs as $key => $language): ?>
+	                        		<option value="<?php echo($key); ?>" <?php echo ($key == $config['language']) ? 'selected' : ''; ?>>
+	                        			<?php echo($language); ?>
+	                        		</option>
+	                        	<?php endforeach ?>
+	                        </select>
+						</div>
+                        <br>
+                        <label for="upload_system">Blog System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $blog_system_on; ?> name="blog_system"  value="on" id="blog_system-enabled">
+                            <label for="blog_system-enabled" id="blog_system-enabled">Enabled</label>
+                            <input type="radio" <?php echo $blog_system_off; ?> name="blog_system" id="blog_system-disabled" value="off">
+                            <label for="blog_system-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+                        
+                        <label for="upload_system">Video chat</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $video_chat_on; ?> name="video_chat"  value="1" id="video_chat-enabled">
+                            <label for="video_chat-enabled" id="video_chat-enabled">Enabled</label>
+                            <input type="radio" <?php echo $video_chat_off; ?> name="video_chat" id="video_chat-disabled" value="0">
+                            <label for="video_chat-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <div class="form-line">
+                                                        <label class="form-label">
+                                Twilio account Sid
+                            </label>
+                              <input type="text" id="video_accountSid" name="video_accountSid" class="form-control" value="<?php echo $config['video_accountSid']; ?>">
+
+                        </div>
+                        <br>
+                        <div class="form-line">
+                        <label class="form-label">
+                                Twilio api key Sid
+                            </label> 
+                            <input type="text" id="video_apiKeySid" name="video_apiKeySid" class="form-control" value="<?php echo $config['video_apiKeySid']; ?>"> 
+                        </div>
+                        <br>
+                        <div class="form-line">
+                                                       <label class="form-label">
+                                Twilio api key secret
+                            </label>   <input type="text" id="video_apiKeySecret" name="video_apiKeySecret" class="form-control" value="<?php echo $config['video_apiKeySecret']; ?>">
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="header">
+                <h2>Post settings</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form site-settings-form">
+                    	<div class="form-alert"></div>
+						<div class="form-group form-float">
+                            <label for="upload">Max Upload Size</label>
+                            <select class="form-control"  name="max_upload">
+                                <option value="2000000" <?php if($config['max_upload'] == '2000000'){ echo("selected");}?>>2MB</option>
+                                <option value="6000000" <?php if($config['max_upload'] == '6000000'){ echo("selected");}?>>6MB</option>
+                                <option value="12000000" <?php if($config['max_upload'] == '12000000'){ echo("selected");}?>>12MB</option>
+                                <option value="24000000" <?php if($config['max_upload'] == '24000000'){ echo("selected");}?>>24MB</option>
+                                <option value="48000000" <?php if($config['max_upload'] == '48000000'){ echo("selected");}?>>48MB</option>
+                                <option value="96000000" <?php if($config['max_upload'] == '96000000'){ echo("selected");}?>>96MB</option>
+                                <option value="256000000" <?php if($config['max_upload'] == '256000000'){ echo("selected");}?>>256MB</option>
+                                <option value="512000000" <?php if($config['max_upload'] == '512000000'){ echo("selected");}?>>512MB</option>
+                                <option value="1000000000" <?php if($config['max_upload'] == '1000000000'){ echo("selected");}?>>1GB</option>
+                                <option value="10000000000" <?php if($config['max_upload'] == '10000000000'){ echo("selected");}?>>10GB</option>
+                            </select>
+                        </div>
+						
+						<div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="number" id="caption_len" name="caption_len" class="form-control" value="<?php echo($caption_len); ?>">
+                                <label class="form-label">
+                                    Max Caption Characters Length
+                                </label>
+                            </div>	
+                        </div>	
+
+						<div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="number" id="comment_len" name="comment_len" class="form-control" value="<?php echo($comment_len); ?>">
+                                <label class="form-label">
+                                    Max Comment Characters Length
+                                </label>
+                            </div>	
+                        </div>
+						
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(document).ready(function($) {
+        var ssform = $("form.site-settings-form");
+
+        ssform.ajaxForm({
+            url: acpajax_url('site-settings'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSubmit: function(arr,form){
+                $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+            },
+            success: function(data, status, xhr, form){
+                if (data.status == 200) {
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-success',
+                        text:'Settings has been updated successfully'
+                    }));
+                    setTimeout(function(){
+                        ssform.find('div.form-alert .alert').slideUp('fast',function(){
+                            $(this).remove(); 
+                        })    
+                    },1000);
+                }
+                else{
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-warning',
+                        text: data.error
+                    }));
+                }
+
+                ssform.find('button[type=submit]').text('Save').removeAttr('disabled');
+            }
+        });
+    });
+</script>

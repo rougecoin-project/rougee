@@ -1,0 +1,19 @@
+<div>
+	<div class="header">
+		<h4>{{LANG manage_sessions}}</h4>
+		<div class="clear"></div>
+	</div>
+	<hr>
+	<div class="s-users--ls">
+		<?php if ($context['sessions']) {
+			foreach ($context['sessions'] as $key => $sdata) {
+				include 'session.html';
+			}
+		} ?>
+	</div>
+</div>
+
+<?php 
+include $context['dirname_theme'].'/main/templates/includes/lazy-load.html';
+include $context['dirname_theme'].'/settings/templates/settings/js/script.html';
+ ?>

@@ -1,0 +1,440 @@
+<div class="block-header">
+    <h2 class="breadcrumb">Settings <i class="material-icons">keyboard_arrow_right</i> Amazon S3 Settings</h2>
+</div>
+<div class="row">
+
+    <div class="col-lg-6 col-md-6">
+        <div class="card">
+            <div class="body">
+
+                <form class="form login-settings-form" method="POST">
+                    <div class="form-alert"></div>
+                    <label for="amazone_s3">Amazon S3 Storage</label>
+
+                    <div class="form-group">
+
+                        <input type="radio" name="amazone_s3" id="amazone_s3-enabled" value="1" <?php echo ($config['amazone_s3'] == 1) ? 'checked': '';?>>
+
+                        <label for="amazone_s3-enabled">Enabled</label>
+
+                        <input type="radio" name="amazone_s3" id="amazone_s3-disabled" value="0" <?php echo ($config['amazone_s3'] == 0) ? 'checked': '';?>>
+
+                        <label for="amazone_s3-disabled" class="m-l-20">Disabled</label>
+
+                    </div>
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="bucket_name" name="bucket_name" class="form-control" value="<?php echo $config['bucket_name']?>">
+
+                            <label class="form-label">Amazon Bucket Name</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="amazone_s3_key" name="amazone_s3_key" class="form-control" value="<?php echo $config['amazone_s3_key']?>">
+
+                            <label class="form-label">Amazon S3 Key</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="amazone_s3_s_key" name="amazone_s3_s_key" class="form-control" value="<?php echo $config['amazone_s3_s_key']?>">
+
+                            <label class="form-label">Amazon S3 Secret Key</label>
+
+                        </div>
+
+                    </div>
+
+                    <label for="region">Amazon S3 bucket Region</label>
+
+                    <select class="form-control show-tick" id="region" name="region">
+
+                        <option value="us-east-1" <?php echo ($config['region'] == 'us-east-1')   ? ' selected' : '';?> >US East (N. Virginia)</option>
+
+                        <option value="us-east-2" <?php echo ($config['region'] == 'us-east-2')   ? ' selected' : '';?> >US East (Ohio)</option>
+
+                        <option value="us-west-1" <?php echo ($config['region'] == 'us-west-1')   ? ' selected' : '';?> >US West (N. California)</option>
+
+                        <option value="us-west-2" <?php echo ($config['region'] == 'us-west-2')   ? ' selected' : '';?> >US West (Oregon)</option>
+
+                        <option value="ap-northeast-2" <?php echo ($config['region'] == 'ap-northeast-2')   ? ' selected' : '';?> >Asia Pacific (Seoul)</option>
+
+                        <option value="ap-south-1" <?php echo ($config['region'] == 'ap-south-1')   ? ' selected' : '';?> >Asia Pacific (Mumbai)</option>
+
+                        <option value="ap-southeast-1" <?php echo ($config['region'] == 'ap-southeast-1')   ? ' selected' : '';?> >Asia Pacific (Singapore)</option>
+
+                        <option value="ap-southeast-2" <?php echo ($config['region'] == 'ap-southeast-2')   ? ' selected' : '';?> >Asia Pacific (Sydney)</option>
+
+                        <option value="ap-northeast-1" <?php echo ($config['region'] == 'ap-northeast-1')   ? ' selected' : '';?> >Asia Pacific (Tokyo)</option>
+
+                        <option value="ca-central-1" <?php echo ($config['region'] == 'ca-central-1')   ? ' selected' : '';?> >Canada (Central)</option>
+
+                        <option value="eu-central-1" <?php echo ($config['region'] == 'eu-central-1')   ? ' selected' : '';?> >EU (Frankfurt)</option>
+
+                        <option value="eu-west-1" <?php echo ($config['region'] == 'eu-west-1')   ? ' selected' : '';?> >EU (Ireland)</option>
+
+                        <option value="eu-west-2" <?php echo ($config['region'] == 'eu-west-2')   ? ' selected' : '';?> >EU (London)</option>
+
+                        <option value="sa-east-1" <?php echo ($config['region'] == 'sa-east-1')   ? ' selected' : '';?> >South America (São Paulo)</option>
+
+                    </select>
+
+                    <div class="clearfix"></div>
+
+                    <br><br>
+
+                    <span class="help-block ">1. Before enabling Amazon S3, make sure you upload the whole "upload/" folder to your bucket.</span>
+
+                    <span class="help-block ">2. Before disabling Amazon S3, make sure you download the whole "upload/" folder to your server.</span>
+
+                    <span class="help-block ">3. We recommend to upload the folder and files via <a href="http://s3tools.org/s3cmd">S3cmd</a>.</span>
+
+                    <span class="help-block ">4. If your site is still brand new, you can escape the upload step, but make sure to click on "Test Connection".</span>
+
+                    <!-- <input type="hidden" name="hash_id" value="<?php //echo Wo_CreateSession();?>"> -->
+
+                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+
+                    <button type="button" class="btn btn-warning m-t-15 waves-effect" onclick="Wo_TestS3()" id="s3test">Test Connection</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6">
+        <div class="card">
+            <div class="body">
+
+                <form class="form login-settings-form" method="POST">
+                    <div class="form-alert"></div>
+                    <label for="google_cloud_storage">Google cloud storage</label>
+
+                    <div class="form-group  form-float">
+
+                        <input type="radio" name="google_cloud_storage" id="google_cloud_storage-enabled" value="1" <?php echo ($config['google_cloud_storage'] == 1) ? 'checked': '';?>>
+
+                        <label for="google_cloud_storage-enabled">Enabled</label>
+
+                        <input type="radio" name="google_cloud_storage" id="google_cloud_storage-disabled" value="0" <?php echo ($config['google_cloud_storage'] == 0) ? 'checked': '';?>>
+
+                        <label for="google_cloud_storage-disabled" class="m-l-20">Disabled</label>
+
+                    </div>
+
+                    <div class="form-group  form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="google_cloud_storage_bucket_name" name="google_cloud_storage_bucket_name" class="form-control" value="<?php echo $config['google_cloud_storage_bucket_name']?>">
+
+                            <label class="form-label">google cloud storage Bucket Name</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group form-float">
+							<div class="form-line">
+                                <textarea rows="8" id="google_cloud_storage_service_account" name="google_cloud_storage_service_account" class="form-control"><?php echo $config['google_cloud_storage_service_account']; ?></textarea>
+                                <label class="form-label">
+                                    Google cloud storage service account json content
+                                </label>
+                            </div>	
+						</div>
+                    <div class="clearfix"></div>
+
+                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+
+                    <!-- <button type="button" class="btn btn-warning m-t-15 waves-effect" onclick="Wo_TestS3()" id="s3test">Test Connection</button> -->
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-6 col-md-6">
+        <div class="card">
+            <div class="body">
+
+                <form class="form login-settings-form" method="POST">
+                    <div class="form-alert"></div>
+                    <label for="digital_ocean">Digital Ocean</label>
+
+                    <div class="form-group">
+
+                        <input type="radio" name="digital_ocean" id="digital_ocean-enabled" value="1" <?php echo ($config['digital_ocean'] == 1) ? 'checked': '';?>>
+
+                        <label for="digital_ocean-enabled">Enabled</label>
+
+                        <input type="radio" name="digital_ocean" id="digital_ocean-disabled" value="0" <?php echo ($config['digital_ocean'] == 0) ? 'checked': '';?>>
+
+                        <label for="digital_ocean-disabled" class="m-l-20">Disabled</label>
+
+                    </div>
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="digital_ocean_space_name" name="digital_ocean_space_name" class="form-control" value="<?php echo $config['digital_ocean_space_name']?>">
+
+                            <label class="form-label">Digital Ocean Bucket Name</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="digital_ocean_key" name="digital_ocean_key" class="form-control" value="<?php echo $config['digital_ocean_key']?>">
+
+                            <label class="form-label">Digital ocean key</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="digital_ocean_s_key" name="digital_ocean_s_key" class="form-control" value="<?php echo $config['digital_ocean_s_key']?>">
+
+                            <label class="form-label">Digital ocean Secret Key</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="digital_ocean_region" name="digital_ocean_region" class="form-control" value="<?php echo $config['digital_ocean_region']?>">
+
+                            <label class="form-label">Digital ocean region</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+
+                    <!-- <button type="button" class="btn btn-warning m-t-15 waves-effect" onclick="Wo_TestS3()" id="s3test">Test Connection</button> -->
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-6 col-md-6 ">
+
+        <div class="card">
+
+            <div class="header">
+
+                <h2>FTP Settings</h2><br>
+
+                <small>You can upload files directly from your server to another FTP server and load them from there.</small><br>
+
+                <small>Impotant: This may slow down your site's upload/delete speed, make sure to use fast FTP server.</small>
+
+            </div>
+
+            <div class="body">
+
+                <form class="form login-settings-form" method="POST">
+                    <div class="form-alert"></div>
+                    <label for="ftp_upload">FTP Storage</label>
+
+                    <div class="form-group">
+
+                        <input type="radio" name="ftp_upload" id="ftp_upload-enabled" value="1" <?php echo ($config['ftp_upload'] == 1) ? 'checked': '';?>>
+
+                        <label for="ftp_upload-enabled">Enabled</label>
+
+                        <input type="radio" name="ftp_upload" id="ftp_upload-disabled" value="0" <?php echo ($config['ftp_upload'] == 0) ? 'checked': '';?>>
+
+                        <label for="ftp_upload-disabled" class="m-l-20">Disabled</label>
+
+                    </div>
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="ftp_host" name="ftp_host" class="form-control" value="<?php echo $config['ftp_host']?>">
+
+                            <label class="form-label">FTP Hostname</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="ftp_username" name="ftp_username" class="form-control" value="<?php echo $config['ftp_username']?>">
+
+                            <label class="form-label">FTP Username</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="ftp_password" name="ftp_password" class="form-control" value="<?php echo $config['ftp_password']?>">
+
+                            <label class="form-label">FTP Password</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="ftp_port" name="ftp_port" class="form-control" value="<?php echo $config['ftp_port']?>">
+
+                            <label class="form-label">FTP Port</label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group form-float">
+
+                        <div class="form-line">
+
+                            <input type="text" id="ftp_endpoint" name="ftp_endpoint" class="form-control" value="<?php echo $config['ftp_endpoint']?>">
+
+                            <label class="form-label">FTP Endpoint (IP or domain where the FTP server is pointed to) example: wowonderstorage.com, files will be loaded from here.</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <span class="help-block ">1. Before enabling FTP, make sure you upload the whole "upload/" folder to your FTP server.</span>
+
+                    <span class="help-block ">2. Before disabling FTP, make sure you download the whole "upload/" folder to your server.</span>
+
+                    <span class="help-block ">3. If your site is still brand new, you can escape the upload step, but make sure to click on "Test Connection".</span>
+
+                    <!-- <input type="hidden" name="hash_id" value="<?php //echo Wo_CreateSession();?>"> -->
+
+                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+
+                    <button type="button" class="btn btn-warning m-t-15 waves-effect" onclick="Wo_TestFTP()"  id="ftptest">Test FTP Connection</button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        </div>
+
+    <div class="clearfix"></div>
+</div>
+
+
+<script>
+    function Wo_TestFTP() {
+        $('#ftptest').html('Please wait..');
+        $.get(acpajax_url('test_ftp'), {}, function (data) {
+            if (data.status == 200) {
+                alert('Connection established!');
+            } else if (data.status == 400) {
+                alert(data.message);
+            }
+            $('#ftptest').html('Test FTP Connection');
+        });
+    }
+
+    function Wo_TestS3() {
+        $('#s3test').html('Please wait..');
+        $.get(acpajax_url('test_s3'), {}, function (data) {
+            if (data.status == 200) {
+                alert('Connection established!');
+            } else if (data.status == 300) {
+                alert('Bucket doesn\'t exists');
+            } else if (data.status == 500) {
+                alert('Your s3 account doesn\'t have any buckets, please create one.');
+            } else if (data.status == 400) {
+                alert(data.message);
+            } else  {
+                alert('Error while connecting to amazone, please check your details');
+            }
+            $('#s3test').html('Test Connection');
+        });
+    }
+
+    jQuery(document).ready(function($) {
+        var slform = $("form.login-settings-form");
+
+        slform.ajaxForm({
+            url: acpajax_url('storeg-settings'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSubmit: function(arr,form){
+                $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+            },
+            success: function(data, status, xhr, form){
+                if (data.status == 200) {
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-success',
+                        text:'Settings has been updated successfully'
+                    }));
+                    setTimeout(function(){
+                        slform.find('div.form-alert .alert').slideUp('fast',function(){
+                            $(this).remove(); 
+                        })    
+                    },1000);
+                }
+                else{
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-warning',
+                        text: data.error
+                    }));
+                }
+
+                slform.find('button[type=submit]').text('Save').removeAttr('disabled');
+            }
+        });
+    });
+
+
+</script>

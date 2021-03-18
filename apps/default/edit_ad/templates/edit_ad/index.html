@@ -1,0 +1,233 @@
+<div class="settings-page-container content-shadow">
+	<div class="page-content sett_avatr_chng">
+		<div>
+			<form class="form row pp_sett_form create_ads_inputs create_ads_inputs_selects" id="edit_ad" enctype="multipart/form-data">
+				<div class="col-md-6">
+					<div class="pp_mat_input">
+						<input required="true" type="text" name="company" class="form-control" value="<?php echo($context['user_ad']->name) ?>">
+						<span class="bar"></span>
+						<label>{{LANG company}}</label>
+					</div>
+					<div class="pp_mat_input">
+						<input required="true" type="text" name="url" class="form-control" value="<?php echo($context['user_ad']->url) ?>">
+						<span class="bar"></span>
+						<label>{{LANG url}}</label>
+					</div>
+					<div class="pp_mat_input" id="review-ads-location">
+						<input required="true" type="text" name="title" class="form-control" value="<?php echo($context['user_ad']->headline) ?>" id="ads-location">
+						<span class="bar"></span>
+						<label>{{LANG title}}</label>
+						<div id="place"></div>
+					</div>
+					<div class="pp_mat_input">
+						<input required="true" type="text" name="location" class="form-control" value="<?php echo($context['user_ad']->location) ?>">
+						<span class="bar"></span>
+						<label>{{LANG location}}</label>
+					</div>
+					<div class="pp_mat_input">
+						<textarea class="form-control" name="description" rows="3"><?php echo($context['user_ad']->description) ?></textarea>
+						<span class="bar"></span>
+						<label>{{LANG description}}</label>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="pp_mat_select ads_select_country_input">
+						<label class="pp_mat_label">{{LANG country}}</label>
+						<div>
+							 <select class="form-control selectpicker show-menu-arrow show-tick" multiple name="country[]" data-live-search="true" title="{{LANG country}}" data-actions-box="true">
+				              	<?php foreach ($context['countries_name'] as $cid => $cname) { ?>
+									<option value="<?php echo($cid) ?>" <?php echo (!empty($context['user_ad']->audience) && in_array('{'.$cid.'}', explode(',', $context['user_ad']->audience)) ? 'selected' : ''); ?>>
+										<?php echo $cname; ?>
+									</option>
+								<?php } ?>
+				          	</select>
+							<span class="bar"></span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="pp_mat_select">
+						<label class="pp_mat_label">{{LANG bidding}}</label>
+						<div>
+							<select name="bidding" class="form-control">
+								<option value="clicks" <?php echo ($context['user_ad']->bidding == 'clicks' ? 'selected' : ''); ?>><?php echo str_replace('{{PRICE}}',  $context['currency_symbol'] . $config['ad_c_price'], $context['lang']['pay_per_click']); ?></option>
+								<option value="views" <?php echo ($context['user_ad']->bidding == 'views' ? 'selected' : ''); ?>><?php echo str_replace('{{PRICE}}', $context['currency_symbol'] . $config['ad_v_price'], $context['lang']['pay_per_imprssion']); ?></option>
+							</select>
+							<span class="bar"></span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="pp_mat_select">
+						<label class="pp_mat_label">{{LANG placement}}</label>
+						<div>
+							<select name="appears" class="form-control">
+								<option value="post" <?php echo ($context['user_ad']->appears == 'post' ? 'selected' : ''); ?>><?php echo $context['lang']['post']; ?></option>
+								<option value="sidebar" <?php echo ($context['user_ad']->appears == 'sidebar' ? 'selected' : ''); ?>><?php echo $context['lang']['sidebar']; ?></option>
+							</select>
+							<span class="bar"></span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="pp_mat_select">
+						<label class="pp_mat_label">{{LANG gender}}</label>
+						<div>
+							<select name="gender" class="form-control">
+								<option value="all" <?php echo ($context['user_ad']->gender == 'all' ? 'selected' : ''); ?>>{{LANG all}}</option>
+								<option value="male" <?php echo ($context['user_ad']->gender == 'male' ? 'selected' : ''); ?>>{{LANG male}}</option>
+								<option value="female" <?php echo ($context['user_ad']->gender == 'female' ? 'selected' : ''); ?>>{{LANG female}}</option>
+							</select>
+							<span class="bar"></span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="pp_mat_select">
+						<label class="pp_mat_label">{{LANG status}}</label>
+						<div>
+							<select name="status" class="form-control">
+								<option value="1" <?php echo ($context['user_ad']->status == 1 ? 'selected' : ''); ?>>{{LANG active}}</option>
+								<option value="0" <?php echo ($context['user_ad']->status == 0 ? 'selected' : ''); ?>>{{LANG not_active}}</option>
+							</select>
+							<span class="bar"></span>
+						</div>
+						<div class="clear"></div>
+					</div>
+				<!-- <div class="form-group">
+				        <label>{{LANG upload_file}}</label>
+				        <div class="input-group">
+				            <span class="input-group-btn">
+				                <span class="btn btn-default btn-file">
+				                    Browse… <input type="file" id="image" name="image">
+				                </span>
+				            </span>
+				            <input type="text" class="form-control" readonly>
+				        </div>
+				        <img id='img-upload'/>
+				    </div> -->
+					<input type="hidden" name="hash" value="<?php echo($context['csrf_token']) ?>">
+					<input type="hidden" name="id" value="<?php echo($context['user_ad']->id) ?>">
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<div class="pp_load_loader"><button class="btn btn-info pp_flat_btn" type="submit"><span>{{LANG submit}}</span></button></div>
+			</form>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<script src="{{THEME_URL}}/main/static/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="{{THEME_URL}}/main/static/css/bootstrap-select.min.css">
+<script type="text/javascript">
+
+	<?php if ($config['google_map']) { ?>
+    $("#ads-location").keyup(function(event) {
+        if ($(this).val().length >= 3) {
+        	setTimeout(function () {
+        		$("#review-ads-location #place").html('<iframe width="100%" frameborder="0" style="border:0;margin-top: 10px;" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $config['google_map_api']; ?>&q=' + $("#ads-location").val() + '&language=en"></iframe>');
+        	},1000);
+        }
+        else{
+        	setTimeout(function () {
+        		$("#review-ads-location #place").html('<iframe width="100%" frameborder="0" style="border:0;margin-top: 10px;" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $config['google_map_api']; ?>&q=us&language=en"></iframe>');
+        	},1000);
+        }
+  	});
+   <?php } ?>
+
+
+	jQuery(document).ready(function($) {
+			
+
+		$("form#edit_ad").ajaxForm({
+			url: link('profile/edit_ad'),
+			type: 'POST',
+			dataType: 'json',
+			beforeSubmit: function(arr,form){
+				
+				$(form).find('.pp_load_loader').addClass('loadingg');
+				$(form).find('button[type="submit"]').attr('disabled','true');
+			},
+			success: function(data,stat,xhr,form){
+				scroll2top();
+				$.toast(data.message,{
+                	duration: 5000, 
+                	type: 'success',
+                	align: 'bottom',
+                	singleton: true
+                });
+                if (data.status == 200) {
+                	setTimeout(function () {
+                		window.location.href = "{{CONFIG site_url}}/ads";
+                	},2000);
+                }
+				$(form).find('.pp_load_loader').removeClass('loadingg');
+                $(form).find('button[type="submit"]').removeAttr('disabled');
+			}
+		});
+
+		
+	});
+
+
+
+
+
+	$('.selectpicker').selectpicker({});
+	// $(document).ready( function() {
+ //    	$(document).on('change', '.btn-file :file', function() {
+	// 	var input = $(this),
+	// 		label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+	// 	input.trigger('fileselect', [label]);
+	// 	});
+
+	// 	$('.btn-file :file').on('fileselect', function(event, label) {
+		    
+	// 	    var input = $(this).parents('.input-group').find(':text'),
+	// 	        log = label;
+		    
+	// 	    if( input.length ) {
+	// 	        input.val(log);
+	// 	    } else {
+	// 	        if( log ) alert(log);
+	// 	    }
+	    
+	// 	});
+	// 	function readURL(input) {
+	// 	    if (input.files && input.files[0]) {
+	// 	        var reader = new FileReader();
+		        
+	// 	        reader.onload = function (e) {
+	// 	        }
+		        
+	// 	        reader.readAsDataURL(input.files[0]);
+	// 	    }
+	// 	}
+
+	// 	$("#imgInp").change(function(){
+	// 	    readURL(this);
+	// 	}); 	
+	// });
+</script>
+<style type="text/css">
+	.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+#img-upload{
+    width: 100%;
+}
+</style>

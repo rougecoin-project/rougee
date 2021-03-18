@@ -1,0 +1,356 @@
+<?php if ($context['page'] == 'blocked') { ?>
+	<script data-page="blocked-users">
+		jQuery(document).ready(function($) {
+			$("button.unblock-user").click(function(event) {
+				var user_id = $(this).attr('id');
+				var zis     = $(this);
+				$('.unblockuser--modal').data('id',user_id).fadeIn(350);
+			});
+
+			$('.block--user').click(function(event) {
+				var zis     = $(this);
+				var uid     = zis.closest('.confirm--modal').data('id');
+				if (!uid || !$.isNumeric(uid)) {
+					return false;
+				}
+
+				zis.closest('.confirm--modal').data('id','').fadeOut(400);
+				$.ajax({
+					url: link('settings/unblock-user'),
+					type: 'POST',
+					dataType: 'json',
+					data: {id:uid},
+				})
+				.done(function(data) {
+					delay(function(){
+						$('[data-blocked-users-ls="'+uid+'"]').slideUp('fast',function(){
+							$(this).remove();
+						});
+					},500);
+
+					$.toast(data.message,{
+		            	duration: 5000, 
+	                	type: 'success',
+	                	align: 'bottom',
+	                	singleton: true
+		            });
+				});	
+			});
+		});
+	</script>
+<?php } ?>
+<?php if ($context['page'] == 'general') { ?>
+	<script data-page="general">
+		jQuery(document).ready(function($) {
+			
+
+			$("form#edit-general-settings").ajaxForm({
+				url: '<?php echo($context['xhr_url']) ?>/general',
+				type: 'POST',
+				dataType: 'json',
+				beforeSubmit: function(arr,form){
+					if ($(form).find('#active').length > 0) {
+						if($(form).find('#active').prop('checked') == false){
+							arr.push({name:'active', value:'off'}); 
+						}
+					}
+					if ($(form).find('#verified').length > 0) {
+						if($(form).find('#verified').prop('checked') == false){
+							arr.push({name:'verified', value:'off'}); 
+						}
+					}
+					if ($(form).find('#is_pro').length > 0) {
+						if($(form).find('#is_pro').prop('checked') == false){
+							arr.push({name:'is_pro', value:'off'}); 
+						}
+					}
+					if ($(form).find('#business_account').length > 0) {
+						if($(form).find('#business_account').prop('checked') == false){
+							arr.push({name:'business_account', value:'off'}); 
+						}
+					}
+					
+					
+					$(form).find('.pp_load_loader').addClass('loadingg');
+					$(form).find('button[type="submit"]').attr('disabled','true');
+				},
+				success: function(data,stat,xhr,form){
+					scroll2top();
+					$.toast(data.message,{
+	                	duration: 5000, 
+	                	type: 'success',
+	                	align: 'bottom',
+	                	singleton: true
+	                });
+					$(form).find('.pp_load_loader').removeClass('loadingg');
+	                $(form).find('button[type="submit"]').removeAttr('disabled');
+				}
+			});
+
+			
+		});
+	</script>
+<?php } ?>
+<?php if ($context['page'] == 'profile') { ?>
+	<script data-page="profile">
+		jQuery(document).ready(function($) {
+			$("#avatar").change(function(event) {
+				$("#edit-avatar").submit();
+			});
+
+			$("form#edit-profile-settings").ajaxForm({
+				url: '<?php echo($context['xhr_url']) ?>/profile',
+				type: 'POST',
+				dataType: 'json',
+				beforeSubmit: function(arr,form){
+					$(form).find('.pp_load_loader').addClass('loadingg');
+					$(form).find('button[type="submit"]').attr('disabled','true');
+					if ($(form).find('#business_account').length > 0) {
+						if($(form).find('#business_account').prop('checked') == false){
+							arr.push({name:'business_account', value:'off'}); 
+						}
+					}
+				},
+				success: function(data,stat,xhr,form){
+					scroll2top();
+					if (data.message) {
+						$.toast(data.message,{
+		                	duration: 5000, 
+							type: 'success',
+							align: 'bottom',
+							singleton: true
+		                });
+					}
+					$(form).find('.pp_load_loader').removeClass('loadingg');
+	                $(form).find('button[type="submit"]').removeAttr('disabled');
+				}
+			});
+		});
+	</script>
+<?php } ?>
+<?php if ($context['page'] == 'password') { ?>
+	<script data-page="password">
+		jQuery(document).ready(function($) {
+			$("form#edit-password-settings").ajaxForm({
+				url: '<?php echo($context['xhr_url']) ?>/change-password',
+				type: 'POST',
+				dataType: 'json',
+				beforeSubmit: function(arr,form){
+					$(form).find('.pp_load_loader').addClass('loadingg');
+					$(form).find('button[type="submit"]').attr('disabled','true');
+				},
+				success: function(data,stat,xhr,form){
+					scroll2top();
+					$.toast(data.message,{
+	                	duration: 5000, 
+	                	type: 'success',
+	                	align: 'bottom',
+	                	singleton: true
+	                });
+					$(form).find('.pp_load_loader').removeClass('loadingg');
+	                $(form).find('button[type="submit"]').removeAttr('disabled');
+	                $(form).get(0).reset();
+				}
+			});
+		});
+	</script>	
+<?php } ?>
+<?php if ($context['page'] == 'privacy') { ?>
+	<script>
+		jQuery(document).ready(function($) {
+			var form = $("form#edit-privacy-settings");
+			form.ajaxForm({
+				url: link('settings/privacy'),
+				type: 'POST',
+				dataType: 'json',
+				beforeSend: function(){
+					$(form).find('.pp_load_loader').addClass('loadingg');
+					form.find('button[type="submit"]').attr('disabled','true');
+				},
+				success: function(data){
+					$(form).find('.pp_load_loader').removeClass('loadingg');
+					form.find('button[type="submit"]').removeAttr('disabled');
+					$.toast(data.message,{
+	                	duration: 5000, 
+	                	type: 'success',
+	                	align: 'bottom',
+	                	singleton: true
+	                });
+				}
+			});
+		});
+	</script>
+<?php } ?>
+<?php if ($context['page'] == 'notifications') { ?>
+	<script>
+		jQuery(document).ready(function($) {
+			var form = $("form#edit-notification-settings");
+			form.ajaxForm({
+				url: link('settings/notifications'),
+				type: 'POST',
+				dataType: 'json',
+				beforeSend: function(){
+					$(form).find('.pp_load_loader').addClass('loadingg');
+					form.find('button[type="submit"]').attr('disabled','true');
+				},
+				success: function(data){
+					$.toast(data.message,{
+	                	duration: 5000, 
+	                	type: 'success',
+	                	align: 'bottom',
+	                	singleton: true
+	                });
+					$(form).find('.pp_load_loader').removeClass('loadingg');
+					form.find('button[type="submit"]').removeAttr('disabled');
+				}
+			});
+		});
+	</script>
+<?php } ?>
+<?php if ($context['page'] == 'delete') { ?>
+	<script>
+		jQuery(document).ready(function($) {
+			$("form#delete-account-settings").ajaxForm({
+				url: link('settings/delete-account'),
+				type: 'POST',
+				dataType: 'json',
+				beforeSubmit: function(arr,form){
+					$(form).find('.pp_load_loader').addClass('loadingg');
+					$(form).find('button[type="submit"]').attr('disabled', 'true');
+				},
+				success: function(data){
+					$.toast(data.message,{
+	                	duration: 5000, 
+	                	type: 'success',
+	                	align: 'bottom',
+	                	singleton: true
+	                });
+	                if (data.status == 200) {
+	                	delay(function(){
+							window.location.href = site_url("welcome");
+						},2500);
+	                }
+	                else{
+	                	$('.pp_load_loader').removeClass('loadingg');
+						$('button[type="submit"]').removeAttr('disabled');
+	                }
+
+				}
+			});
+		});
+	</script>
+<?php } ?>
+<?php if ($context['page'] == 'verification') { ?>
+	<script>
+		jQuery(document).ready(function($) {
+
+		    $("#ip-photo").change(function(event) {
+		        $("#user_ip").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture' width='100%'>")
+		    });
+
+		    $("#user-photo").change(function(event) {
+		        $("#user_image").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture' width='100%'>")
+		    });
+
+			var form = $("form#verify-profile-settings");
+			form.ajaxForm({
+				url: link('settings/verify'),
+				type: 'POST',
+				dataType: 'json',
+				beforeSend: function(){
+					$(form).find('.pp_load_loader').addClass('loadingg');
+					form.find('button[type="submit"]').attr('disabled','true');
+				},
+				success: function(data){
+					$.toast(data.message,{
+	                	duration: 5000, 
+	                	type: 'success',
+	                	align: 'bottom',
+	                	singleton: true
+	                });
+					$(form).find('.pp_load_loader').removeClass('loadingg');
+					form.find('button[type="submit"]').removeAttr('disabled');
+					if (data.status == 200) {
+					    setTimeout(function () {
+							window.location.reload();
+						},3000);
+					}
+				}
+			});
+		});
+	</script>
+<?php } ?>
+<?php if ($context['page'] == 'manage_sessions') { ?>
+	<script data-page="manage_sessions">
+		function delete_u_session(id,is_current) {
+			if (is_current == true) {
+				window.location.href = site_url('signout');
+			}else{
+				$.post(link('settings/delete_session'), {id: id}, function(data, textStatus, xhr) {
+					$('#s_'+id).slideUp('slow').remove();
+				});
+			}
+		}
+	</script>
+<?php } ?>
+<?php if ($context['page'] == 'withdraw') { ?>
+	<script data-page="withdraw">
+		jQuery(document).ready(function($) {
+			
+
+			$("form#edit-withdraw-settings").ajaxForm({
+				url: '<?php echo($context['xhr_url']) ?>/withdraw',
+				type: 'POST',
+				dataType: 'json',
+				beforeSubmit: function(arr,form){
+					$(form).find('.pp_load_loader').addClass('loadingg');
+					$(form).find('button[type="submit"]').attr('disabled','true');
+				},
+				success: function(data,stat,xhr,form){
+					scroll2top();
+					$.toast(data.message,{
+	                	duration: 5000, 
+	                	type: 'success',
+	                	align: 'bottom',
+	                	singleton: true
+	                });
+					$(form).find('.pp_load_loader').removeClass('loadingg');
+	                $(form).find('button[type="submit"]').removeAttr('disabled');
+				}
+			});
+
+			
+		});
+	</script>
+<?php } ?>
+
+<script type="text/javascript">
+	$("#avatar").change(function(event) {
+		$("#edit-avatar").submit();
+	});
+	$("#edit-avatar").ajaxForm({
+		url: '<?php echo($context['xhr_url']) ?>/edit-avatar',
+		type: 'POST',
+		dataType: 'json',
+		data:{
+			user_id: '<?php echo($context['me']['user_id']) ?>'
+		},
+		beforeSend: function(){
+			$("#modal-progress").removeClass('hidden');
+		},
+		success: function(data){
+			if (data.status == 200) {
+				$('.avatar-wrapper').find('img').attr('src', data.avatar);
+			}
+			
+			$.toast(data.message,{
+            	duration: 5000, 
+            	type: 'success',
+            	align: 'bottom',
+            	singleton: true
+            });
+
+			$("#modal-progress").addClass('hidden');
+		}
+	});
+</script>

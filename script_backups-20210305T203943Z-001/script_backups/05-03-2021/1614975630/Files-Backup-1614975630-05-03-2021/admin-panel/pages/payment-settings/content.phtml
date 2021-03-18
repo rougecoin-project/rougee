@@ -1,0 +1,246 @@
+<?php 
+$playtube_links_on = ($config['playtube_links'] == 'on') ? 'checked' : '';
+$playtube_links_off = ($config['playtube_links'] == 'off') ? 'checked' : '';
+ ?>
+<div class="block-header">
+    <h2 class="breadcrumb">Settings <i class="material-icons">keyboard_arrow_right</i> Payment System Settings</h2>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Payment System Settings (Advertisement system + Pro System)</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form general-settings-form">
+                        <div class="form-alert"></div>
+
+                        <label for="upload_system">Credit Card Payment Method</label>
+                        <div class="form-group">
+                            <input type="radio" name="credit_card"  value="on" id="credit_card-enabled" <?php echo ($config['credit_card'] == 'on') ? 'checked': '';?>>
+                            <label for="credit_card-enabled" id="credit_card-enabled">Enabled</label>
+                            <input type="radio" name="credit_card" id="credit_card-disabled" value="off" <?php echo ($config['credit_card'] == 'off') ? 'checked': '';?>>
+                            <label for="credit_card-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="stripe_secret" name="stripe_secret" class="form-control" value="<?php echo $config['stripe_secret'];?>">
+                                <label class="form-label">Stripe API Secret Key <small>Your Stripe secret key that starts with sk_</small></label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="stripe_id" name="stripe_id" class="form-control" value="<?php echo $config['stripe_id'];?>">
+                                <label class="form-label">Stripe Publishable Key <small>Your Stripe publishable key that starts with pk_</small></label>
+                            </div>
+                        </div>
+                        <br>
+
+                        <label for="upload_system">Paysera Payment Method</label>
+                        <div class="form-group">
+                            <input type="radio" name="paysera" value="on" id="paysera-enabled" <?php echo ($config['paysera'] == 'on') ? 'checked': '';?>>
+                            <label for="paysera-enabled" id="paysera-enabled">Enabled</label>
+                            <input type="radio" name="paysera" id="paysera-disabled" value="off" <?php echo ($config['paysera'] == 'off') ? 'checked': '';?>>
+                            <label for="paysera-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="paysera_project_id" name="paysera_project_id" class="form-control" value="<?php echo $config['paysera_project_id'];?>">
+                                <label class="form-label">Paysera project id</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="paysera_password" name="paysera_password" class="form-control" value="<?php echo $config['paysera_password'];?>">
+                                <label class="form-label">Paysera password</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="radio" name="paysera_test_mode" value="test" id="paysera_test_mode-enabled" <?php echo ($config['paysera_test_mode'] == 'test') ? 'checked': '';?>>
+                            <label for="paysera_test_mode-enabled" id="paysera_test_mode-enabled">Test Mode</label>
+                            <input type="radio" name="paysera_test_mode" id="paysera_test_mode-disabled" value="live" <?php echo ($config['paysera_test_mode'] == 'live') ? 'checked': '';?>>
+                            <label for="paysera_test_mode-disabled" class="m-l-20">Live Mode</label>
+                        </div>
+                        <br>
+
+                        <label for="upload_system">Razorpay Payment Method</label>
+                        <div class="form-group">
+                            <input type="radio" name="razorpay" value="on" id="razorpay-enabled" <?php echo ($config['razorpay'] == 'on') ? 'checked': '';?>>
+                            <label for="razorpay-enabled" id="razorpay-enabled">Enabled</label>
+                            <input type="radio" name="razorpay" id="razorpay-disabled" value="off" <?php echo ($config['razorpay'] == 'off') ? 'checked': '';?>>
+                            <label for="razorpay-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="razorpay_key" name="razorpay_key" class="form-control" value="<?php echo $config['razorpay_key'];?>">
+                                <label class="form-label">Razorpay key</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="razorpay_secret" name="razorpay_secret" class="form-control" value="<?php echo $config['razorpay_secret'];?>">
+                                <label class="form-label">Razorpay secret</label>
+                            </div>
+                        </div>
+                        <br><br>
+
+
+                        <label for="upload_system">Paystack Payment Method</label>
+                        <div class="form-group">
+                            <input type="radio" name="paystack" value="on" id="paystack-enabled" <?php echo ($config['paystack'] == 'on') ? 'checked': '';?>>
+                            <label for="paystack-enabled" id="paystack-enabled">Enabled</label>
+                            <input type="radio" name="paystack" id="paystack-disabled" value="off" <?php echo ($config['paystack'] == 'off') ? 'checked': '';?>>
+                            <label for="paystack-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="paystack_public_key" name="paystack_public_key" class="form-control" value="<?php echo $config['paystack_public_key'];?>">
+                                <label class="form-label">Paystack public key</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="paystack_secret_key" name="paystack_secret_key" class="form-control" value="<?php echo $config['paystack_secret_key'];?>">
+                                <label class="form-label">Paystack secret key</label>
+                            </div>
+                        </div>
+                        <b>Note: Please set paystack callback url to : <?php echo $config['site_url'];?>/aj/paystack/success</b>
+                        <br><br><br
+
+                        <label for="paypal_mode">PayPal Mode</label>
+                        <div class="form-group">
+                            <input type="radio" name="paypal_mode" id="paypal_mode-enabled" value="live" <?php echo ($config['paypal_mode'] == 'live') ? 'checked': '';?>>
+                            <label for="paypal_mode-enabled">Live</label>
+                            <input type="radio" name="paypal_mode" id="paypal_mode-disabled" value="sandbox" <?php echo ($config['paypal_mode'] == 'sandbox') ? 'checked': '';?>>
+                            <label for="paypal_mode-disabled" class="m-l-20">SandBox</label>
+                        </div> 
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="paypal_id" name="paypal_id" class="form-control" value="<?php echo $config['paypal_id'];?>">
+                                <label class="form-label">PayPal Clinet ID</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="paypal_secret" name="paypal_secret" class="form-control" value="<?php echo $config['paypal_secret'];?>">
+                                <label class="form-label">PayPal Secret Key</label>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="number" id="donate_percentage" name="donate_percentage" class="form-control" value="<?php echo $config['donate_percentage'];?>"  onkeyup="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                <label class="form-label">Amount % <small>The price that the user will pay to you for each new user donate</small></label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6">
+        <div class="card">
+            <div class="header">
+                <h2>Local bank payment</h2>
+            </div>
+            <div class="body">
+                
+                <form class="form bank-settings" method="POST">
+                    <div class="form-alert"></div>
+                    <label for="bank_payment">Bank Payment Method </label>
+                    <div class="form-group">
+                        <input type="radio" name="bank_payment" id="bank_payment-enabled" value="on" <?php echo ($config['bank_payment'] == 'on') ? 'checked': '';?>>
+                        <label for="bank_payment-enabled">Enabled</label>
+                        <input type="radio" name="bank_payment" id="bank_payment-disabled" value="off" <?php echo ($config['bank_payment'] == 'off') ? 'checked': '';?>>
+                        <label for="bank_payment-disabled" class="m-l-20">Disabled</label>
+                    </div> 
+                    <div class="form-group form-float">
+                        <div class="form-line focused">
+                            <textarea name="bank_description" id="bank_description" class="form-control" cols="30" rows="5"><?php echo $config['bank_description'];?>
+                            </textarea>
+                            <label class="form-label">Bank Description</label>
+                        </div>
+                    </div>
+                    <div class="form-group form-float">
+                        <div class="form-line focused">
+                            <textarea name="bank_transfer_note" id="bank_transfer_note" class="form-control" cols="30" rows="5"><?php echo $config['bank_transfer_note'];?></textarea>
+                            <label class="form-label">Bank transfer note</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(document).ready(function($) {
+        var gsform = $("form.general-settings-form");
+        var bankform = $("form.bank-settings");
+
+        gsform.ajaxForm({
+            url: acpajax_url('general-settings'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSubmit: function(arr,form){
+                $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+            },
+            success: function(data, status, xhr, form){
+                if (data.status == 200) {
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-success',
+                        text:'Settings has been updated successfully'
+                    }));
+                    setTimeout(function(){
+                        gsform.find('div.form-alert .alert').slideUp('fast',function(){
+                            $(this).remove(); 
+                        })    
+                    },1000);
+                }
+                else{
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-warning',
+                        text: data.error
+                    }));
+                }
+
+                gsform.find('button[type=submit]').text('Save').removeAttr('disabled');
+            }
+        });
+
+        bankform.ajaxForm({
+            url: acpajax_url('general-settings'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSubmit: function(arr,form){
+                $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+            },
+            success: function(data, status, xhr, form){
+                if (data.status == 200) {
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-success',
+                        text:'Settings has been updated successfully'
+                    }));
+                    setTimeout(function(){
+                        bankform.find('div.form-alert .alert').slideUp('fast',function(){
+                            $(this).remove(); 
+                        })    
+                    },1000);
+                }
+                else{
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-warning',
+                        text: data.error
+                    }));
+                }
+
+                bankform.find('button[type=submit]').text('Save').removeAttr('disabled');
+            }
+        });
+    });
+</script>

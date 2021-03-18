@@ -1,0 +1,107 @@
+<footer <?php if($context['app_name'] == 'startup'){ ?> class="footer_class"<?php } ?> >
+	<div class="container container-<?php echo($context['app_name']); ?> <?php if($context['app_name'] != 'profile' || $context['app_name'] != 'explore'){ ?> container-<?php echo($context['app_name']); ?>-main <?php } ?> " id="footer_">
+	<div class="footer__container">
+		<div class="footer clearfix">
+			<ul class="nav pull-right">
+				<li><a href="<?php echo(pxp_link('terms-of-use')) ?>" data-ajax="ajax_loading.php?app=terms&apph=terms&page=terms-of-use">{{LANG terms}}</a></li>
+				<li><a href="<?php echo(pxp_link('privacy-and-policy')) ?>"  data-ajax="ajax_loading.php?app=terms&apph=terms&page=privacy-and-policy">{{LANG privacy_and_policy}}</a></li>
+				<li><a href="<?php echo(pxp_link('about-us')) ?>"  data-ajax="ajax_loading.php?app=terms&apph=terms&page=about-us">{{LANG about}}</a></li>
+				<li><a href="<?php echo(pxp_link('contact_us')) ?>"  data-ajax="ajax_loading.php?app=terms&apph=terms&page=contact_us">{{LANG contact_us}}</a></li>
+				<?php if ($config['user_ads'] == 'on') { ?>
+					<li><a href="{{CONFIG site_url}}/ads" data-ajax="ajax_loading.php?app=ads&apph=ads">{{LANG advertising}}</a></li>
+				<?php } ?>
+
+				<?php if ($config['blog_system'] == 'on') { ?>
+					<li><a href="{{CONFIG site_url}}/blog" data-ajax="ajax_loading.php?app=blog&apph=blog">{{LANG blog}}</a></li>
+				<?php } ?>
+				<li class="dropup">
+					<span class="dropdown-toggle" data-toggle="dropdown">
+					    <a><svg fill="#7a7a7a" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" class="feather feather-translate" style="margin-top: -3px;width: 15px;height: 15px;"><path d="M12.87,15.07L10.33,12.56L10.36,12.53C12.1,10.59 13.34,8.36 14.07,6H17V4H10V2H8V4H1V6H12.17C11.5,7.92 10.44,9.75 9,11.35C8.07,10.32 7.3,9.19 6.69,8H4.69C5.42,9.63 6.42,11.17 7.67,12.56L2.58,17.58L4,19L9,14L12.11,17.11L12.87,15.07M18.5,10H16.5L12,22H14L15.12,19H19.87L21,22H23L18.5,10M15.88,17L17.5,12.67L19.12,17H15.88Z"></path></svg>{{LANG language}}</a>
+					</span>
+					<ul class="dropdown-menu">
+						<?php foreach ($context['langs'] as $key => $val) { ?>
+							<li><a href='?lang=<?php echo($key); ?>'><?php echo($val); ?></a></li>
+						<?php } ?>
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav">
+				<li>
+					<span class="fluid copyright">Copyright &copy; 2018 {{CONFIG site_name}}</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+</footer>
+<script>
+	function SharePostToTimeLine(post_id, element) {
+		if (!post_id || post_id == 0) {
+			return false;
+		}
+		var text = $('#share_comment').val();
+  		$(element).text('please wait');
+  		$(element).attr('disabled', 'true');
+		$.ajax({
+			url: link('main/share_post_on'),
+			type: 'GET',
+			dataType: 'json',
+			data: {post_id:post_id,text:text}
+		})
+		.done(function(data) {
+			$(element).text('Share');
+			$(element).removeAttr('disabled');
+			if (data.status == 200) {
+				setTimeout(function () {
+					$(".post-editing-form").fadeOut(100,function(){
+						$(this).empty();
+						$("body").removeClass('active');
+						$('#create-newpost').hide();
+					});
+				},2000);
+			}
+			else{
+				$.toast(data.message,{
+					duration: 5000, 
+					type: '',
+					align: 'bottom',
+					singleton: true
+				});
+				setTimeout(function () {
+					$(".post-editing-form").fadeOut(100,function(){
+						$(this).empty();
+						$("body").removeClass('active');
+						$('#create-newpost').hide();
+					});
+				},2000);
+			}
+		})
+		.fail(function() {})
+		.always(function() {});
+
+	}
+	function getShareModal(id, element) {
+		if (!id || id == 0) {
+			return false;
+		}
+		$("#modal-progress").removeClass('hidden');
+		$('#share_post_modal').remove();
+		$.get(link('main/get-share-modal') , {id: id}, function (data) {
+			if (data.status == 200) {
+				$('body').addClass('active');
+				$("#create-newpost").html(data.html).fadeIn(100);
+			}
+			else{
+				if (data.message) {
+					$.toast(data.message,{
+						duration: 5000, 
+						type: '',
+						align: 'top-right',
+						singleton: false
+					});
+				}
+			}
+			$("#modal-progress").addClass('hidden');
+		});
+	}
+</script>

@@ -1,0 +1,120 @@
+<?php 
+$ads1 = $config['ad1'];
+$ads2 = $config['ad2'];
+$ads3 = $config['ad3'];
+$langs = $admin::getLangs();
+?>
+
+<div class="block-header">
+    <h2 class="breadcrumb">Settings <i class="material-icons">keyboard_arrow_right</i> Ads Settings</h2>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Ad Block #1</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form site-settings-form">
+                    	<div class="form-alert"></div>
+						<div class="form-group">
+							<div class="form-line">
+                                <textarea name="ad1" id="ad1" rows="10" class="form-control"><?php echo $ads1; ?></textarea>
+                                <label class="form-label" for="ad1">
+                                   AD Block Code #1
+                                </label>
+                                This block will be shown under the navigation menu.
+                            </div>	
+						</div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Ad Block #2</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form site-settings-form">
+                    	<div class="form-alert"></div>
+						<div class="form-group">
+							<div class="form-line">
+                                <textarea name="ad2" id="ad2" rows="10" class="form-control"><?php echo($ads2); ?></textarea>
+                                <label class="form-label" for="ad2">
+                                    AD Block Code #2
+                                </label>
+                                This block will be shown at the top of the sidebar.
+                            </div>	
+						</div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="header">
+                <h2>Ad Block #3</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form site-settings-form">
+                    	<div class="form-alert"></div>
+						<div class="form-group">
+							<div class="form-line">
+                                <textarea name="ad3" id="ad3" rows="10" class="form-control"><?php echo($ads3); ?></textarea>
+                                <label class="form-label" for="ad3">
+                                    AD Block Code #3
+                                </label>
+                                This block will be shown at the bottom of the sidebar.
+                            </div>	
+						</div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(document).ready(function($) {
+        var ssform = $("form.site-settings-form");
+
+        ssform.ajaxForm({
+            url: acpajax_url('ad-settings'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSubmit: function(arr,form){
+                arr[0]['value'] = btoa(unescape(encodeURIComponent(arr[0]['value'])));
+                console.log(arr[0]['value']);
+                $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+            },
+            success: function(data, status, xhr, form){
+                if (data.status == 200) {
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-success',
+                        text:'Settings has been updated successfully'
+                    }));
+                    setTimeout(function(){
+                        ssform.find('div.form-alert .alert').slideUp('fast',function(){
+                            $(this).remove(); 
+                        })    
+                    },1000);
+                }
+                else{
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-warning',
+                        text: data.error
+                    }));
+                }
+
+                ssform.find('button[type=submit]').text('Save').removeAttr('disabled');
+            }
+        });
+    });
+</script>

@@ -1,0 +1,49 @@
+<div class="timeline-posts content-shadow timeline-posts-ads">
+	<div class="header">
+		<img src="<?php echo(media($post_data['user_data']['avatar'])) ?>" class="img-circle" />
+		<?php if(IsSharedPost($post_data['post_id'])){
+			echo str_replace(array('}','{'),'',lang('share_post'));
+		}?>
+		<span class="timeline-posts_ads_name">
+			<a href="<?php echo($post_data['url']) ?>" class="publisher-name" target="_blank"><?php if ($post_data['headline']) { echo $post_data['headline']; } ?></a>
+			<p><a href="{{CONFIG site_url}}/ads" data-ajax="ajax_loading.php?app=ads&apph=ads" class="sponsored">{{LANG sponsored}}</a></p>
+		</span>
+		<?php if ($post_data['user_data']['user_id'] == $me['user_id']) { ?>
+			<div class="dropdown pull-right">
+				<span class="dropdown-toggle" data-toggle="dropdown">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+				</span>
+				<ul class="dropdown-menu zoom">
+					<li><a href="{{CONFIG site_url}}/edit_ad/<?php echo($post_data['id']) ?>">{{LANG edit_ad}}</a></li>				
+				</ul>
+			</div>
+			<time><a href="javascript:void(0);" target="_blank"><span class="time-ago" title="<?php echo(ToDate($post_data['posted'])) ?>"><?php echo(time2str($post_data['posted'])); ?></span></a></time>
+		<?php } else { ?>
+			<time class="ad_post_time"><a href="javascript:void(0);" target="_blank"><span class="time-ago" title="<?php echo(ToDate($post_data['posted'])) ?>"><?php echo(time2str($post_data['posted'])); ?></span></a></time>
+		<?php } ?>
+		<div class="clear"></div>
+	</div>
+	<div class="post-images fluid lightgallery">
+		<?php  if (!empty($post_data['ad_media'])) { ?>
+			<a href="<?php echo($post_data['url']) ?>" target="_blank" <?php if ($post_data['bidding'] == 'clicks') { ?> onclick="ad_click(<?php echo $post_data['id']; ?>)" <?php } ?>>
+				<img src="<?php echo(media($post_data['ad_media'])) ?>" class="img-res">
+			</a>
+       	<?php } ?>
+	</div>
+	<div class="caption" data-caption>
+		<div class="header">
+			<?php
+			$shared_owner = GetSharedPostOwner($post_data['post_id']);
+			if(is_array($shared_owner) && !empty($shared_owner)){
+			?>
+				<a href="<?php echo(un2url($shared_owner['username'])) ?>" data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($shared_owner['username']) ?>" class="publisher-name">
+					<img src="<?php echo(media($shared_owner['avatar'])) ?>" class="img-circle" />
+					<?php echo($shared_owner['username']) ?>
+				</a>
+			<?php } ?>
+		</div>
+		<?php if ($post_data['description']) {
+			echo $post_data['description'];
+		} ?>
+	</div>
+</div>

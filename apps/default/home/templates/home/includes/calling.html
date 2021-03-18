@@ -1,0 +1,16 @@
+<div class="modal fade pp_call_modals" id="calling-modal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content dt_call_ing">
+			<svg height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m18.25 23.5c-.104 0-.21-.022-.308-.066l-5-2.25c-.27-.121-.442-.389-.442-.684v-5c0-.295.173-.563.442-.684l5-2.25c.231-.104.502-.083.715.054.214.138.343.376.343.63v9.5c0 .254-.129.492-.343.63-.123.079-.264.12-.407.12z" fill="#1e88e5"/><path d="m11.75 24h-9.5c-1.24 0-2.25-1.009-2.25-2.25v-7.5c0-1.241 1.01-2.25 2.25-2.25h9.5c1.24 0 2.25 1.009 2.25 2.25v7.5c0 1.241-1.01 2.25-2.25 2.25z" fill="#2196f3"/><path d="m15.75 11c-.091 0-.184-.017-.272-.051-.288-.112-.478-.39-.478-.699v-2.25h-1.25c-.965 0-1.75-.785-1.75-1.75v-4.5c0-.965.785-1.75 1.75-1.75h8.5c.965 0 1.75.785 1.75 1.75v4.5c0 .965-.785 1.75-1.75 1.75h-3.42l-2.527 2.757c-.145.158-.347.243-.553.243z" fill="#ffc107"/><g fill="#fafafa"><circle cx="15.5" cy="4" r=".75"/><circle cx="18" cy="4" r=".75"/><circle cx="20.5" cy="4" r=".75"/></g></svg>
+            <div class="modal-header">
+                <h4 class="modal-title"><?php echo lang('calling');?> <?php echo $context['calling_user']->username;?> ..</h4>
+            </div>
+            <div class="modal-body">
+                <p><?php echo lang('please_wait_answer');?></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-flat btn-default cancel-call" onclick="Wo_CancelCall();"><?php echo lang('cancel');?></button>
+            </div>
+        </div>
+    </div>
+</div>

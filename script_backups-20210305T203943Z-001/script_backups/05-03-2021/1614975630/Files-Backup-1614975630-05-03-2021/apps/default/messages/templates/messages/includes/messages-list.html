@@ -1,0 +1,47 @@
+<?php if ($msg_data['from_id'] == $context['user']['user_id']) { ?>
+<div class="message-list-item right" data-id="<?php echo($msg_data['id']) ?>">
+	<div class="message-list-item__inner right">			
+		<div class="message__data">
+			<?php 
+			if (!empty($msg_data['text']) && empty($msg_data['media_file'])) { ?>
+				<p class="message__text"><?php echo($msg_data['text']) ?></p>
+			<?php }elseif (!empty($msg_data['media_file']) && $msg_data['media_type'] == 'image'){ ?>
+				<div>
+					<img src="<?php echo(media($msg_data['media_file'])) ?>">
+				</div>
+			<?php }elseif (!empty($msg_data['media_file']) && $msg_data['media_type'] == 'file') { ?>
+				<div>
+					<a href="<?php echo(media($msg_data['media_file'])) ?>" target="_blank"><?php echo $msg_data['media_name']; ?></a>
+				</div>
+			<?php } ?>
+			<time class="pull-right"><span class="time-ago" title="<?php echo(ToDate($msg_data['time'])) ?>"><?php echo(time2str($msg_data['time'])) ?></span><time>
+		</div>
+		<div class="user__avatar" data-id="<?php echo($msg_data['id']) ?>">
+			<img src="<?php echo($context['user']['avatar']) ?>" class="img-circle">	
+		</div>
+	</div>
+</div>
+<?php } else{ ?>
+<div class="message-list-item left" data-id="<?php echo($msg_data['id']) ?>">
+	<div class="message-list-item__inner left">
+		<div class="user__avatar">
+			<img src="<?php echo(media($context['user_data']['avatar'])) ?>" class="img-circle">	
+		</div>
+		<div class="message__data">
+			<?php 
+			if (!empty($msg_data['text']) && empty($msg_data['media_file'])) { ?>
+				<p class="message__text"><?php echo($msg_data['text']) ?></p>
+			<?php }elseif (!empty($msg_data['media_file']) && $msg_data['media_type'] == 'image'){ ?>
+				<div>
+					<img src="<?php echo(media($msg_data['media_file'])) ?>">
+				</div>
+			<?php }elseif (!empty($msg_data['media_file']) && $msg_data['media_type'] == 'file') { ?>
+				<div>
+					<a href="<?php echo(media($msg_data['media_file'])) ?>" target="_blank"><?php echo $msg_data['media_name']; ?></a>
+				</div>
+			<?php } ?>
+			<time><span class="time-ago" title="<?php echo(ToDate($msg_data['time'])) ?>"><?php echo(time2str($msg_data['time'])) ?></span><time>
+		</div>
+	</div>
+</div>
+<?php } ?>

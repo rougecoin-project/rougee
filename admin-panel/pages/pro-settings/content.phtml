@@ -1,0 +1,93 @@
+<div class="container-fluid">
+    <div class="block-header">
+        <h2>Pro System > Pro System Settings</h2>
+    </div>
+    <!-- Vertical Layout -->
+    <div class="row">
+        <div class="col-lg-5 col-md-5">
+            <div class="card">
+                <div class="header">
+                    <h2>Pro System Settings</h2>
+                </div>
+                <div class="body">
+                    <form class="pro-settings" method="POST">
+                        <div class="form-alert"></div>
+                        <label for="pro_system">Pro System <span class="black" data-toggle="popover" data-trigger="hover"><i class="fa fa-question-circle fa-fw"></i></span></label>
+                        <div class="form-group">
+                            <input type="radio" name="pro_system" id="pro_system-enabled" value="on" <?php echo ($config['pro_system'] == 'on') ? 'checked': '';?>>
+                            <label for="pro_system-enabled">Enabled</label>
+                            <input type="radio" name="pro_system" id="pro_system-disabled" value="off" <?php echo ($config['pro_system'] == 'off') ? 'checked': '';?>>
+                            <label for="pro_system-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" id="pro_price" name="pro_price" class="form-control" value="<?php echo $config['pro_price'];?>">
+                                <label class="form-label">Price</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="number" id="boosted_posts" name="boosted_posts" class="form-control" value="<?php echo $config['boosted_posts'];?>">
+                                <label class="form-label">Boosted Post</label>
+                            </div>
+                        </div>
+                        <br>
+                        <label for="currency">Currency</label>
+                        <select class="form-control show-tick" id="currency" name="currency">
+                          <option value="USD" <?php echo ($config['currency'] == 'USD')  ? ' selected': '';?>>USD</option>
+		                  <option value="EUR" <?php echo ($config['currency'] == 'EUR')  ? ' selected': '';?>>EUR</option>
+		                  <option value="JPY" <?php echo ($config['currency'] == 'JPY')  ? ' selected': '';?>>JPY</option>
+		                  <option value="TRY" <?php echo ($config['currency'] == 'TRY')  ? ' selected': '';?>>TRY</option>
+		                  <option value="GBP" <?php echo ($config['currency'] == 'GBP')  ? ' selected': '';?>>GBP</option>
+		                  <option value="RUB" <?php echo ($config['currency'] == 'RUB')  ? ' selected': '';?>>RUB</option>
+		                  <option value="PLN" <?php echo ($config['currency'] == 'PLN')  ? ' selected': '';?>>PLN</option>
+		                  <option value="ILS" <?php echo ($config['currency'] == 'ILS')  ? ' selected': '';?>>ILS</option>
+		                  <option value="BRL" <?php echo ($config['currency'] == 'BRL')  ? ' selected': '';?>>BRL</option>
+                          <option value="INR" <?php echo ($config['currency'] == 'INR')  ? ' selected': '';?>>INR</option>
+                        </select>
+                        <div class="clearfix"></div>
+                        <br><br>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        
+    </div>
+</div>
+    <!-- #END# Vertical Layout -->
+<script>
+    jQuery(document).ready(function($) {
+        var proform = $("form.pro-settings");
+        proform.ajaxForm({
+            url: acpajax_url('general-settings'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSubmit: function(arr,form){
+                $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+            },
+            success: function(data, status, xhr, form){
+                if (data.status == 200) {
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-success',
+                        text:'Settings has been updated successfully'
+                    }));
+                    setTimeout(function(){
+                        proform.find('div.form-alert .alert').slideUp('fast',function(){
+                            $(this).remove(); 
+                        })    
+                    },1000);
+                }
+                else{
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-warning',
+                        text: data.error
+                    }));
+                }
+
+                proform.find('button[type=submit]').text('Save').removeAttr('disabled');
+            }
+        });
+    });
+</script>

@@ -1,0 +1,225 @@
+<?php 
+$page                = (!empty($_GET['page-id'])) ? $_GET['page-id'] : 1;
+$admin::$db->pageLimit       = 50;
+$total      = $admin::$db->getValue(T_TRANSACTIONS, 'sum(amount)');
+$admin_earn       = $admin::$db->getValue(T_TRANSACTIONS, 'sum(admin_com)');
+$total = $total + $admin_earn;
+$donate       = $admin::$db->where('type','donate')->getValue(T_TRANSACTIONS, 'sum(amount)');
+$donate = $donate + $admin_earn;
+
+$wallet       = $admin::$db->where('type','Advertise')->getValue(T_TRANSACTIONS, 'sum(amount)');
+$pro       = $admin::$db->where('type','pro_member')->getValue(T_TRANSACTIONS, 'sum(amount)');
+
+$transactions = $admin::$db->orderBy('id','DESC')->paginate(T_TRANSACTIONS,$page);
+
+if (($page > $admin::$db->totalPages) && !empty($_GET['page-id'])) {
+    header("Location: " . pxp_acp_link('earnings'));
+    exit();
+}
+?>
+
+<div class="container-fluid">
+    <div class="block-header">
+        <h2>Earnings</h2>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-3">
+            <div class="info-box bg-blue hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">attach_money</i>
+                </div>
+                <div class="content">
+                    <div class="text">Total Earnings</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $total; ?>" data-speed="1000" data-fresh-interval="20">
+                        <?php echo Pxp_GetCurrency($context['config']['currency']).$total; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 ">
+            <div class="info-box bg-blue hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">attach_money</i>
+                </div>
+                <div class="content">
+                    <div class="text">Admin Earnings</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $admin_earn; ?>" data-speed="1000" data-fresh-interval="20">
+                        <?php echo Pxp_GetCurrency($context['config']['currency']).$admin_earn; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 ">
+            <div class="info-box bg-blue hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">attach_money</i>
+                </div>
+                <div class="content">
+                    <div class="text">Total Donation With Commission</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $donate; ?>" data-speed="1000" data-fresh-interval="20">
+                        <?php echo Pxp_GetCurrency($context['config']['currency']).$donate; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 ">
+            <div class="info-box bg-blue hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">attach_money</i>
+                </div>
+                <div class="content">
+                    <div class="text">Total Ads Paid</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $wallet; ?>" data-speed="1000" data-fresh-interval="20">
+                        <?php echo Pxp_GetCurrency($context['config']['currency']).$wallet; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 ">
+            <div class="info-box bg-blue hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">attach_money</i>
+                </div>
+                <div class="content">
+                    <div class="text">Pro Members</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $pro; ?>" data-speed="1000" data-fresh-interval="20">
+                        <?php echo Pxp_GetCurrency($context['config']['currency']).$pro; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <!--  <div class="col-lg-3 col-md-3 ">
+            <div class="info-box bg-blue hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">av_timer</i>
+                </div>
+                <div class="content">
+                    <div class="text">DECLINED REQUESTS</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $declined_requests; ?>" data-speed="1000" data-fresh-interval="20">
+                        <?php echo $declined_requests; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 ">
+            <div class="info-box bg-blue hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">mail_outline</i>
+                </div>
+                <div class="content">
+                    <div class="text">PENDING REQUESTS</div>
+                    <div class="number count-to" data-from="0" data-to="<?php echo $pending_requests; ?>" data-speed="1000" data-fresh-interval="20"><?php echo $pending_requests; ?></div>
+                </div>
+            </div>
+        </div> -->
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Earnings</h2>
+                </div>
+                <div class="body">
+                   <div class="table-responsive1">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr role="row">
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Amount</th>
+                                    <th>Admin Earnings</th>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                    foreach ($transactions as $key => $wal_requests) {
+                                        $user = $admin::$db->where('user_id',$wal_requests->user_id)->getOne(T_USERS);
+                                        $context['wal_requests'] = o2array($wal_requests);
+                                        $context['user'] = o2array($admin->userData($user));
+                                        echo $admin->loadPage('earnings/list');
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="acp-payment-requests">
+                    <div class="pull-left">
+                        <?php echo "Showing $page out of " . $admin::$db->totalPages; ?>
+                    </div>
+                    <div class="pull-right">
+                        <nav>
+                            <ul class="pagination">
+                                <li>
+                                    <a href="<?php echo pxp_acp_link('payment-requests?page-id=1'); ?>" class="waves-effect" title='First Page'>
+                                        <i class="material-icons">first_page</i>
+                                    </a>
+                                </li>
+                                <?php if ($page > 1) {  ?>
+                                <li>
+                                    <a href="<?php echo pxp_acp_link('payment-requests?page-id=' . ($page - 1)); ?>" class="waves-effect" title='Previous Page'>
+                                        <i class="material-icons">chevron_left</i>
+                                    </a>
+                                </li>
+                                <?php  } ?>
+                                <?php 
+                                $nums = 0;
+                                $nums_pages = ($page > 4) ? ($page - 4) : $page;
+                                for ($i=$nums_pages; $i <= $admin::$db->totalPages; $i++) { 
+                                    if ($nums < 20) {
+                                    ?>
+                                    <li class="<?php echo ($page == $i) ? 'active' : ''; ?>"><a href="<?php echo pxp_acp_link('payment-requests?page-id=' . ($i)); ?>" class="waves-effect"><?php echo $i ?></a></li>
+                                    <?php
+                                    }
+                                    $nums++;
+                                }
+                                ?>
+                                <?php if ($admin::$db->totalPages > $page) { ?>
+                                <li>
+                                    <a href="<?php echo pxp_acp_link('payment-requests?page-id=' . ($page + 1)); ?>" class="waves-effect" title="Next Page">
+                                        <i class="material-icons">chevron_right</i>
+                                    </a>
+                                </li>
+                                <?php } ?>
+                                <li>
+                                    <a href="<?php echo pxp_acp_link('payment-requests?page-id=' . ($admin::$db->totalPages)); ?>" class="waves-effect" title='Last Page'>
+                                        <i class="material-icons">last_page</i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<script>
+    function Pxp_ManageWRequests(id,action) {
+        if (!id || (action != 1 && action != 2 && action != 3)) {
+            return false;
+        }
+
+        else if (action == 1) {
+            $("#list-"+id).find('td.request-status').html('<span class="alert-success">Paid</span>');
+        } 
+
+        else if (action == 2) {
+            $("#list-"+id).find('td.request-status').html('<span class="alert-danger">Declined</span>');
+        }
+
+        else if (action == 3) {
+            $("#list-"+id).slideUp(function(){
+                $(this).remove();
+            })
+        }
+
+        else{
+            return false;
+        }
+
+        $.post(acpajax_url('withdrawal-requests'), {action:action,id:id}, function(){ /* pass */ });
+    }
+</script>

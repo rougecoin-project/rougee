@@ -1,0 +1,146 @@
+<style>
+    #store_filter {
+        display: none;
+    }
+</style>
+<div class="verf-active">
+    <div class="pp_store_tra_hed">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" /></svg>
+        <h4>{{LANG my_downloads}}</h4>
+    </div>
+
+</div>
+
+
+
+<div class="explore-page-container mt-0">
+    <div class="explore-posts-container" style="margin-top: inherit;">
+        <?php
+         if ($context['transactions']) {
+			foreach ($context['transactions'] as $key => $post_data) {
+                $post_data['post_id'] = $post_data['item_data']['id'];
+                $post_data['price'] = $post_data['item_data']['price'];
+                $post_data['views'] = $post_data['item_data']['views'];
+                $post_data['sells'] = $post_data['item_data']['sells'];
+                $post_data['downloads'] = $post_data['item_data']['downloads'];
+                $post_data['created_date'] = $post_data['item_data']['created_date'];
+                $post_data['license'] = $post_data['item_data']['license'];
+
+                $post_data['category_name'] = $context['lang'][$post_data['item_data']['category']];
+                $post_data['type'] = 'image';
+                $post_data['thumb'] = $post_data['item_data']['small_file'];
+                $post_data['boosted'] = 0;
+                $post_data['avatar'] = $context['me']['avatar'];
+                $post_data['username'] = $context['me']['username'];
+                //var_dump($post_data);
+                include 'list-item.html';
+            }
+         } else{
+            include $context['dirname_theme'].'/store/templates/store/includes/no-posts-found.html';
+         }
+        ?>
+    </div>
+</div>
+
+<?php
+    include $context['dirname_theme'].'/main/templates/includes/lazy-load.html';
+?>
+
+<script>
+    var myLazyLoad = new LazyLoad({
+        elements_selector: ".lazy_"
+    });
+
+    var gwidth = ($('.explore-posts-container').width() / 4);
+    var config = {
+        selector: '.item',
+        gutter: 0,
+        animate: true,
+        animationOptions: {
+            speed: 100,
+            duration: 200
+        }
+    }
+
+    if ($(window).width() > 992){
+        config.width = 303.34;
+    };
+
+    $(".explore-posts-container").gridalicious(config);
+
+    jQuery(document).ready(function($) {
+        var scrolled = 0;
+        var last_id  = 0;
+
+        $(window).scroll(function() {
+            if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                if (scrolled == 0 && $('.explore-postset').length > 0) {
+                    scrolled = 1;
+                    var list_ids = $("div.explore-postset[id]").map(function() {
+                        return $(this).attr('id');
+                    }).get();
+
+                    if (!list_ids) {
+                        return false;
+                    }
+
+                    var last_id  = Math.min.apply(Math,list_ids);
+
+                    $.ajax({
+                        url: link('store/explore-user-store'),
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {offset:last_id},
+                    }).done(function(data) {
+                        if (data.status == 200) {
+                            $(".explore-posts-container").gridalicious('append', $(data.html));
+                            scrolled = 0;
+                        }
+                        else{
+                            $(window).unbind('scroll');
+                        }
+                    });
+                }
+            }
+        });
+
+        $(document).ready(function(){
+            $('#follow__suggestions-cr').slick({
+                infinite: false,
+                lazyLoad: 'ondemand',
+                slidesToShow: 5,
+                variableWidth: false,
+                slidesToScroll: 1,
+                autoplay: false,
+                autoplaySpeed: 2000,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 4
+                        }
+                    },
+                    {
+                        breakpoint: 800,
+                        settings: {
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    },
+                    {
+                        breakpoint: 300,
+                        settings: {
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+        });
+    });
+
+</script>

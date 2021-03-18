@@ -1,0 +1,25 @@
+<li data-post-comment-reply="<?php echo($context['reply']['id']) ?>" title="<?php echo(time2str($context['reply']['time'])) ?>">
+	<div class="user-avatar">
+		<img src="<?php echo(media($context['reply']['avatar'])) ?>" class="img-circle" />
+	</div>
+	<div class="pp_com_body">
+		<span>
+			<strong><a href="<?php echo(un2url($context['reply']['username'])) ?>"  data-ajax="ajax_loading.php?app=profile&apph=profile&uname=<?php echo($context['reply']['username']) ?>"><?php echo($context['reply']['username']) ?></a></strong> 
+			<?php echo($context['reply']['text']) ?>
+			<div onclick="pxp_like_dis_comment_reply(<?php echo($context['reply']['id']) ?>,this)" class="like_comment comment_like_<?php echo($context['reply']['id']) ?>">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart <?php echo($context['reply']['is_liked'] ? 'liked_color' : '') ?>	"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+			</div>
+		</span>
+	</div>
+	<div class="events_container">
+		<span class="evnt_cont_btns comment_like_span_reply_<?php echo($context['reply']['id']) ?>" id="comment_like_<?php echo($context['reply']['id']) ?>"><span><?php echo($context['reply']['likes']) ?></span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart liked_color	smaller"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></span>
+	</div>
+	<?php if ($context['reply']['is_owner']) { ?>
+		<span class="pull-right delcomment" title="{{LANG delete_comment}}" onclick="delete_commnet_reply(<?php echo($context['reply']['id']) ?>);">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+		</span>
+	<?php } ?>
+</li>
+<script type="text/javascript">
+	add_comment_emoji(<?php echo($context['reply']['id']) ?>);
+</script>

@@ -1,0 +1,501 @@
+<?php
+$image_sell_system_on = ($config['image_sell_system'] == 'on') ? 'checked' : '';
+$image_sell_system_off = ($config['image_sell_system'] == 'off') ? 'checked' : '';
+
+$upload_images_on = ($config['upload_images'] == 'on') ? 'checked' : '';
+$upload_images_off = ($config['upload_images'] == 'off') ? 'checked' : '';
+
+$upload_video_on = ($config['upload_videos'] == 'on') ? 'checked' : '';
+$upload_video_off = ($config['upload_videos'] == 'off') ? 'checked' : '';
+
+$import_video_on = ($config['import_videos'] == 'on') ? 'checked' : '';
+$import_video_off = ($config['import_videos'] == 'off') ? 'checked' : '';
+
+$import_images_on = ($config['import_images'] == 'on') ? 'checked' : '';
+$import_images_off = ($config['import_images'] == 'off') ? 'checked' : '';
+
+$story_system_on = ($config['story_system'] == 'on') ? 'checked' : '';
+$story_system_off = ($config['story_system'] == 'off') ? 'checked' : '';
+
+$ffmpeg_sys_on = ($config['ffmpeg_sys'] == 'on') ? 'checked' : '';
+$ffmpeg_sys_off = ($config['ffmpeg_sys'] == 'off') ? 'checked' : '';
+
+$signup_sys_on = ($config['signup_system'] == 'on') ? 'checked' : '';
+$signup_sys_off = ($config['signup_system'] == 'off') ? 'checked' : '';
+
+$delete_account_on = ($config['delete_account'] == 'on') ? 'checked' : '';
+$delete_account_off = ($config['delete_account'] == 'off') ? 'checked' : '';
+
+$mp4_links_on = ($config['mp4_links'] == 'on') ? 'checked' : '';
+$mp4_links_off = ($config['mp4_links'] == 'off') ? 'checked' : '';
+
+$recaptcha_on = ($config['recaptcha'] == 'on') ? 'checked' : '';
+$recaptcha_off = ($config['recaptcha'] == 'off') ? 'checked' : '';
+$recaptcha_site_key = (!empty($config['recaptcha_site_key'])) ? $config['recaptcha_site_key'] : '';
+$recaptcha_secret_key = (!empty($config['recaptcha_secret_key'])) ? $config['recaptcha_secret_key'] : '';
+
+$email_validation_on = ($config['email_validation'] == 'on') ? 'checked' : '';
+$email_validation_off = ($config['email_validation'] == 'off') ? 'checked' : '';
+
+$subscription_on_signup_on = ($config['subscription_on_signup'] == 'on') ? 'checked' : '';
+$subscription_on_signup_off = ($config['subscription_on_signup'] == 'off') ? 'checked' : '';
+
+$share_system_on = ($config['share_system'] == 'on') ? 'checked' : '';
+$share_system_off = ($config['share_system'] == 'off') ? 'checked' : '';
+
+$allow_user_create_blog_on = ($config['allow_user_create_blog'] == 'on') ? 'checked' : '';
+$allow_user_create_blog_off = ($config['allow_user_create_blog'] == 'off') ? 'checked' : '';
+
+$face_filter_on = ($config['face_filter'] == 'on') ? 'checked' : '';
+$face_filter_off = ($config['face_filter'] == 'off') ? 'checked' : '';
+
+$clickable_url_on = ($config['clickable_url'] == 'on') ? 'checked' : '';
+$clickable_url_off = ($config['clickable_url'] == 'off') ? 'checked' : '';
+
+$yt_api = $config['yt_api'];
+$giphy_api = $config['giphy_api'];
+$max_video_duration = $config['max_video_duration'];
+$ffmpeg_binary = $config['ffmpeg_binary'];
+?>
+
+<div class="block-header">
+    <h2 class="breadcrumb">Settings <i class="material-icons">keyboard_arrow_right</i> General Settings</h2>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Upload &amp; Post system Settings</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form general-settings-form">
+                        <div class="form-alert"></div>
+
+
+                        <label for="upload_system">Upload Images System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $upload_images_on; ?> name="upload_images"  value="on" id="upload_images-enabled">
+                            <label for="upload_images-enabled" id="upload_images-enabled">Enabled</label>
+                            <input type="radio" <?php echo $upload_images_off; ?> name="upload_images" id="upload_images-disabled" value="off">
+                            <label for="upload_images-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+                        <label for="upload_system">Upload Video System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $upload_video_on; ?> name="upload_videos"  value="on" id="upload_videos-enabled">
+                            <label for="upload_videos-enabled" id="upload_videos-enabled">Enabled</label>
+                            <input type="radio" <?php echo $upload_video_off; ?> name="upload_videos" id="upload_videos-disabled" value="off">
+                            <label for="upload_videos-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+                        <label for="upload_system">Import Video System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $import_video_on; ?> name="import_videos"  value="on" id="import_videos-enabled">
+                            <label for="import_videos-enabled" id="import_videos-enabled">Enabled</label>
+                            <input type="radio" <?php echo $import_video_off; ?> name="import_videos" id="import_videos-disabled" value="off">
+                            <label for="import_videos-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+                        <label for="upload_system">Import Images System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $import_images_on; ?> name="import_images"  value="on" id="import_images-enabled">
+                            <label for="import_images-enabled" id="import_images-enabled">Enabled</label>
+                            <input type="radio" <?php echo $import_images_off; ?> name="import_images" id="import_images-disabled" value="off">
+                            <label for="import_images-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+                        <label for="upload_system">Story System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $story_system_on; ?> name="story_system"  value="on" id="story_system-enabled">
+                            <label for="story_system-enabled" id="story_system-enabled">Enabled</label>
+                            <input type="radio" <?php echo $story_system_off; ?> name="story_system" id="story_system-disabled" value="off">
+                            <label for="story_system-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <label for="upload_system">Import from mp4 links System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $mp4_links_on; ?> name="mp4_links"  value="on" id="mp4_links-enabled">
+                            <label for="mp4_links-enabled" id="mp4_links-enabled">Enabled</label>
+                            <input type="radio" <?php echo $mp4_links_off; ?> name="mp4_links" id="mp4_links-disabled" value="off">
+                            <label for="mp4_links-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <label for="upload_system">Face Filter System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $face_filter_on; ?> name="face_filter"  value="on" id="face_filter-enabled">
+                            <label for="face_filter-enabled" id="face_filter-enabled">Enabled</label>
+                            <input type="radio" <?php echo $face_filter_off; ?> name="face_filter" id="face_filter-disabled" value="off">
+                            <label for="face_filter-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <label for="business_account">Business Account System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo ($config['business_account'] == 'on' ? 'checked' : ''); ?> name="business_account"  value="on" id="business_account-enabled">
+                            <label for="business_account-enabled" id="business_account-enabled">Enabled</label>
+                            <input type="radio" <?php echo ($config['business_account'] == 'off' ? 'checked' : ''); ?> name="business_account" id="business_account-disabled" value="off">
+                            <label for="business_account-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <label for="withdraw_system">Withdraw System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo ($config['withdraw_system'] == 'on' ? 'checked' : ''); ?> name="withdraw_system"  value="on" id="withdraw_system-enabled">
+                            <label for="withdraw_system-enabled" id="withdraw_system-enabled">Enabled</label>
+                            <input type="radio" <?php echo ($config['withdraw_system'] == 'off' ? 'checked' : ''); ?> name="withdraw_system" id="withdraw_system-disabled" value="off">
+                            <label for="withdraw_system-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <label for="raise_money">Raise Money System</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo ($config['raise_money'] == 'on' ? 'checked' : ''); ?> name="raise_money"  value="on" id="raise_money-enabled">
+                            <label for="raise_money-enabled" id="raise_money-enabled">Enabled</label>
+                            <input type="radio" <?php echo ($config['raise_money'] == 'off' ? 'checked' : ''); ?> name="raise_money" id="raise_money-disabled" value="off">
+                            <label for="raise_money-disabled" class="m-l-20">Disabled</label>
+                        </div>
+                        <label for="raise_money_type">Who can create funding requests ?</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo ($config['raise_money_type'] == '1' ? 'checked' : ''); ?> name="raise_money_type"  value="1" id="raise_money_type-enabled">
+                            <label for="raise_money_type-enabled" id="raise_money_type-enabled">Verified</label>
+                            <input type="radio" <?php echo ($config['raise_money_type'] == '0' ? 'checked' : ''); ?> name="raise_money_type" id="raise_money_type-disabled" value="0">
+                            <label for="raise_money_type-disabled" class="m-l-20">All Users</label>
+                        </div>
+
+                        <label for="upload_system">Make URL clickable for pro users</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $clickable_url_on; ?> name="clickable_url"  value="on" id="clickable_url-enabled">
+                            <label for="clickable_url-enabled" id="clickable_url-enabled">Enabled</label>
+                            <input type="radio" <?php echo $clickable_url_off; ?> name="clickable_url" id="clickable_url-disabled" value="off">
+                            <label for="clickable_url-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="header">
+                <h2>User Settings</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="general-settings-form form-group form-float">
+                        <div class="form-alert"></div>
+                        <label for="upload_system">User Registration </label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $signup_sys_on; ?> name="signup_system"  value="on" id="signup_system-enabled">
+                            <label for="signup_system-enabled">Enabled</label>
+                            <input type="radio" <?php echo $signup_sys_off; ?> name="signup_system" id="signup_system-disabled" value="off">
+                            <label for="signup_system-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+                        <label for="upload_system">Delete User Account</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $delete_account_on; ?> name="delete_account"  value="on" id="delete_account-enabled">
+                            <label for="delete_account-enabled">Enabled</label>
+                            <input type="radio" <?php echo $delete_account_off; ?> name="delete_account" id="delete_account-disabled" value="off">
+                            <label for="delete_account-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+                        <label for="upload_system">Email Validation</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $email_validation_on; ?> name="email_validation"  value="on" id="email_validation-enabled">
+                            <label for="email_validation-enabled" id="email_validation-enabled">Enabled</label>
+                            <input type="radio" <?php echo $email_validation_off; ?> name="email_validation" id="email_validation-disabled" value="off">
+                            <label for="email_validation-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+
+                        <label for="upload_system">Share system</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $share_system_on; ?> name="share_system"  value="on" id="share_system-enabled">
+                            <label for="share_system-enabled" id="share_system-enabled">Enabled</label>
+                            <input type="radio" <?php echo $share_system_off; ?> name="share_system" id="share_system-disabled" value="off">
+                            <label for="share_system-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+
+                        <label for="upload_system">Require subscription on sign up</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $subscription_on_signup_on; ?> name="subscription_on_signup"  value="on" id="subscription_on_signup-enabled">
+                            <label for="subscription_on_signup-enabled" id="subscription_on_signup-enabled">Enabled</label>
+                            <input type="radio" <?php echo $subscription_on_signup_off; ?> name="subscription_on_signup" id="subscription_on_signup-disabled" value="off">
+                            <label for="subscription_on_signup-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+                        <div class="form-line">
+                            <input type="text" id="specific_email_signup" name="specific_email_signup" class="form-control" value="<?php echo ($config['specific_email_signup']); ?>">
+                            <label class="form-label">
+                            Allow signs ups from specific Email provider. for example gmail.com
+                            </label>
+                        </div>
+<br><br>
+                        <div class="form-line">
+                        <input type="text" id="free_user_storage_limit" name="free_user_storage_limit" class="form-control" value="<?php echo ($config['free_user_storage_limit']); ?>">
+                            <label class="form-label">
+                            limit storage for free users. Size in Kilobyte, 0 for unlimited
+                            </label>
+                        </div>
+
+                        <br>
+                        <label for="upload_system">Users can create blog articles</label>
+                        <div class="form-group">
+                            <input type="radio" <?php echo $allow_user_create_blog_on; ?> name="allow_user_create_blog"  value="on" id="allow_user_create_blog-enabled">
+                            <label for="allow_user_create_blog-enabled" id="allow_user_create_blog-enabled">Enabled</label>
+                            <input type="radio" <?php echo $allow_user_create_blog_off; ?> name="allow_user_create_blog" id="allow_user_create_blog-disabled" value="off">
+                            <label for="allow_user_create_blog-disabled" class="m-l-20">Disabled</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Store Settings</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form general-settings-form">
+                        <div class="form-alert"></div>
+                        <div class="form-group form-float">
+                            <label for="image_sell_system">Images Sell System</label>
+                            <div class="form-group">
+                                <input type="radio" <?php echo $image_sell_system_on; ?> name="image_sell_system"  value="on" id="image_sell_system-enabled">
+                                <label for="image_sell_system-enabled" id="upload_images-enabled">Enabled</label>
+                                <input type="radio" <?php echo $image_sell_system_off; ?> name="image_sell_system" id="image_sell_system-disabled" value="off">
+                                <label for="image_sell_system-disabled" class="m-l-20">Disabled</label>
+                            </div>
+
+                            <div class="form-line">
+                                <input type="text" id="min_image_width" name="min_image_width" class="form-control" value="<?php echo ($config['min_image_width']); ?>">
+                                <label class="form-label">
+                                    Min Image Width * in pixel
+                                </label>
+                            </div>
+                            <br>
+                            <div class="form-line">
+                                <input type="text" id="min_image_height" name="min_image_height" class="form-control" value="<?php echo ($config['min_image_height']); ?>">
+                                <label class="form-label">
+                                    Min Image Height * in pixel
+                                </label>
+                            </div>
+                            <br>
+                            <div class="form-line">
+                                <input type="text" id="watermark_opacity" name="watermark_opacity" class="form-control" value="<?php echo ($config['watermark_opacity']); ?>">
+                                <label class="form-label">
+                                    Watermark opacity value must be between 0:1
+                                </label>
+                            </div>
+                            <br>
+                            <div class="form-group form-float">
+                                <label for="upload">Watermark anchor</label>
+                                <select class="form-control"  name="watermark_anchor">
+                                    <option value="top left" <?php if($config['watermark_anchor'] == 'top left'){ echo("selected");}?>>top left</option>
+                                    <option value="top right" <?php if($config['watermark_anchor'] == 'top right'){ echo("selected");}?>>top right</option>
+                                    <option value="top" <?php if($config['watermark_anchor'] == 'top'){ echo("selected");}?>>top</option>
+                                    <option value="bottom left" <?php if($config['watermark_anchor'] == 'bottom left'){ echo("selected");}?>>bottom left</option>
+                                    <option value="bottom right" <?php if($config['watermark_anchor'] == 'bottom right'){ echo("selected");}?>>bottom right</option>
+                                    <option value="bottom" <?php if($config['watermark_anchor'] == 'bottom'){ echo("selected");}?>>bottom</option>
+                                    <option value="right" <?php if($config['watermark_anchor'] == 'right'){ echo("selected");}?>>right</option>
+                                    <option value="top center" <?php if($config['watermark_anchor'] == 'top center'){ echo("selected");}?>>center</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>FFMPEG system settings</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <div>
+                        <p>
+                            This system will compress, convert,optimzise and crop videos to mp4. This system require "ffmpeg" to be installed in your server.
+                        </p>
+                    </div>
+                    <?php
+                    if(!function_exists('exec')) {
+                    ?>
+                    <div class="alert alert-danger">
+                        <i class="fa fa-fw fa-exclamation-triangle"></i> <strong>Required:</strong> exec function is Disabled.
+                    </div>
+                    <?php } ?>
+                    <form class="form general-settings-form">
+                        <div class="form-alert"></div>
+                        <div class="form-group form-float">
+                            <br>
+                            <label for="upload_system">FFMPEG system</label>
+                            <div class="form-group">
+                                <input type="radio" <?php echo $ffmpeg_sys_on; ?> name="ffmpeg_sys"  value="on" id="ffmpeg_sys-enabled">
+                                <label for="ffmpeg_sys-enabled" id="ffmpeg_sys-enabled">Enabled</label>
+                                <input type="radio" <?php echo $ffmpeg_sys_off; ?> name="ffmpeg_sys" id="ffmpeg_sys-disabled" value="off">
+                                <label for="ffmpeg_sys-disabled" class="m-l-20">Disabled</label>
+                            </div>
+                            <br>
+                            <div class="form-line">
+                                <input type="text" id="ffmpeg_binary" name="ffmpeg_binary" class="form-control" value="<?php echo($ffmpeg_binary); ?>">
+                                <label class="form-label">
+                                    FFmpeg binary file path: on Linux(/usr/bin/ffmpeg) or Windows(C:\\ffmpeg\bin\ffmpeg.exe)
+                                </label>
+                            </div>
+                            <br>
+                            <div class="form-line">
+                                <input type="number" id="max_video_duration" name="max_video_duration" class="form-control" value="<?php echo($max_video_duration); ?>">
+                                <label class="form-label">
+                                    Max video duration in seconds
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="header">
+                <h2>API Settings</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form general-settings-form">
+                        <div class="form-alert"></div>
+                        <div class="form-group form-float"> 
+                            <div class="form-line">
+                                <input type="text" id="yt_api" name="yt_api" class="form-control" value="<?php echo($yt_api); ?>">
+                                <label class="form-label">
+                                    Youtube api key..
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float"> 
+                            <div class="form-line">
+                                <input type="text" id="giphy_api" name="giphy_api" class="form-control" value="<?php echo($giphy_api); ?>">
+                                <label class="form-label">
+                                    Giphy api key
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>reCaptcha settings</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form general-settings-form">
+                        <div class="form-alert"></div>
+                        <div class="form-group form-float">
+                            <br>
+                            <label for="upload_system">reCaptcha</label>
+                            <div class="form-group">
+                                <input type="radio" <?php echo $recaptcha_on; ?> name="recaptcha"  value="on" id="recaptcha-enabled">
+                                <label for="recaptcha-enabled" id="recaptcha-enabled">Enabled</label>
+                                <input type="radio" <?php echo $recaptcha_off; ?> name="recaptcha" id="recaptcha-disabled" value="off">
+                                <label for="recaptcha-disabled" class="m-l-20">Disabled</label>
+                            </div>
+                            <br>
+                            <div class="form-line">
+                                <input type="text" id="recaptcha_site_key" name="recaptcha_site_key" class="form-control" value="<?php echo($recaptcha_site_key); ?>">
+                                <label class="form-label">
+                                    Site key (reCaptcha key)
+                                </label>
+                            </div>
+                            <br>
+                            <div class="form-line">
+                                <input type="text" id="recaptcha_secret_key" name="recaptcha_secret_key" class="form-control" value="<?php echo($recaptcha_secret_key); ?>">
+                                <label class="form-label">
+                                    Secret key
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Google Map Settings</h2>
+            </div>
+            <div class="body">
+                <div class="clearfix">
+                    <form class="form general-settings-form">
+                        <div class="form-alert"></div>
+                        <div class="form-group form-float">
+                            <br>
+                            <label for="upload_system">Google Map</label>
+                            <div class="form-group">
+                                <input type="radio" <?php echo ($config['google_map'] == 'on' ? 'checked' : ''); ?> name="google_map"  value="on" id="google_map-enabled">
+                                <label for="google_map-enabled" id="google_map-enabled">Enabled</label>
+                                <input type="radio" <?php echo ($config['google_map'] == 'off' ? 'checked' : ''); ?> name="google_map" id="google_map-disabled" value="off">
+                                <label for="google_map-disabled" class="m-l-20">Disabled</label>
+                            </div>
+                            <br>
+                            <div class="form-line">
+                                <input type="text" id="google_map_api" name="google_map_api" class="form-control" value="<?php echo ($config['google_map_api']); ?>">
+                                <label class="form-label">
+                                    Google Map API
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(document).ready(function($) {
+        var gsform = $("form.general-settings-form");
+
+        gsform.ajaxForm({
+            url: acpajax_url('general-settings'),
+            type: 'POST',
+            dataType: 'json',
+            beforeSubmit: function(arr,form){
+                $(form).find('button[type=submit]').text('Please wait.').attr('disabled', 'true');
+            },
+            success: function(data, status, xhr, form){
+                if (data.status == 200) {
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-success',
+                        text:'Settings has been updated successfully'
+                    }));
+                    setTimeout(function(){
+                        gsform.find('div.form-alert .alert').slideUp('fast',function(){
+                            $(this).remove(); 
+                        })    
+                    },1000);
+                }
+                else{
+                    $(form).find('div.form-alert').scroll2().html($('<div>',{
+                        class:'alert alert-warning',
+                        text: data.error
+                    }));
+                }
+
+                gsform.find('button[type=submit]').text('Save').removeAttr('disabled');
+            }
+        });
+    });
+</script>

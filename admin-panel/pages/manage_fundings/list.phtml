@@ -1,0 +1,43 @@
+<tr id="list-<?php echo($context['fund']->id); ?>">
+	<td>
+		<span>
+			<?php echo($context['fund']->id); ?>
+		</span>
+	</td>
+	<td>
+		<a href="<?php echo($context['user']->url); ?>">
+			<img src="<?php echo(media($context['user']->avatar)); ?>" class="td-avatar" alt="user avatar">
+			<?php echo($context['user']->username); ?>
+		</a>
+	</td>
+	<td>
+		<span>
+			<?php echo($context['fund']->title); ?>
+		</span>
+	</td>
+	<td>
+		<span>
+			<?php echo($context['fund']->description); ?>
+		</span>
+	</td>
+	<td>
+		<span>
+			<?php echo($context['currency_symbol'].$context['fund']->amount); ?>
+		</span>
+	</td>
+	<td>
+		<span>
+			<?php echo($context['currency_symbol'].$context['fund']->raised); ?>
+		</span>
+	</td>
+	<td>
+		<button class="btn bg-cyan waves-effect waves-light">
+			<a href="<?php echo($config['site_url']).'/edit_funding/'.$context['fund']->id ?>"  target="_blank">
+				EDIT
+			</a>
+		</button>
+		<button class="btn btn-danger waves-effect waves-light delete-content" data-id="<?php echo($context['fund']->id); ?>" data-type="fund">
+			DELETE
+		</button>
+	</td>
+</tr>

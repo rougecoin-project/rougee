@@ -1,0 +1,117 @@
+<?php 
+$filter_keyword = (!empty($_GET['query'])) ? $admin::secure($_GET['query']) : '';
+
+if (!empty($filter_keyword)) {
+  $requests = $admin::$db->rawQuery("SELECT * FROM  " . T_BUS_REQUESTS . " 
+      WHERE `user_id` IN (SELECT `user_id` FROM " . T_USERS . " WHERE `username` LIKE '%$filter_keyword%' OR `email` LIKE '%$filter_keyword%' OR `fname` LIKE '%$filter_keyword%' OR `lname` LIKE '%$filter_keyword%' OR `user_id` LIKE '%$filter_keyword%')");
+}
+
+else{
+  $requests = $admin::$db->where('type',0)->get(T_BUS_REQUESTS);
+}
+
+foreach ($requests as $key => $value) {
+  $value->request_from = $admin->getUserDataById($value->user_id);
+
+}
+ ?>
+<div class="container-fluid">
+    <div class="block-header">
+        <h2>Users > Manage Business Reqeusts</h2>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Manage Business Reqeusts</h2>
+                </div>
+                <div class="body">
+                  <div class="clearfix">
+                        <div class="col-md-6" style="margin-bottom:0;">
+                            <form method="get" action="<?php echo pxp_acp_link('manage-business-requests'); ?>">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input type="text" name="query" id="query" class="form-control"  value="<?php echo($filter_keyword); ?>">
+                                                <label class="form-label search-form">Search for ID, Keyword, E-mail, Username, First Name, Last Name</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3">
+                                        <button class="btn btn-info">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                   <div class="table-responsive1">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                      <th>ID</th>
+					                  <th>User</th>
+                            <th>Status</th>
+					                  <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+				                foreach ($requests as $context['verification']) {
+				                    echo $admin->loadPage('manage-business-requests/list');
+                            
+				                }
+
+				                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    </div>
+    <!-- #END# Vertical Layout -->
+<script>
+
+function delete_request_(id) {
+  $.ajax({
+      url: acpajax_url('delete_bus_request_'),
+      type: 'POST',
+      dataType: 'json',
+      data: {
+          id:id,
+      },
+  })
+  .done(function(data) {
+      if (data.status == 200) {
+          $('#VerificationID_' + id).fadeOut(300, function() {
+            $(this).remove();
+          });
+          $('#VerificationID__' + id).fadeOut(300, function() {
+            $(this).remove();
+          });
+      }
+  });
+
+}
+
+function verify_user_(id) {
+  $.ajax({
+      url: acpajax_url('accept_bus_request_'),
+      type: 'POST',
+      dataType: 'json',
+      data: {
+          id:id,
+      },
+  })
+  .done(function(data) {
+      if (data.status == 200) {
+          $('#statusID_' + id).html('<strong class="label label-success">Accepted</strong>')
+      }
+  });
+
+}
+
+</script>

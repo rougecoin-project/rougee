@@ -1,0 +1,35 @@
+<?php 
+$themes = $admin::getThemes();
+?>
+
+<div class="block-header">
+    <h2 class="breadcrumb">Design <i class="material-icons">keyboard_arrow_right</i> Themes</h2>
+</div>
+<div class="row clearfix">
+	<?php foreach ($themes as $context['theme_item']): ?>
+		<?php echo $admin::loadPage('themes/list'); ?>
+	<?php endforeach; ?>
+</div>
+
+<script>
+	jQuery(document).ready(function($) {
+		$(".activate-theme").click(function(event) {
+			$(this).find('a').addClass('disabled').text('Please wait');
+
+			$.ajax({
+				url: acpajax_url('activate-theme'),
+				type: 'POST',
+				dataType: 'json',
+				data: {theme: $(this).data('theme')},
+			})
+			.done(function(data) {
+				if(data.status == 200){
+					window.location.reload();
+				}
+				else{
+					alert("Something went wrong Please try again later");
+				}
+			});
+		});
+	});
+</script>

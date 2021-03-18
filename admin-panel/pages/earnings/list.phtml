@@ -1,0 +1,30 @@
+<?php if(!empty($context['user'])){ ?>
+<tr id="list-<?php echo($context['wal_requests']['id']) ?>">
+	<td>
+		<span>
+			<?php echo($context['wal_requests']['id']) ?>
+		</span>
+	</td>
+	<td>
+		<span>
+			<?php echo($context['user']['username']) ?>
+		</span>
+	</td>
+	<td>
+		<address>
+        <?php echo(Pxp_GetCurrency($context['config']['currency']).$context['wal_requests']['amount']) ?>
+		</address>
+	</td>
+	<td>
+		<?php echo(Pxp_GetCurrency($context['config']['currency']).$context['wal_requests']['admin_com']) ?>
+	</td>
+	<td>
+		<time>
+			<?php echo ToDate($context['wal_requests']['time']); ?>
+		</time>
+	</td>
+	<td>
+		<?php echo($context['wal_requests']['type']) ?>
+	</td>
+</tr>
+<?php } ?>

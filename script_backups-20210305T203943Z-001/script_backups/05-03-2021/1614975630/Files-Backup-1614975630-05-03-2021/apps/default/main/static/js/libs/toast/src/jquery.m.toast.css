@@ -1,0 +1,6 @@
+.toast{ position:fixed; list-style: none; padding:60px 10px 10px 10px; width: auto; z-index: 999999; font-family:"Helvetica","Lato",sans-serif; }
+.toast li{ display:block; text-align: center;}
+.toast span {  min-width: 220px; max-width: 400px; display: inline-block; margin: 5px 0 0 0; text-align: center; background-color: rgba(0, 0, 0, 0.8); color:#ffffff; padding:10px 17px; border-radius: 5px; -webkit-border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,.15); -webkit-box-shadow: 0 2px 5px rgba(0,0,0,.15);  }
+.toast li.danger span{ color: #b94a48; background-color: #f2dede; border-color: #eed3d7; }
+.toast li.info span{ color: #3a87ad; background-color: #d9edf7; border-color: #bce8f1; }
+.toast li.success span{ color: #468847; background-color: #dff0d8; border-color: #d6e9c6; }
